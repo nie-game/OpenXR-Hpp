@@ -438,6 +438,9 @@ class CppGenerator(AutomaticSourceOutputGenerator):
         if suffix:
             enum_name += suffix
 
+        if enum_name[0].isdigit():
+            enum_name = "_" + enum_name
+ 
         return enum_name
 
     def get_flag_value_prefix_suffix(self, typename):
