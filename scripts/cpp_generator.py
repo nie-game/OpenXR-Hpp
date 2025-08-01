@@ -1025,6 +1025,7 @@ class CppGenerator(AutomaticSourceOutputGenerator):
             self.dict_enums[enum.name] = enum
 
         result_enum = self.dict_enums['XrResult']
+        result_enum.values = [value for value in result_enum.values if not value.alias]
 
         for struct in self.api_structures:
             self.dict_structs[struct.name] = struct
