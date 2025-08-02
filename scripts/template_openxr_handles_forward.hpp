@@ -61,6 +61,10 @@ class DispatchLoaderDynamic;
 // XrSpaceUserIdFB name, and I don't want to make a openxr_spaceuseridfb.hpp file just for this.
 using SpaceUserIdFB = XrSpaceUserIdFB;
 
+// FIXME the only XR_OPAQUE_64 type, may need to be implemented in a real class
+// but this type alias is enought for now
+using FutureEXT = XrFutureEXT;
+
 //# for handle in gen.api_handles
 //## Note this won't actually find anything until automatic_source_generator.py is modified
 //## to actually store a value under "alias" for handles, but...
