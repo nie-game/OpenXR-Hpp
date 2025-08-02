@@ -885,7 +885,7 @@ class CppGenerator(AutomaticSourceOutputGenerator):
         return tag_member[0].values is None
 
     def _cpp_hidden_member(self, member):
-        return member.name == "type" or member.name == "next"
+        return member.name == "type" or (member.name == "next" and member.type == "void")
 
     def _struct_member_count(self, struct):
         return len(struct.members)
@@ -897,7 +897,7 @@ class CppGenerator(AutomaticSourceOutputGenerator):
         if struct.name.startswith("XrEventData"):
             return False
         nextptr = [x.cdecl for x in struct.members
-                   if x.name == 'next']
+                   if (x.name == 'next' and x.type == 'void')]
         return nextptr and 'const' in nextptr[0]
 
     def _is_struct_output(self, struct):
@@ -906,7 +906,7 @@ class CppGenerator(AutomaticSourceOutputGenerator):
         if struct.name.startswith("XrEventData"):
             return True
         nextptr = [x.cdecl for x in struct.members
-                   if x.name == 'next']
+                   if (x.name == 'next' and x.type == 'void')]
         if not nextptr:
             return False
         return 'const' not in nextptr[0]
