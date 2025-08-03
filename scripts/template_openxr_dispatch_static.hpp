@@ -42,7 +42,9 @@
 #include <openxr/openxr.h>
 
 #if XR_CURRENT_API_VERSION >= XR_MAKE_VERSION(1, 0, 33)
+#ifndef XR_EXTENSION_PROTOTYPES
 #define XR_EXTENSION_PROTOTYPES 1
+#endif
 #include <openxr/openxr_loader_negotiation.h>
 #endif
 
