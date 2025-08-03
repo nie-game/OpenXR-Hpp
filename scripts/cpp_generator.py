@@ -993,7 +993,7 @@ class CppGenerator(AutomaticSourceOutputGenerator):
             if member.type == 'char' and member.is_array and member.pointer_count == 0:
                 # We'll initialize a fixed-size string with a cstring.
                 result = f"const char* {member.name}{suffix}"
-            elif member.type.startswith("Xr") and member.pointer_count == 0:
+            elif member.type.startswith("Xr") and not member.is_array and member.pointer_count == 0:
                 result = f"const {_project_type_name(member.type)}& {member.name}{suffix}"
 
         if defaulted:
