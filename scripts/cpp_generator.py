@@ -102,7 +102,12 @@ def _project_type_name(typename):
 
 
 def _is_static_length_array(member):
-    return member.is_array and member.pointer_count == 0
+    is_static_length_array = member.is_array and member.pointer_count == 0
+    if is_static_length_array and member.array_count_var == '':
+        size_begin = member.cdecl.find("[")
+        size_end = member.cdecl.find("]", size_begin)
+        member.array_count_var = member.cdecl[size_begin + 1:size_end]
+    return is_static_length_array
 
 
 def _is_static_length_string(member):
