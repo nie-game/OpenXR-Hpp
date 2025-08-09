@@ -41,6 +41,10 @@ The following additional naming conventions apply
     * `XR_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT` is now
       `xr::DebugUtilsMessageSeverityFlagBitsEXT::Verbose`. (Type is an
       extension, so removed from value.)
+  * Note: to avoid compilation error, if the enum identifier start 
+    with a digit, it has an underscore prefix :
+      e.g. XR_MARKER_ARUCO_DICT_4X4_50_ML become xr::MarkerArucoDictML:_4X4_50
+           (and not xr::MarkerArucoDictML:4X4_50)
 * Flag bits are handled like enums with the addition that the `_BIT` suffix has
   also been removed.
   * `XR_SPACE_VELOCITY_LINEAR_VALID_BIT` is now
