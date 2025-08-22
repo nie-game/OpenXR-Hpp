@@ -174,6 +174,10 @@ xr::Swapchain swapchain =
                               1});
 ```
 
+Because of the strict C++ naming rule, a sub-class can't change a parent class
+member name; so in very rare cases the sub-class keep the parent member name
+(e.g. XrCompositionLayerPassthroughFB.flags become XrCompositionLayerPassthroughFB.layerFlags).
+
 ### Return values, Error Codes & Exceptions
 
 By default OpenXR-Hpp has exceptions enabled. This means that OpenXR-Hpp checks
