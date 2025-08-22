@@ -44,8 +44,10 @@
 //#         endif
              , /*{s.next_param_name}*/)
 //#     endif
-//#    for member in visible_members if member.name not in s.parent_fields and not is_static_length_string(member)
+//#    for member in visible_members
+//#       if cpp_hidden_member|length + loop.index > s.parent_fields|length and not is_static_length_string(member)
                   /*{- initializer_comma() }*/ /*{ member.name }*/{/*{ get_default_for_member(member, s.name, "") -}*/}
+//#       endif
 //#    endfor
             {}
 //# endmacro
@@ -68,15 +70,19 @@
 //#        set arg_comma = joiner(",")
               /*{- initializer_comma() }*/ Parent(
                 /*{- arg_comma() -}*/ /*% if s.is_abstract %*/type_ /*% else %*/ /*{- s.struct_type_enum -}*/ /*% endif %*/
-//#        for member in visible_members if member.name in s.parent_fields
+//#        for member in visible_members
+//#           if cpp_hidden_member|length + loop.index <= s.parent_fields|length
                 /*{- arg_comma() }*/ /*{ member.name + "_" -}*/
+//#           endif
 //#        endfor
                 /*{- arg_comma() }*/ /*{ s.next_param_name -}*/
               )
 //#    endif
 
-//#    for member in visible_members if member.name not in s.parent_fields and not is_static_length_array(member)
+//#    for member in visible_members
+//#       if cpp_hidden_member|length + loop.index > s.parent_fields|length and not is_static_length_array(member)
               /*{- initializer_comma() }*/ /*{ member.name }*/ {/*{ member.name + "_"}*/}
+//#       endif
 //#    endfor
         {
 //#    for member in visible_members if is_static_length_array(member)
@@ -206,8 +212,10 @@
         }
 //# endif
 
-//# for member in struct.members if not member is cpp_hidden_member and member.name not in s.parent_fields
+//# for member in struct.members if not member is cpp_hidden_member 
+//#    if loop.index > s.parent_fields|length
         /*{ project_cppdecl(struct, member) }*/;
+//#    endif
 //# endfor
     };
     /*{ wrapperSizeStaticAssert(struct.name, s.cpp_name) }*/

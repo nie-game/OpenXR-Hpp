@@ -14,8 +14,6 @@ EXCLUDED_EXTENSIONS = (
     # Projection of UuidMSFT fails
     "XR_MSFT_scene_understanding",
     "XR_MSFT_scene_understanding_serialization",
-    # Projection of derivated structure that failed to call their base classes
-    "XR_FB_passthrough",
     "XR_META_passthrough_layer_resumed_event",
     "XR_META_passthrough_color_lut",
     # Ordering base to derivated class
