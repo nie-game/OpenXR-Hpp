@@ -15,12 +15,7 @@ EXCLUDED_EXTENSIONS = (
     "XR_MSFT_scene_understanding",
     "XR_MSFT_scene_understanding_serialization",
     # Ordering base to derivated class
-    "XR_ML_spatial_anchors",
-    "XR_ML_spatial_anchors_storage",
-    "XR_BD_spatial_scene",
     "XR_BD_spatial_sensing",
-    "XR_BD_spatial_anchor",
-    "XR_BD_spatial_anchor_sharing",
 )
 
 

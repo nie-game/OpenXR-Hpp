@@ -1013,6 +1013,19 @@ class CppGenerator(AutomaticSourceOutputGenerator):
         if self.isCoreExtensionName(extname):
             return False
         return self.dict_extensions[extname].protect_value is not None
+        
+    def topologic_sort(self, api_list):
+        # Don't use iterators because we move items in place while scanning and searching
+        index = 0
+        while index < len(api_list):
+            parent = self.struct_parents.get(api_list[index].name)
+            if (parent):
+               for depend in range(index + 1, len(api_list)):
+                  if api_list[depend].name == parent:
+                     api_list.insert(index, api_list.pop(depend))
+                     index += 1
+                     break
+            index += 1
 
     # Write out all the information for the appropriate file,
     # and then call down to the base class to wrap everything up.
@@ -1034,7 +1047,7 @@ class CppGenerator(AutomaticSourceOutputGenerator):
 
         for struct in self.api_structures:
             self.dict_structs[struct.name] = struct
-
+            
         for bitmask in self.api_bitmasks:
             self.dict_bitmasks[bitmask.name] = bitmask
 
@@ -1108,6 +1121,9 @@ class CppGenerator(AutomaticSourceOutputGenerator):
                 else:
                     # assumption violated
                     assert False
+
+        self.topologic_sort(self.api_structures)
+
         # Verify
         self.selftests()
 
