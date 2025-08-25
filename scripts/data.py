@@ -14,8 +14,6 @@ EXCLUDED_EXTENSIONS = (
     # Projection of UuidMSFT fails
     "XR_MSFT_scene_understanding",
     "XR_MSFT_scene_understanding_serialization",
-    # Ordering base to derivated class
-    "XR_BD_spatial_sensing",
 )
 
 

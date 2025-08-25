@@ -210,6 +210,15 @@
             }
             return reinterpret_cast</*{ struct.name }*/*>(this);
         }
+//# else
+//#     filter block_doxygen_comment
+        //! @brief Accessor for passing this as the address of a raw /*{struct.name}*/.
+        //!
+        //! The optional clear argument is not used in this abstract class
+//# endfilter
+        /*{ struct.name }*/ * put([[maybe_unused]] bool clear = true) noexcept {
+            return reinterpret_cast</*{ struct.name }*/*>(this);
+        }
 //# endif
 
 //# for member in struct.members if not member is cpp_hidden_member 
@@ -229,22 +238,19 @@
         return s.get();
     }
 
-//# if not s.is_abstract
-//#     filter block_doxygen_comment
+//# filter block_doxygen_comment
     //! @brief Free function accessor for clearing (by default) and passing /*{s.cpp_name}*/ as the address of a raw /*{struct.name}*/
     //! @relates /*{s.cpp_name}*/
     //! @ingroup utility_accessors
 //# endfilter
     static OPENXR_HPP_INLINE /*{ struct.name }*/ * put(/*{s.cpp_name}*/ &s, bool clear = true) noexcept { return s.put(clear); }
-//# endif
-
 //# if s.is_derived_type
 //#     filter block_doxygen_comment
     //! @brief Free function accessor for a reference to const /*{s.cpp_name}*/ as a raw, pointer to const /*{s.parent_type}*/ (the base type)
     //! @relates /*{s.cpp_name}*/
     //! @relatesalso /*{s.parent_cpp_type}*/
     //! @ingroup utility_accessors
-//#     endfilter
+//# endfilter
     static OPENXR_HPP_INLINE /*{s.parent_type}*/ const* get_base(/*{s.cpp_name}*/ const& h) {
         return h.get_base();
     }
