@@ -599,13 +599,13 @@ class CppGenerator(AutomaticSourceOutputGenerator):
     def _is_tagged_type(self, typename):
         if typename not in self.dict_structs:
             return False
-        return any((x.name == "type" for x in self.dict_structs[typename].members))
+        return any((x.name == "type" and x.type == "XrStructureType" for x in self.dict_structs[typename].members))
 
     def _get_tag(self, typename):
         if typename not in self.dict_structs:
             return None
         tag_member = [x for x in self.dict_structs[typename].members
-                      if x.name == "type"]
+                      if x.name == "type" and x.type == "XrStructureType"]
         if not tag_member:
             return None
         raw_tag = tag_member[0].values
@@ -884,13 +884,13 @@ class CppGenerator(AutomaticSourceOutputGenerator):
     def _is_base_only(self, struct):
         if not struct:
             return False
-        tag_member = [x for x in struct.members if x.name == "type"]
+        tag_member = [x for x in struct.members if x.name == "type" and x.type == "XrStructureType"]
         if not tag_member:
             return False
         return tag_member[0].values is None
 
     def _cpp_hidden_member(self, member):
-        return member.name == "type" or (member.name == "next" and member.type == "void")
+        return (member.name == "type" and member.type == "XrStructureType") or (member.name == "next" and member.type == "void")
 
     def _struct_member_count(self, struct):
         return len(struct.members)
