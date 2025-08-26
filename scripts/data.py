@@ -25,7 +25,7 @@ DISCOURAGED = set((
 ))
 
 TEMPLATED_TWO_CALL = set([
-    'xrEnumerateSwapchainImages'
+#    'xrEnumerateSwapchainImages'
 ])
 
 MANUALLY_PROJECTED_SCALARS = set((
