@@ -743,7 +743,8 @@ class CppGenerator(AutomaticSourceOutputGenerator):
             return False
 
         last_param = method.params[-1]
-        if last_param.is_const or last_param.pointer_count != 1 or last_param.array_count_var != '':
+        last_param_struct = self.dict_structs.get(last_param.type)
+        if last_param.is_const or last_param.pointer_count != 1 or last_param.array_count_var != '' or (last_param_struct and self._is_base_only(last_param_struct)):
             return False
 
         # Do not return a single output of a type we aren't projecting
