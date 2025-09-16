@@ -311,7 +311,35 @@ into the dispatch object every time it's called. While not an issue for
 infrequently called functions, if executed inside a loop or on a per-frame
 basis, this can adversely impact performance.
 
-Note that this can be configured.
+However, you can define a global dynamic dispatcher, e.g. :
+
+in file pch.h :
+```c++
+// ...
+#include <openxr/openxr.h>
+#include <openxr/openxr_platform.h>
+#include <openxr/openxr_reflection.h>
+#include <openxr/openxr_dispatch_dynamic.hpp>
+extern xr::DispatchLoaderDynamic globalDispatchLoaderDynamic;
+#define OPENXR_HPP_DEFAULT_EXTENSION_DISPATCHER_TYPE xr::DispatchLoaderDynamic
+#define OPENXR_HPP_DEFAULT_EXTENSION_DISPATCHER std::move(::globalDispatchLoaderDynamic)
+#include <openxr/openxr.hpp>
+// ...
+```
+
+in file pch.cpp :
+```c++
+#include "pch.h"
+xr::DispatchLoaderDynamic globalDispatchLoaderDynamic;
+```
+
+then in your code :
+```c++
+#include "pch.h"
+// ...
+xr::DebugUtilsMessengerEXT messenger =
+    instance.createDebugUtilsMessengerEXT({ severityFlags, typeFlags, debugCallback, userData });
+```
 
 @see config_dispatch
 
