@@ -553,7 +553,11 @@ class CppGenerator(AutomaticSourceOutputGenerator):
             elif param.pointer_count == 1 and not is_two_call:
                 # Output struct
                 method.decl_dict[name] = f"{cpp_type}& {name}"
-                method.access_dict[name] = f"{name_stripped}.put()"
+                last_param_struct = self.dict_structs.get(param.type)
+                if self._is_base_only(last_param_struct) or self._contains_pointer(last_param_struct):
+                   method.access_dict[name] = f"{name_stripped}.put(false)"
+                else:
+                   method.access_dict[name] = f"{name_stripped}.put()"
 
         # Convert atoms, plus XrTime and XrDuration as special case (promoted from raw ints to constexpr wrapper classes)
         for param in method.decl_params:
@@ -744,7 +748,8 @@ class CppGenerator(AutomaticSourceOutputGenerator):
 
         last_param = method.params[-1]
         last_param_struct = self.dict_structs.get(last_param.type)
-        if last_param.is_const or last_param.pointer_count != 1 or last_param.array_count_var != '' or (last_param_struct and self._is_base_only(last_param_struct)):
+        if last_param.is_const or last_param.pointer_count != 1 or last_param.array_count_var != '' \
+              or self._is_base_only(last_param_struct) or self._contains_pointer(last_param_struct):
             return False
 
         # Do not return a single output of a type we aren't projecting
@@ -889,6 +894,11 @@ class CppGenerator(AutomaticSourceOutputGenerator):
         if not tag_member:
             return False
         return tag_member[0].values is None
+
+    def _contains_pointer(self, struct):
+        if not struct:
+            return False
+        return any(x.pointer_count > 0 and (x.name != "next" or x.type != "void") for x in struct.members)
 
     def _cpp_hidden_member(self, member):
         return (member.name == "type" and member.type == "XrStructureType") or (member.name == "next" and member.type == "void")
