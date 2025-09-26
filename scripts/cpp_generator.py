@@ -567,8 +567,16 @@ class CppGenerator(AutomaticSourceOutputGenerator):
                 continue
             name = param.name
             cpp_type = _project_type_name(param.type)
-            method.decl_dict[name] = f"{cpp_type} {name}"
-            method.access_dict[name] = f"{name.strip()}.get()"
+            if param.pointer_count == 1 and not param.is_const:
+               if param.pointer_count_var != '':
+                   method.decl_dict[name] = f"{cpp_type}* {name}"
+                   method.access_dict[name] = f"{name.strip()}->put()"
+               else:
+                   method.decl_dict[name] = f"{cpp_type}& {name}"
+                   method.access_dict[name] = f"{name.strip()}.put()"
+            else:
+                method.decl_dict[name] = f"{cpp_type} {name}"
+                method.access_dict[name] = f"{name.strip()}.get()"
 
     def _update_enhanced_return_type(self, method):
         """Set the return type based on the bare return type.
@@ -762,7 +770,7 @@ class CppGenerator(AutomaticSourceOutputGenerator):
             if param.pointer_count > 0 and not param.is_const:
                 return False
 
-        # if not self.quiet:
+        #if not self.quiet:
         #     print(f"method {method.name} has output parameter {last_param.name} of type {last_param.type}")
         return True
 
