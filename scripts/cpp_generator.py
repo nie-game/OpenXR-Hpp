@@ -699,6 +699,11 @@ class CppGenerator(AutomaticSourceOutputGenerator):
             # If we're missing at least one, stop checking two-call stuff here.
             return False
 
+        last_param_struct = self.dict_structs.get(array_param['param'].type)
+        if self._is_base_only(last_param_struct):
+            # If this is a base type, we don't know what real type to allocate for the vector
+            return False;
+
         method.is_two_call = True
         method.masks_simple = False
         # Should we put "ToVector" on the method name?
