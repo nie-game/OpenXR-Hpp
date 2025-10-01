@@ -526,21 +526,18 @@ class CppGenerator(AutomaticSourceOutputGenerator):
                     # Input enum
                     method.decl_dict[name] = f"{cpp_type} {name}"
                     method.access_dict[name] = f"OPENXR_HPP_NAMESPACE::get({name_stripped})"
-                elif param.pointer_count == 1 and not is_two_call:
+                elif param.pointer_count == 1:
                     # Output enum
-                    method.decl_dict[name] = f"{cpp_type}& {name}"
-                    method.pre_statements.append(
-                        f"{param.type} {name_stripped}_tmp;")
-                    method.access_dict[name] = f"&{name_stripped}_tmp"
-                    method.post_statements.append(
-                        f"{name_stripped} = static_cast<{cpp_type}>({name_stripped}_tmp);")
+                    if param.pointer_count_var != '':
+                        method.decl_dict[name] = f"{cpp_type}* {name}"
+                        method.access_dict[name] = f"{name_stripped} == nullptr ? nullptr : OPENXR_HPP_NAMESPACE::put(*{name_stripped})"
+                    else:
+                        method.decl_dict[name] = f"{cpp_type}& {name}"
+                        method.access_dict[name] = f"OPENXR_HPP_NAMESPACE::put({name_stripped})"
                 continue
 
             # Convert structs
             if param.type not in self.dict_structs:
-                continue
-            if self._is_base_only(self.dict_structs[param.type]):
-                # This is a polymorphic parameter: skip conversion for now.
                 continue
             if param.type in SKIP_PROJECTION:
                 # This is a mess to project.
@@ -550,14 +547,19 @@ class CppGenerator(AutomaticSourceOutputGenerator):
                 # Input struct
                 method.decl_dict[name] = f"const {cpp_type}& {name}"
                 method.access_dict[name] = f"{name_stripped}.get()"
-            elif param.pointer_count == 1 and not is_two_call:
+            elif param.pointer_count == 1:
                 # Output struct
-                method.decl_dict[name] = f"{cpp_type}& {name}"
-                last_param_struct = self.dict_structs.get(param.type)
-                if self._is_base_only(last_param_struct) or self._contains_pointer(last_param_struct):
-                   method.access_dict[name] = f"{name_stripped}.put(false)"
+                if param.pointer_count_var != '':
+                    method.decl_dict[name] = f"{cpp_type}* {name}"
+                    last_param_struct = self.dict_structs.get(param.type)
+                    method.access_dict[name] = f"{name_stripped} == nullptr ? nullptr : {name_stripped}->put(false)"
                 else:
-                   method.access_dict[name] = f"{name_stripped}.put()"
+                    method.decl_dict[name] = f"{cpp_type}& {name}"
+                    last_param_struct = self.dict_structs.get(param.type)
+                    if self._is_base_only(last_param_struct) or self._contains_pointer(last_param_struct):
+                       method.access_dict[name] = f"{name_stripped}.put(false)"
+                    else:
+                       method.access_dict[name] = f"{name_stripped}.put()"
 
         # Convert atoms, plus XrTime and XrDuration as special case (promoted from raw ints to constexpr wrapper classes)
         for param in method.decl_params:
@@ -570,7 +572,7 @@ class CppGenerator(AutomaticSourceOutputGenerator):
             if param.pointer_count == 1 and not param.is_const:
                if param.pointer_count_var != '':
                    method.decl_dict[name] = f"{cpp_type}* {name}"
-                   method.access_dict[name] = f"{name.strip()}->put()"
+                   method.access_dict[name] = f"{name.strip()} == nullptr ? nullptr : {name.strip()}->put()"
                else:
                    method.decl_dict[name] = f"{cpp_type}& {name}"
                    method.access_dict[name] = f"{name.strip()}.put()"
