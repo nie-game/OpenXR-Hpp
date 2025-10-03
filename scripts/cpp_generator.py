@@ -547,6 +547,10 @@ class CppGenerator(AutomaticSourceOutputGenerator):
                 # Input struct
                 method.decl_dict[name] = f"const {cpp_type}& {name}"
                 method.access_dict[name] = f"{name_stripped}.get()"
+            elif param.pointer_count == 0:
+                # Input struct passed by value
+                method.decl_dict[name] = f"{cpp_type} {name}"
+                method.access_dict[name] = f"{name_stripped}" # auto cast by specific structure static_cast operator
             elif param.pointer_count == 1:
                 # Output struct
                 if param.pointer_count_var != '':
@@ -560,6 +564,10 @@ class CppGenerator(AutomaticSourceOutputGenerator):
                        method.access_dict[name] = f"{name_stripped}.put(false)"
                     else:
                        method.access_dict[name] = f"{name_stripped}.put()"
+            elif param.pointer_count == 2:
+                # Output struct array
+                method.decl_dict[name] = f"{cpp_type}*& {name}"
+                method.access_dict[name] = f"reinterpret_cast<{param.type}**>(&{name_stripped})"
 
         # Convert atoms, plus XrTime and XrDuration as special case (promoted from raw ints to constexpr wrapper classes)
         for param in method.decl_params:
