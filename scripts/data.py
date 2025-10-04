@@ -31,6 +31,7 @@ TEMPLATED_TWO_CALL = set([
 MANUALLY_PROJECTED_SCALARS = set((
     "XrTime",
     "XrDuration",
+    "XrBool32",
 ))
 
 MANUALLY_PROJECTED = set((
