@@ -1086,7 +1086,7 @@ class CppGenerator(AutomaticSourceOutputGenerator):
             self.dict_bitmasks[bitmask.name] = bitmask
 
         for basetype in self.api_base_types:
-            if basetype.type == "XR_DEFINE_ATOM":
+            if basetype.type == "XR_DEFINE_ATOM" or basetype.type == "XR_DEFINE_OPAQUE_64":
                 self.dict_atoms[basetype.name] = basetype
 
         self.projected_types = MANUALLY_PROJECTED.union(self.dict_handles.keys())
