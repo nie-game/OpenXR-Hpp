@@ -20,7 +20,8 @@ import re
 from typing import Optional
 
 from automatic_source_generator import AutomaticSourceOutputGenerator, write
-from data import (DISCOURAGED, MANUALLY_PROJECTED, MANUALLY_PROJECTED_SCALARS,
+from data import (DISCOURAGED, 
+                  PROJECTED_NATIVE_C_TYPE, MANUALLY_PROJECTED, MANUALLY_PROJECTED_SCALARS,
                   SKIP, SKIP_PROJECTION, SPECIAL_TOKENS, TEMPLATED_TWO_CALL,
                   UPPER_TOKENS, VALID_FOR_NULL_INSTANCE)
 from jinja_helpers import JinjaTemplate, make_jinja_environment
@@ -504,6 +505,10 @@ class CppGenerator(AutomaticSourceOutputGenerator):
             #     method.cpp_name = _strip_suffix(method.cpp_name, method.cpp_handle)
 
         for param in method.decl_params:
+            if param.type in SKIP_PROJECTION:
+                # This is a mess to project.
+                continue
+
             name = param.name
             name_stripped = name.strip()
             cpp_type = _project_type_name(param.type)
@@ -537,56 +542,71 @@ class CppGenerator(AutomaticSourceOutputGenerator):
                 continue
 
             # Convert structs
-            if param.type not in self.dict_structs:
-                continue
-            if param.type in SKIP_PROJECTION:
-                # This is a mess to project.
-                continue
-
-            if param.is_const:
-                # Input struct
-                method.decl_dict[name] = f"const {cpp_type}& {name}"
-                method.access_dict[name] = f"{name_stripped}.get()"
-            elif param.pointer_count == 0:
-                # Input struct passed by value
-                method.decl_dict[name] = f"{cpp_type} {name}"
-                method.access_dict[name] = f"{name_stripped}" # auto cast by specific structure static_cast operator
-            elif param.pointer_count == 1:
-                # Output struct
-                if param.pointer_count_var != '':
-                    method.decl_dict[name] = f"{cpp_type}* {name}"
-                    last_param_struct = self.dict_structs.get(param.type)
-                    method.access_dict[name] = f"{name_stripped} == nullptr ? nullptr : {name_stripped}->put(false)"
-                else:
-                    method.decl_dict[name] = f"{cpp_type}& {name}"
-                    last_param_struct = self.dict_structs.get(param.type)
-                    if self._is_base_only(last_param_struct) or self._contains_pointer(last_param_struct):
-                       method.access_dict[name] = f"{name_stripped}.put(false)"
+            if param.type in self.dict_structs:
+                if param.is_const:
+                    # Input struct
+                    method.decl_dict[name] = f"const {cpp_type}& {name}"
+                    method.access_dict[name] = f"{name_stripped}.get()"
+                elif param.pointer_count == 0:
+                    # Input struct passed by value
+                    method.decl_dict[name] = f"{cpp_type} {name}"
+                    method.access_dict[name] = f"{name_stripped}" # auto cast by specific structure static_cast operator
+                elif param.pointer_count == 1:
+                    # Output struct
+                    if param.pointer_count_var != '':
+                        method.decl_dict[name] = f"{cpp_type}* {name}"
+                        last_param_struct = self.dict_structs.get(param.type)
+                        method.access_dict[name] = f"{name_stripped} == nullptr ? nullptr : {name_stripped}->put(false)"
                     else:
-                       method.access_dict[name] = f"{name_stripped}.put()"
-            elif param.pointer_count == 2:
-                # Output struct array
-                method.decl_dict[name] = f"{cpp_type}*& {name}"
-                method.access_dict[name] = f"reinterpret_cast<{param.type}**>(&{name_stripped})"
+                        method.decl_dict[name] = f"{cpp_type}& {name}"
+                        last_param_struct = self.dict_structs.get(param.type)
+                        if self._is_base_only(last_param_struct) or self._contains_pointer(last_param_struct):
+                           method.access_dict[name] = f"{name_stripped}.put(false)"
+                        else:
+                           method.access_dict[name] = f"{name_stripped}.put()"
+                elif param.pointer_count == 2:
+                    # Output struct array
+                    method.decl_dict[name] = f"{cpp_type}*& {name}"
+                    method.access_dict[name] = f"reinterpret_cast<{param.type}**>(&{name_stripped})"
 
-        # Convert atoms, plus XrTime and XrDuration as special case (promoted from raw ints to constexpr wrapper classes)
-        for param in method.decl_params:
-            if param.type not in MANUALLY_PROJECTED_SCALARS and param.type not in self.dict_atoms:
-                continue
-            if param.type in SKIP_PROJECTION:
-                continue
-            name = param.name
-            cpp_type = _project_type_name(param.type)
-            if param.pointer_count == 1 and not param.is_const:
-               if param.pointer_count_var != '':
-                   method.decl_dict[name] = f"{cpp_type}* {name}"
-                   method.access_dict[name] = f"{name.strip()} == nullptr ? nullptr : {name.strip()}->put()"
-               else:
-                   method.decl_dict[name] = f"{cpp_type}& {name}"
-                   method.access_dict[name] = f"{name.strip()}.put()"
-            else:
-                method.decl_dict[name] = f"{cpp_type} {name}"
-                method.access_dict[name] = f"{name.strip()}.get()"
+            # Convert atoms, plus manually projeced scalars (XrTime, XrDuration, XrBool32...) as special case (promoted from raw ints to constexpr wrapper classes)
+            if param.type in self.dict_atoms or param.type in MANUALLY_PROJECTED_SCALARS:
+                name = param.name
+                cpp_type = _project_type_name(param.type)
+                if param.pointer_count == 1 and not param.is_const:
+                   if param.pointer_count_var != '':
+                       method.decl_dict[name] = f"{cpp_type}* {name}"
+                       method.access_dict[name] = f"{name.strip()} == nullptr ? nullptr : {name.strip()}->put()"
+                   else:
+                       method.decl_dict[name] = f"{cpp_type}& {name}"
+                       method.access_dict[name] = f"{name.strip()}.put()"
+                else:
+                    method.decl_dict[name] = f"{cpp_type} {name}"
+                    method.access_dict[name] = f"{name.strip()}.get()"
+                    
+            # Convert native C types
+            elif param.type in PROJECTED_NATIVE_C_TYPE:
+                if param.is_const:
+                    # Input struct
+                    method.decl_dict[name] = f"const {cpp_type}& {name}"
+                    method.access_dict[name] = f"&{name}"
+                elif param.pointer_count == 0:
+                    # Input struct passed by value
+                    method.decl_dict[name] = f"{cpp_type} {name}"
+                    method.access_dict[name] = f"{name}"
+                elif param.pointer_count == 1:
+                    # Output struct from pointer to reference
+                    if param.pointer_count_var != '':
+                        method.decl_dict[name] = f"{cpp_type}* {name}"
+                        method.access_dict[name] = f"{name}"
+                    else:
+                        method.decl_dict[name] = f"{cpp_type}& {name}"
+                        method.access_dict[name] = f"&{name}"
+                elif param.pointer_count == 2:
+                    # Output struct array (pointer of pointer) to pointer reference
+                    method.decl_dict[name] = f"{cpp_type}*& {name}"
+                    method.access_dict[name] = f"&{name}"
+
 
     def _update_enhanced_return_type(self, method):
         """Set the return type based on the bare return type.

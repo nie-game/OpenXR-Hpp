@@ -38,6 +38,17 @@ MANUALLY_PROJECTED = set((
     "XrEventDataBuffer",
 )).union(MANUALLY_PROJECTED_SCALARS)
 
+PROJECTED_NATIVE_C_TYPE = set((
+    "int8_t",
+    "int32_t",
+    "int64_t",
+    "uint8_t",
+    "uint32_t",
+    "uint64_t",
+    "float",
+    "XrSpaceUserIdFB",
+))
+
 SKIP_PROJECTION = set((
     "XrBaseInStructure",
     "XrBaseOutStructure",
