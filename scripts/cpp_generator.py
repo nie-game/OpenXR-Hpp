@@ -22,7 +22,7 @@ from typing import Optional
 from automatic_source_generator import AutomaticSourceOutputGenerator, write
 from data import (DISCOURAGED, 
                   PROJECTED_NATIVE_C_TYPE, MANUALLY_PROJECTED, MANUALLY_PROJECTED_SCALARS,
-                  SKIP, SKIP_PROJECTION, SPECIAL_TOKENS, TEMPLATED_TWO_CALL,
+                  SKIP, SKIP_PROJECTION, SPECIAL_TOKENS,
                   UPPER_TOKENS, VALID_FOR_NULL_INSTANCE)
 from jinja_helpers import JinjaTemplate, make_jinja_environment
 
@@ -501,8 +501,6 @@ class CppGenerator(AutomaticSourceOutputGenerator):
             method.is_member_function = True
             method.decl_dict[handle.name] = None
             method.access_dict[handle.name] = "this->get()"
-            # if method.cpp_name.endswith(method.cpp_handle):
-            #     method.cpp_name = _strip_suffix(method.cpp_name, method.cpp_handle)
 
         for param in method.decl_params:
             if param.type in SKIP_PROJECTION:
@@ -742,21 +740,11 @@ class CppGenerator(AutomaticSourceOutputGenerator):
 
         item_type_cpp = _project_type_name(item_type)
         method.item_type_cpp = item_type_cpp
-        templated = method.name in TEMPLATED_TWO_CALL
-        method.templated = templated
-
         vector_member_type = item_type_cpp
-        if templated:
-            vector_member_type = 'ResultItemType'
-
         vec_type = f"std::vector<{vector_member_type}, Allocator>"
         method.vec_type = vec_type
         method.template_decl_list.insert(0, f"typename Allocator = std::allocator<{vector_member_type}>")
         method.template_defn_list.insert(0, "typename Allocator")
-
-        if templated:
-            method.template_decl_list.insert(0, "typename ResultItemType")
-            method.template_defn_list.insert(0, "typename ResultItemType")
 
         method.capacity_input_param_name = capacity_input_param_name
         method.count_output_param_name = count_output_param_name
@@ -805,8 +793,6 @@ class CppGenerator(AutomaticSourceOutputGenerator):
             if param.pointer_count > 0 and not param.is_const:
                 return False
 
-        #if not self.quiet:
-        #     print(f"method {method.name} has output parameter {last_param.name} of type {last_param.type}")
         return True
 
     def _enhanced_method_projection(self, method):
@@ -883,7 +869,6 @@ class CppGenerator(AutomaticSourceOutputGenerator):
         method.post_statements.append('ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};')
         method.handle_return_type = method.bare_return_type
         method.bare_return_type = f"UniqueHandle<{method.bare_return_type}, impl::RemoveRefConst<Dispatch>>"
-        # method.returns[1] = "{}({}, {})"
         self._update_enhanced_return_type(method)
 
     def _append_to_method_name_before_vendor(self, method, s):
@@ -1225,9 +1210,3 @@ class CppGenerator(AutomaticSourceOutputGenerator):
         assert not self._is_struct_output(self.dict_structs['XrApplicationInfo'])
 
         assert self._index0_of_first_visible_defaultable_member(self.dict_structs['XrApplicationInfo'], self.dict_structs['XrApplicationInfo'].members) == 0
-        # index = self._index0_of_first_visible_defaultable_member(self.dict_structs['XrInstanceCreateInfo'].members)
-        # print(index)
-        # assert(self._index0_of_first_visible_defaultable_member(self.dict_structs['XrInstanceCreateInfo'].members) == 0)
-        # members = self.dict_structs['XrInstanceCreateInfo'].members
-        # for i, member in enumerate(members):
-        #     print(i, member.name, self._is_member_defaultable(member))

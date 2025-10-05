@@ -24,10 +24,6 @@ DISCOURAGED = set((
     'xrStructureTypeToString',
 ))
 
-TEMPLATED_TWO_CALL = set([
-#    'xrEnumerateSwapchainImages'
-])
-
 MANUALLY_PROJECTED_SCALARS = set((
     "XrTime",
     "XrDuration",
