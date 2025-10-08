@@ -34386,7 +34386,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_spatial_anchors
+    #if 0
 /*!
  * C++ projection of XrSpatialAnchorsCreateInfoBaseHeaderML
  * 
@@ -34480,7 +34480,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_spatial_anchors
+    #ifdef dsaXR_ML_spatial_anchors
 /*!
  * C++ projection of XrSpatialAnchorsCreateInfoFromPoseML
  * 
@@ -34714,7 +34714,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_spatial_anchors
+    #if 0
 /*!
  * C++ projection of XrCreateSpatialAnchorsCompletionML
  * 
@@ -34836,7 +34836,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_spatial_anchors
+    #ifdef dsaXR_ML_spatial_anchors
 /*!
  * C++ projection of XrSpatialAnchorStateML
  * 
@@ -34944,7 +34944,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_spatial_anchors_storage
+    #ifdef dsaXR_ML_spatial_anchors_storage
 /*!
  * C++ projection of XrSpatialAnchorsCreateStorageInfoML
  * 
@@ -35051,7 +35051,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_spatial_anchors_storage
+    #ifdef dsaXR_ML_spatial_anchors_storage
 /*!
  * C++ projection of XrSpatialAnchorsQueryInfoBaseHeaderML
  * 
@@ -35145,7 +35145,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_spatial_anchors_storage
+    #ifdef dsaXR_ML_spatial_anchors_storage
 /*!
  * C++ projection of XrSpatialAnchorsQueryInfoRadiusML
  * 
@@ -35286,7 +35286,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_spatial_anchors_storage
+    #ifdef dsaXR_ML_spatial_anchors_storage
 /*!
  * C++ projection of XrSpatialAnchorsQueryCompletionML
  * 
@@ -35409,7 +35409,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_spatial_anchors_storage
+    #ifdef dsaXR_ML_spatial_anchors_storage
 /*!
  * C++ projection of XrSpatialAnchorsCreateInfoFromUuidsML
  * 
@@ -35547,7 +35547,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_spatial_anchors_storage
+    #ifdef dsaXR_ML_spatial_anchors_storage
 /*!
  * C++ projection of XrSpatialAnchorsPublishInfoML
  * 
@@ -35672,7 +35672,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_spatial_anchors_storage
+    #ifdef dsaXR_ML_spatial_anchors_storage
 /*!
  * C++ projection of XrSpatialAnchorsPublishCompletionML
  * 
@@ -35794,7 +35794,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_spatial_anchors_storage
+    #ifdef dsaXR_ML_spatial_anchors_storage
 /*!
  * C++ projection of XrSpatialAnchorsDeleteInfoML
  * 
@@ -35916,7 +35916,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_spatial_anchors_storage
+    #ifdef dsaXR_ML_spatial_anchors_storage
 /*!
  * C++ projection of XrSpatialAnchorsDeleteCompletionML
  * 
@@ -36036,7 +36036,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_spatial_anchors_storage
+    #ifdef dsaXR_ML_spatial_anchors_storage
 /*!
  * C++ projection of XrSpatialAnchorsUpdateExpirationInfoML
  * 
@@ -36161,7 +36161,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_spatial_anchors_storage
+    #ifdef dsaXR_ML_spatial_anchors_storage
 /*!
  * C++ projection of XrSpatialAnchorsUpdateExpirationCompletionML
  * 
@@ -36281,7 +36281,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_spatial_anchors_storage
+    #ifdef dsaXR_ML_spatial_anchors_storage
 /*!
  * C++ projection of XrSpatialAnchorCompletionResultML
  * 
@@ -36397,7 +36397,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_spatial_anchors_storage
+    #ifdef dsaXR_ML_spatial_anchors_storage
 /*!
  * C++ projection of XrSpatialAnchorsPublishCompletionDetailsML
  * 
@@ -36506,7 +36506,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_spatial_anchors_storage
+    #ifdef dasXR_ML_spatial_anchors_storage
 /*!
  * C++ projection of XrSpatialAnchorsDeleteCompletionDetailsML
  * 
@@ -36615,7 +36615,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_spatial_anchors_storage
+    #ifdef dsaXR_ML_spatial_anchors_storage
 /*!
  * C++ projection of XrSpatialAnchorsUpdateExpirationCompletionDetailsML
  * 
@@ -62312,7 +62312,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_world_mesh_detection
+    #ifdef dsaXR_ML_world_mesh_detection
 /*!
  * C++ projection of XrWorldMeshDetectorCreateInfoML
  * 
@@ -62419,7 +62419,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_world_mesh_detection
+    #ifdef dsaXR_ML_world_mesh_detection
 /*!
  * C++ projection of XrWorldMeshBlockStateML
  * 
@@ -62531,7 +62531,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_world_mesh_detection
+    #ifdef dsaXR_ML_world_mesh_detection
 /*!
  * C++ projection of XrWorldMeshStateRequestInfoML
  * 
@@ -62659,7 +62659,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_world_mesh_detection
+    #ifdef dsaXR_ML_world_mesh_detection
 /*!
  * C++ projection of XrWorldMeshStateRequestCompletionML
  * 
@@ -62783,7 +62783,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_world_mesh_detection
+    #ifdef dsaXR_ML_world_mesh_detection
 /*!
  * C++ projection of XrWorldMeshBufferRecommendedSizeInfoML
  * 
@@ -62902,7 +62902,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_world_mesh_detection
+    #ifdef dsaXR_ML_world_mesh_detection
 /*!
  * C++ projection of XrWorldMeshBufferSizeML
  * 
@@ -63010,7 +63010,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_world_mesh_detection
+    #ifdef dsaXR_ML_world_mesh_detection
 /*!
  * C++ projection of XrWorldMeshBufferML
  * 
@@ -63119,7 +63119,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_world_mesh_detection
+    #ifdef dsaXR_ML_world_mesh_detection
 /*!
  * C++ projection of XrWorldMeshBlockRequestML
  * 
@@ -63228,7 +63228,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_world_mesh_detection
+    #ifdef dsaXR_ML_world_mesh_detection
 /*!
  * C++ projection of XrWorldMeshGetInfoML
  * 
@@ -63359,7 +63359,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_world_mesh_detection
+    #ifdef dsaXR_ML_world_mesh_detection
 /*!
  * C++ projection of XrWorldMeshBlockML
  * 
@@ -63478,7 +63478,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_world_mesh_detection
+    #ifdef dsaXR_ML_world_mesh_detection
 /*!
  * C++ projection of XrWorldMeshRequestCompletionInfoML
  * 
@@ -63600,7 +63600,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_ML_world_mesh_detection
+    #ifdef dsaXR_ML_world_mesh_detection
 /*!
  * C++ projection of XrWorldMeshRequestCompletionML
  * 
@@ -70654,7 +70654,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_EXT_spatial_persistence
+    #ifdef dsaXR_EXT_spatial_persistence
 /*!
  * C++ projection of XrSpatialPersistenceContextCreateInfoEXT
  * 
@@ -70773,7 +70773,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_EXT_spatial_persistence
+    #ifdef dsaXR_EXT_spatial_persistence
 /*!
  * C++ projection of XrCreateSpatialPersistenceContextCompletionEXT
  * 
@@ -70895,7 +70895,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_EXT_spatial_persistence
+    #ifdef dsaXR_EXT_spatial_persistence
 /*!
  * C++ projection of XrSpatialContextPersistenceConfigEXT
  * 
@@ -71017,7 +71017,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_EXT_spatial_persistence
+    #ifdef dsaXR_EXT_spatial_persistence
 /*!
  * C++ projection of XrSpatialDiscoveryPersistenceUuidFilterEXT
  * 
@@ -71139,7 +71139,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_EXT_spatial_persistence
+    #ifdef dsaXR_EXT_spatial_persistence
 /*!
  * C++ projection of XrSpatialPersistenceDataEXT
  * 
@@ -71255,7 +71255,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_EXT_spatial_persistence
+    #ifdef dsaXR_EXT_spatial_persistence
 /*!
  * C++ projection of XrSpatialComponentPersistenceListEXT
  * 
@@ -71364,7 +71364,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_EXT_spatial_persistence_operations
+    #ifdef dsaXR_EXT_spatial_persistence_operations
 /*!
  * C++ projection of XrSpatialEntityPersistInfoEXT
  * 
@@ -71486,7 +71486,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_EXT_spatial_persistence_operations
+    #ifdef dsaXR_EXT_spatial_persistence_operations
 /*!
  * C++ projection of XrPersistSpatialEntityCompletionEXT
  * 
@@ -71608,7 +71608,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_EXT_spatial_persistence_operations
+    #ifdef dsaXR_EXT_spatial_persistence_operations
 /*!
  * C++ projection of XrSpatialEntityUnpersistInfoEXT
  * 
@@ -71727,7 +71727,7 @@ OPENXR_HPP_INLINE XrEventDataBuffer* put(EventDataBuffer& v, bool clear = true) 
 
 
 
-    #ifdef XR_EXT_spatial_persistence_operations
+    #ifdef dasXR_EXT_spatial_persistence_operations
 /*!
  * C++ projection of XrUnpersistSpatialEntityCompletionEXT
  * 
