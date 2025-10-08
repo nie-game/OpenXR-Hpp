@@ -530,10 +530,10 @@ enum class Result {
 #ifdef XR_EXT_spatial_entity
   ErrorSpatialComponentNotEnabledEXT = XR_ERROR_SPATIAL_COMPONENT_NOT_ENABLED_EXT,
 #endif  // XR_EXT_spatial_entity
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
   ErrorSpatialPersistenceScopeUnsupportedEXT = XR_ERROR_SPATIAL_PERSISTENCE_SCOPE_UNSUPPORTED_EXT,
 #endif  // XR_EXT_spatial_persistence
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
   ErrorSpatialPersistenceScopeIncompatibleEXT = XR_ERROR_SPATIAL_PERSISTENCE_SCOPE_INCOMPATIBLE_EXT,
 #endif  // XR_EXT_spatial_persistence_operations
 };
@@ -1104,11 +1104,11 @@ OPENXR_HPP_INLINE OPENXR_HPP_SWITCH_CONSTEXPR const char* to_string_literal(Resu
     case Result::ErrorSpatialComponentNotEnabledEXT:
       return "ErrorSpatialComponentNotEnabledEXT";
 #endif  // XR_EXT_spatial_entity
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
     case Result::ErrorSpatialPersistenceScopeUnsupportedEXT:
       return "ErrorSpatialPersistenceScopeUnsupportedEXT";
 #endif  // XR_EXT_spatial_persistence
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
     case Result::ErrorSpatialPersistenceScopeIncompatibleEXT:
       return "ErrorSpatialPersistenceScopeIncompatibleEXT";
 #endif  // XR_EXT_spatial_persistence_operations
@@ -2815,32 +2815,32 @@ enum class StructureType {
 #ifdef XR_EXT_spatial_anchor
   SpatialAnchorCreateInfoEXT = XR_TYPE_SPATIAL_ANCHOR_CREATE_INFO_EXT,
 #endif  // XR_EXT_spatial_anchor
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
   SpatialPersistenceContextCreateInfoEXT = XR_TYPE_SPATIAL_PERSISTENCE_CONTEXT_CREATE_INFO_EXT,
 #endif  // XR_EXT_spatial_persistence
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
   CreateSpatialPersistenceContextCompletionEXT =
       XR_TYPE_CREATE_SPATIAL_PERSISTENCE_CONTEXT_COMPLETION_EXT,
 #endif  // XR_EXT_spatial_persistence
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
   SpatialContextPersistenceConfigEXT = XR_TYPE_SPATIAL_CONTEXT_PERSISTENCE_CONFIG_EXT,
 #endif  // XR_EXT_spatial_persistence
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
   SpatialDiscoveryPersistenceUuidFilterEXT = XR_TYPE_SPATIAL_DISCOVERY_PERSISTENCE_UUID_FILTER_EXT,
 #endif  // XR_EXT_spatial_persistence
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
   SpatialComponentPersistenceListEXT = XR_TYPE_SPATIAL_COMPONENT_PERSISTENCE_LIST_EXT,
 #endif  // XR_EXT_spatial_persistence
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
   SpatialEntityPersistInfoEXT = XR_TYPE_SPATIAL_ENTITY_PERSIST_INFO_EXT,
 #endif  // XR_EXT_spatial_persistence_operations
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
   PersistSpatialEntityCompletionEXT = XR_TYPE_PERSIST_SPATIAL_ENTITY_COMPLETION_EXT,
 #endif  // XR_EXT_spatial_persistence_operations
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
   SpatialEntityUnpersistInfoEXT = XR_TYPE_SPATIAL_ENTITY_UNPERSIST_INFO_EXT,
 #endif  // XR_EXT_spatial_persistence_operations
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
   UnpersistSpatialEntityCompletionEXT = XR_TYPE_UNPERSIST_SPATIAL_ENTITY_COMPLETION_EXT,
 #endif  // XR_EXT_spatial_persistence_operations
 };
@@ -4865,39 +4865,39 @@ OPENXR_HPP_INLINE OPENXR_HPP_SWITCH_CONSTEXPR const char* to_string_literal(Stru
     case StructureType::SpatialAnchorCreateInfoEXT:
       return "SpatialAnchorCreateInfoEXT";
 #endif  // XR_EXT_spatial_anchor
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
     case StructureType::SpatialPersistenceContextCreateInfoEXT:
       return "SpatialPersistenceContextCreateInfoEXT";
 #endif  // XR_EXT_spatial_persistence
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
     case StructureType::CreateSpatialPersistenceContextCompletionEXT:
       return "CreateSpatialPersistenceContextCompletionEXT";
 #endif  // XR_EXT_spatial_persistence
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
     case StructureType::SpatialContextPersistenceConfigEXT:
       return "SpatialContextPersistenceConfigEXT";
 #endif  // XR_EXT_spatial_persistence
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
     case StructureType::SpatialDiscoveryPersistenceUuidFilterEXT:
       return "SpatialDiscoveryPersistenceUuidFilterEXT";
 #endif  // XR_EXT_spatial_persistence
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
     case StructureType::SpatialComponentPersistenceListEXT:
       return "SpatialComponentPersistenceListEXT";
 #endif  // XR_EXT_spatial_persistence
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
     case StructureType::SpatialEntityPersistInfoEXT:
       return "SpatialEntityPersistInfoEXT";
 #endif  // XR_EXT_spatial_persistence_operations
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
     case StructureType::PersistSpatialEntityCompletionEXT:
       return "PersistSpatialEntityCompletionEXT";
 #endif  // XR_EXT_spatial_persistence_operations
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
     case StructureType::SpatialEntityUnpersistInfoEXT:
       return "SpatialEntityUnpersistInfoEXT";
 #endif  // XR_EXT_spatial_persistence_operations
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
     case StructureType::UnpersistSpatialEntityCompletionEXT:
       return "UnpersistSpatialEntityCompletionEXT";
 #endif  // XR_EXT_spatial_persistence_operations
@@ -5676,7 +5676,7 @@ enum class ObjectType {
 #ifdef XR_EXT_spatial_entity
   SpatialSnapshotEXT = XR_OBJECT_TYPE_SPATIAL_SNAPSHOT_EXT,
 #endif  // XR_EXT_spatial_entity
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
   SpatialPersistenceContextEXT = XR_OBJECT_TYPE_SPATIAL_PERSISTENCE_CONTEXT_EXT,
 #endif  // XR_EXT_spatial_persistence
 };
@@ -5890,7 +5890,7 @@ OPENXR_HPP_INLINE OPENXR_HPP_SWITCH_CONSTEXPR const char* to_string_literal(Obje
     case ObjectType::SpatialSnapshotEXT:
       return "SpatialSnapshotEXT";
 #endif  // XR_EXT_spatial_entity
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
     case ObjectType::SpatialPersistenceContextEXT:
       return "SpatialPersistenceContextEXT";
 #endif  // XR_EXT_spatial_persistence
@@ -17325,7 +17325,7 @@ enum class SpatialComponentTypeEXT {
 #ifdef XR_EXT_spatial_anchor
   Anchor = XR_SPATIAL_COMPONENT_TYPE_ANCHOR_EXT,
 #endif  // XR_EXT_spatial_anchor
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
   Persistence = XR_SPATIAL_COMPONENT_TYPE_PERSISTENCE_EXT,
 #endif  // XR_EXT_spatial_persistence
 };
@@ -17405,7 +17405,7 @@ OPENXR_HPP_INLINE OPENXR_HPP_SWITCH_CONSTEXPR const char* to_string_literal(
     case SpatialComponentTypeEXT::Anchor:
       return "Anchor";
 #endif  // XR_EXT_spatial_anchor
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
     case SpatialComponentTypeEXT::Persistence:
       return "Persistence";
 #endif  // XR_EXT_spatial_persistence
@@ -18069,7 +18069,7 @@ OPENXR_HPP_INLINE OPENXR_HPP_SWITCH_CONSTEXPR std::string to_string(
 
 #endif  // XR_EXT_spatial_marker_tracking
 
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
 /*!
  * @brief Enum class for XrSpatialPersistenceScopeEXT
  *
@@ -18084,7 +18084,7 @@ enum class SpatialPersistenceScopeEXT {
 
   SystemManaged = XR_SPATIAL_PERSISTENCE_SCOPE_SYSTEM_MANAGED_EXT,
 
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
   LocalAnchors = XR_SPATIAL_PERSISTENCE_SCOPE_LOCAL_ANCHORS_EXT,
 #endif  // XR_EXT_spatial_persistence_operations
 };
@@ -18131,7 +18131,7 @@ OPENXR_HPP_INLINE OPENXR_HPP_SWITCH_CONSTEXPR const char* to_string_literal(
     case SpatialPersistenceScopeEXT::SystemManaged:
       return "SystemManaged";
 
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
     case SpatialPersistenceScopeEXT::LocalAnchors:
       return "LocalAnchors";
 #endif  // XR_EXT_spatial_persistence_operations
@@ -18155,7 +18155,7 @@ OPENXR_HPP_INLINE OPENXR_HPP_SWITCH_CONSTEXPR std::string to_string(
 
 #endif  // XR_EXT_spatial_persistence
 
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
 /*!
  * @brief Enum class for XrSpatialPersistenceContextResultEXT
  *
@@ -18170,10 +18170,10 @@ enum class SpatialPersistenceContextResultEXT {
 
   Success = XR_SPATIAL_PERSISTENCE_CONTEXT_RESULT_SUCCESS_EXT,
 
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
   EntityNotTracking = XR_SPATIAL_PERSISTENCE_CONTEXT_RESULT_ENTITY_NOT_TRACKING_EXT,
 #endif  // XR_EXT_spatial_persistence_operations
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
   PersistUuidNotFound = XR_SPATIAL_PERSISTENCE_CONTEXT_RESULT_PERSIST_UUID_NOT_FOUND_EXT,
 #endif  // XR_EXT_spatial_persistence_operations
 };
@@ -18221,11 +18221,11 @@ OPENXR_HPP_INLINE OPENXR_HPP_SWITCH_CONSTEXPR const char* to_string_literal(
     case SpatialPersistenceContextResultEXT::Success:
       return "Success";
 
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
     case SpatialPersistenceContextResultEXT::EntityNotTracking:
       return "EntityNotTracking";
 #endif  // XR_EXT_spatial_persistence_operations
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
     case SpatialPersistenceContextResultEXT::PersistUuidNotFound:
       return "PersistUuidNotFound";
 #endif  // XR_EXT_spatial_persistence_operations
@@ -18249,7 +18249,7 @@ OPENXR_HPP_INLINE OPENXR_HPP_SWITCH_CONSTEXPR std::string to_string(
 
 #endif  // XR_EXT_spatial_persistence
 
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
 /*!
  * @brief Enum class for XrSpatialPersistenceStateEXT
  *

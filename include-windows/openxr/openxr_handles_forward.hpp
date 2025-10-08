@@ -1087,7 +1087,7 @@ namespace traits {
     using type = SpatialSnapshotEXT;
   };
 #endif  // XR_EXT_spatial_entity
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
   template <>
   struct cpp_type_from_object_type_enum<ObjectType::SpatialPersistenceContextEXT> {
     using type = SpatialPersistenceContextEXT;

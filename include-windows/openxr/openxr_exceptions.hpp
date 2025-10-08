@@ -1889,7 +1889,7 @@ namespace exceptions {
         : SystemError(impl::make_error_code(Result::ErrorSpatialComponentNotEnabledEXT), message) {}
   };
 #endif  // XR_EXT_spatial_entity
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
   //! @brief Exception class for the Result::ErrorSpatialPersistenceScopeUnsupportedEXT aka
   //! XR_ERROR_SPATIAL_PERSISTENCE_SCOPE_UNSUPPORTED_EXT result code.
   class SpatialPersistenceScopeUnsupportedErrorEXT : public SystemError {
@@ -1903,7 +1903,7 @@ namespace exceptions {
                       message) {}
   };
 #endif  // XR_EXT_spatial_persistence
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
   //! @brief Exception class for the Result::ErrorSpatialPersistenceScopeIncompatibleEXT aka
   //! XR_ERROR_SPATIAL_PERSISTENCE_SCOPE_INCOMPATIBLE_EXT result code.
   class SpatialPersistenceScopeIncompatibleErrorEXT : public SystemError {
@@ -2567,12 +2567,12 @@ namespace exceptions {
         throw SpatialComponentNotEnabledErrorEXT(message);
 #endif  // XR_EXT_spatial_entity
 
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
       case Result::ErrorSpatialPersistenceScopeUnsupportedEXT:
         throw SpatialPersistenceScopeUnsupportedErrorEXT(message);
 #endif  // XR_EXT_spatial_persistence
 
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
       case Result::ErrorSpatialPersistenceScopeIncompatibleEXT:
         throw SpatialPersistenceScopeIncompatibleErrorEXT(message);
 #endif  // XR_EXT_spatial_persistence_operations

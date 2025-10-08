@@ -4559,7 +4559,7 @@ public:
 
 #endif  // XR_EXT_spatial_entity
 
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
 
   /*!
    * @brief xrEnumerateSpatialPersistenceScopesEXT wrapper (basic).
@@ -17679,7 +17679,7 @@ public:
 
 #endif  // XR_EXT_spatial_entity
 
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
 
   /*!
    * @brief xrCreateSpatialPersistenceContextAsyncEXT wrapper (basic).
@@ -17753,7 +17753,7 @@ public:
 
 #endif  // XR_EXT_spatial_persistence
 
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
 
   /*!
    * @brief xrCreateSpatialPersistenceContextCompleteEXT wrapper (basic).
@@ -43922,7 +43922,7 @@ OPENXR_HPP_CONSTEXPR OPENXR_HPP_INLINE bool operator!=(std::nullptr_t /* unused 
 }
 #endif  // XR_EXT_spatial_entity
 
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
 
 /*!
  * @brief Handle class - wrapping XrSpatialPersistenceContextEXT without indicating ownership.
@@ -44093,7 +44093,7 @@ public:
 
 #endif  // !OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
 
   /*!
    * @brief xrPersistSpatialEntityAsyncEXT wrapper (basic).
@@ -44166,7 +44166,7 @@ public:
 
 #endif  // XR_EXT_spatial_persistence_operations
 
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
 
   /*!
    * @brief xrPersistSpatialEntityCompleteEXT wrapper (basic).
@@ -44238,7 +44238,7 @@ public:
 
 #endif  // XR_EXT_spatial_persistence_operations
 
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
 
   /*!
    * @brief xrUnpersistSpatialEntityAsyncEXT wrapper (basic).
@@ -44311,7 +44311,7 @@ public:
 
 #endif  // XR_EXT_spatial_persistence_operations
 
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
 
   /*!
    * @brief xrUnpersistSpatialEntityCompleteEXT wrapper (basic).

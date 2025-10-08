@@ -5561,7 +5561,7 @@ OPENXR_HPP_INLINE Result SpatialContextEXT::createSpatialAnchorEXT(
 
 #endif  // XR_EXT_spatial_anchor
 
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
 OPENXR_HPP_INLINE Result Instance::enumerateSpatialPersistenceScopesEXT(
@@ -5577,8 +5577,9 @@ OPENXR_HPP_INLINE Result Instance::enumerateSpatialPersistenceScopesEXT(
 
 #endif  // XR_EXT_spatial_persistence
 
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
 
+#error WTF
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
 OPENXR_HPP_INLINE Result Session::createSpatialPersistenceContextAsyncEXT(
     const SpatialPersistenceContextCreateInfoEXT& createInfo, FutureEXT& future,
@@ -5591,7 +5592,7 @@ OPENXR_HPP_INLINE Result Session::createSpatialPersistenceContextAsyncEXT(
 
 #endif  // XR_EXT_spatial_persistence
 
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
 OPENXR_HPP_INLINE Result Session::createSpatialPersistenceContextCompleteEXT(
@@ -5605,7 +5606,7 @@ OPENXR_HPP_INLINE Result Session::createSpatialPersistenceContextCompleteEXT(
 
 #endif  // XR_EXT_spatial_persistence
 
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
@@ -5619,7 +5620,7 @@ OPENXR_HPP_INLINE Result SpatialPersistenceContextEXT::destroy(Dispatch&& d) {
 
 #endif  // XR_EXT_spatial_persistence
 
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
 OPENXR_HPP_INLINE Result SpatialPersistenceContextEXT::persistSpatialEntityAsyncEXT(
@@ -5632,7 +5633,7 @@ OPENXR_HPP_INLINE Result SpatialPersistenceContextEXT::persistSpatialEntityAsync
 
 #endif  // XR_EXT_spatial_persistence_operations
 
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
 OPENXR_HPP_INLINE Result SpatialPersistenceContextEXT::persistSpatialEntityCompleteEXT(
@@ -5645,7 +5646,7 @@ OPENXR_HPP_INLINE Result SpatialPersistenceContextEXT::persistSpatialEntityCompl
 
 #endif  // XR_EXT_spatial_persistence_operations
 
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
 OPENXR_HPP_INLINE Result SpatialPersistenceContextEXT::unpersistSpatialEntityAsyncEXT(
@@ -5658,7 +5659,7 @@ OPENXR_HPP_INLINE Result SpatialPersistenceContextEXT::unpersistSpatialEntityAsy
 
 #endif  // XR_EXT_spatial_persistence_operations
 
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
 OPENXR_HPP_INLINE Result SpatialPersistenceContextEXT::unpersistSpatialEntityCompleteEXT(

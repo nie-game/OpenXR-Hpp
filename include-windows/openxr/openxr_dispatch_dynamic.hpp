@@ -9108,7 +9108,7 @@ public:
         spatialContext, createInfo, anchorEntityId, anchorEntity);
   }
 #endif  // XR_EXT_spatial_anchor
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
   //! @brief Call xrEnumerateSpatialPersistenceScopesEXT, populating function pointer if required.
   OPENXR_HPP_INLINE XrResult xrEnumerateSpatialPersistenceScopesEXT(
       XrInstance instance, XrSystemId systemId, uint32_t persistenceScopeCapacityInput,
@@ -9135,7 +9135,7 @@ public:
                                                   persistenceScopeCountOutput, persistenceScopes);
   }
 #endif  // XR_EXT_spatial_persistence
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
   //! @brief Call xrCreateSpatialPersistenceContextAsyncEXT, populating function pointer if
   //! required.
   OPENXR_HPP_INLINE XrResult xrCreateSpatialPersistenceContextAsyncEXT(
@@ -9160,7 +9160,7 @@ public:
         pfnCreateSpatialPersistenceContextAsyncEXT))(session, createInfo, future);
   }
 #endif  // XR_EXT_spatial_persistence
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
   //! @brief Call xrCreateSpatialPersistenceContextCompleteEXT, populating function pointer if
   //! required.
   OPENXR_HPP_INLINE XrResult xrCreateSpatialPersistenceContextCompleteEXT(
@@ -9185,7 +9185,7 @@ public:
         pfnCreateSpatialPersistenceContextCompleteEXT))(session, future, completion);
   }
 #endif  // XR_EXT_spatial_persistence
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
   //! @brief Call xrDestroySpatialPersistenceContextEXT, populating function pointer if required.
   OPENXR_HPP_INLINE XrResult
   xrDestroySpatialPersistenceContextEXT(XrSpatialPersistenceContextEXT persistenceContext) {
@@ -9207,7 +9207,7 @@ public:
         pfnDestroySpatialPersistenceContextEXT))(persistenceContext);
   }
 #endif  // XR_EXT_spatial_persistence
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
   //! @brief Call xrPersistSpatialEntityAsyncEXT, populating function pointer if required.
   OPENXR_HPP_INLINE XrResult xrPersistSpatialEntityAsyncEXT(
       XrSpatialPersistenceContextEXT persistenceContext,
@@ -9230,7 +9230,7 @@ public:
         persistenceContext, persistInfo, future);
   }
 #endif  // XR_EXT_spatial_persistence_operations
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
   //! @brief Call xrPersistSpatialEntityCompleteEXT, populating function pointer if required.
   OPENXR_HPP_INLINE XrResult xrPersistSpatialEntityCompleteEXT(
       XrSpatialPersistenceContextEXT persistenceContext, XrFutureEXT future,
@@ -9254,7 +9254,7 @@ public:
         pfnPersistSpatialEntityCompleteEXT))(persistenceContext, future, completion);
   }
 #endif  // XR_EXT_spatial_persistence_operations
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
   //! @brief Call xrUnpersistSpatialEntityAsyncEXT, populating function pointer if required.
   OPENXR_HPP_INLINE XrResult xrUnpersistSpatialEntityAsyncEXT(
       XrSpatialPersistenceContextEXT persistenceContext,
@@ -9278,7 +9278,7 @@ public:
         pfnUnpersistSpatialEntityAsyncEXT))(persistenceContext, unpersistInfo, future);
   }
 #endif  // XR_EXT_spatial_persistence_operations
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
   //! @brief Call xrUnpersistSpatialEntityCompleteEXT, populating function pointer if required.
   OPENXR_HPP_INLINE XrResult xrUnpersistSpatialEntityCompleteEXT(
       XrSpatialPersistenceContextEXT persistenceContext, XrFutureEXT future,
@@ -18718,7 +18718,7 @@ public:
   }
 #endif  // XR_EXT_spatial_anchor
 
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
   /*!
    * @brief Return the function pointer for xrEnumerateSpatialPersistenceScopesEXT, populating
    * function pointer if required.
@@ -18745,7 +18745,7 @@ public:
   }
 #endif  // XR_EXT_spatial_persistence
 
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
   /*!
    * @brief Return the function pointer for xrCreateSpatialPersistenceContextAsyncEXT, populating
    * function pointer if required.
@@ -18772,7 +18772,7 @@ public:
   }
 #endif  // XR_EXT_spatial_persistence
 
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
   /*!
    * @brief Return the function pointer for xrCreateSpatialPersistenceContextCompleteEXT, populating
    * function pointer if required.
@@ -18799,7 +18799,7 @@ public:
   }
 #endif  // XR_EXT_spatial_persistence
 
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
   /*!
    * @brief Return the function pointer for xrDestroySpatialPersistenceContextEXT, populating
    * function pointer if required.
@@ -18826,7 +18826,7 @@ public:
   }
 #endif  // XR_EXT_spatial_persistence
 
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
   /*!
    * @brief Return the function pointer for xrPersistSpatialEntityAsyncEXT, populating function
    * pointer if required.
@@ -18850,7 +18850,7 @@ public:
   }
 #endif  // XR_EXT_spatial_persistence_operations
 
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
   /*!
    * @brief Return the function pointer for xrPersistSpatialEntityCompleteEXT, populating function
    * pointer if required.
@@ -18877,7 +18877,7 @@ public:
   }
 #endif  // XR_EXT_spatial_persistence_operations
 
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
   /*!
    * @brief Return the function pointer for xrUnpersistSpatialEntityAsyncEXT, populating function
    * pointer if required.
@@ -18904,7 +18904,7 @@ public:
   }
 #endif  // XR_EXT_spatial_persistence_operations
 
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
   /*!
    * @brief Return the function pointer for xrUnpersistSpatialEntityCompleteEXT, populating function
    * pointer if required.

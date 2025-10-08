@@ -10482,7 +10482,7 @@ SpatialContextEXT::createSpatialAnchorUniqueEXT(const SpatialAnchorCreateInfoEXT
 
 #endif  // XR_EXT_spatial_anchor
 
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
@@ -10557,7 +10557,7 @@ Instance::enumerateSpatialPersistenceScopesToVectorEXT(SystemId systemId,
 
 #endif  // XR_EXT_spatial_persistence
 
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
@@ -10576,7 +10576,7 @@ OPENXR_HPP_INLINE ResultValue<FutureEXT> Session::createSpatialPersistenceContex
 
 #endif  // XR_EXT_spatial_persistence
 
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
@@ -10595,7 +10595,7 @@ Session::createSpatialPersistenceContextCompleteEXT(FutureEXT future, Dispatch&&
 
 #endif  // XR_EXT_spatial_persistence
 
-#ifdef XR_EXT_spatial_persistence
+#ifdef dsaXR_EXT_spatial_persistence
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
@@ -10611,7 +10611,7 @@ OPENXR_HPP_INLINE Result SpatialPersistenceContextEXT::destroy(Dispatch&& d) {
 
 #endif  // XR_EXT_spatial_persistence
 
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
@@ -10630,7 +10630,7 @@ OPENXR_HPP_INLINE ResultValue<FutureEXT> SpatialPersistenceContextEXT::persistSp
 
 #endif  // XR_EXT_spatial_persistence_operations
 
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
@@ -10650,7 +10650,7 @@ SpatialPersistenceContextEXT::persistSpatialEntityCompleteEXT(FutureEXT future,
 
 #endif  // XR_EXT_spatial_persistence_operations
 
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
@@ -10670,7 +10670,7 @@ SpatialPersistenceContextEXT::unpersistSpatialEntityAsyncEXT(
 
 #endif  // XR_EXT_spatial_persistence_operations
 
-#ifdef XR_EXT_spatial_persistence_operations
+#ifdef dsaXR_EXT_spatial_persistence_operations
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
