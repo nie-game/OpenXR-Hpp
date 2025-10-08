@@ -12,8 +12,8 @@ doc/
 doxygen/
 
 # generated files
-include/openxr/*.hpp
-include/openxr/*.inl
+#include/openxr/*.hpp
+#include/openxr/*.inl
 
 # Cached python scripts in bytecode form
 *.pyc
