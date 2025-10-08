@@ -2,38 +2,6 @@
 //     See cpp_generator.py for modifications
 // ************************************************************
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
 ** Copyright (c) 2017-2023 The Khronos Group Inc.
 ** Copyright (c) 2019-2023 Collabora, Ltd.
@@ -83,36 +51,6 @@
 
 #ifdef OPENXR_HPP_DOXYGEN
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #if !defined(OPENXR_HPP_NAMESPACE)
 #define OPENXR_HPP_NAMESPACE xr
 #endif  // !OPENXR_HPP_NAMESPACE
@@ -125,19162 +63,5613 @@
 
 namespace OPENXR_HPP_NAMESPACE {
 
-
-
-
-
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::getInstanceProcAddr (
-    const char* name, PFN_xrVoidFunction* function, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetInstanceProcAddr(this->get(), name, function) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::getInstanceProcAddr(const char* name,
+                                                       PFN_xrVoidFunction* function,
+                                                       Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetInstanceProcAddr(this->get(), name, function));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result enumerateApiLayerProperties (
-    uint32_t propertyCapacityInput, uint32_t& propertyCountOutput, ApiLayerProperties* properties, Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrEnumerateApiLayerProperties(propertyCapacityInput, &propertyCountOutput, properties == nullptr ? nullptr : properties->put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result enumerateApiLayerProperties(uint32_t propertyCapacityInput,
+                                                     uint32_t& propertyCountOutput,
+                                                     ApiLayerProperties* properties, Dispatch&& d) {
+  Result result = static_cast<Result>(
+      d.xrEnumerateApiLayerProperties(propertyCapacityInput, &propertyCountOutput,
+                                      properties == nullptr ? nullptr : properties->put(false)));
+
+  return result;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result enumerateInstanceExtensionProperties (
-    const char* layerName, uint32_t propertyCapacityInput, uint32_t& propertyCountOutput, ExtensionProperties* properties, Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrEnumerateInstanceExtensionProperties(layerName, propertyCapacityInput, &propertyCountOutput, properties == nullptr ? nullptr : properties->put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result enumerateInstanceExtensionProperties(const char* layerName,
+                                                              uint32_t propertyCapacityInput,
+                                                              uint32_t& propertyCountOutput,
+                                                              ExtensionProperties* properties,
+                                                              Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrEnumerateInstanceExtensionProperties(
+      layerName, propertyCapacityInput, &propertyCountOutput,
+      properties == nullptr ? nullptr : properties->put(false)));
+
+  return result;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result createInstance (
-    const InstanceCreateInfo& createInfo, Instance& instance, Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrCreateInstance(createInfo.get(), instance.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result createInstance(const InstanceCreateInfo& createInfo, Instance& instance,
+                                        Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrCreateInstance(createInfo.get(), instance.put()));
+
+  return result;
 }
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyInstance(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyInstance(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::getInstanceProperties (
-    InstanceProperties& instanceProperties, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetInstanceProperties(this->get(), instanceProperties.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::getInstanceProperties(InstanceProperties& instanceProperties,
+                                                         Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrGetInstanceProperties(this->get(), instanceProperties.put()));
+
+  return result;
 }
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::pollEvent (
-    EventDataBuffer& eventData, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPollEvent(this->get(), eventData.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::pollEvent(EventDataBuffer& eventData, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrPollEvent(this->get(), eventData.put()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
-
-
-
-
-
 
 #ifdef OPENXR_HPP_PROVIDE_DISCOURAGED_FUNCTIONS
 
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::resultToString (
-    Result value, char buffer[XR_MAX_RESULT_STRING_SIZE], Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrResultToString(this->get(), OPENXR_HPP_NAMESPACE::get(value), buffer) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::resultToString(Result value,
+                                                  char buffer[XR_MAX_RESULT_STRING_SIZE],
+                                                  Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrResultToString(this->get(), OPENXR_HPP_NAMESPACE::get(value), buffer));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  //  OPENXR_HPP_PROVIDE_DISCOURAGED_FUNCTIONS
 
-
-
-
-
-
 #ifdef OPENXR_HPP_PROVIDE_DISCOURAGED_FUNCTIONS
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::structureTypeToString (
-    StructureType value, char buffer[XR_MAX_STRUCTURE_NAME_SIZE], Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrStructureTypeToString(this->get(), OPENXR_HPP_NAMESPACE::get(value), buffer) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::structureTypeToString(StructureType value,
+                                                         char buffer[XR_MAX_STRUCTURE_NAME_SIZE],
+                                                         Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrStructureTypeToString(this->get(), OPENXR_HPP_NAMESPACE::get(value), buffer));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  //  OPENXR_HPP_PROVIDE_DISCOURAGED_FUNCTIONS
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::getSystem (
-    const SystemGetInfo& getInfo, SystemId& systemId, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSystem(this->get(), getInfo.get(), systemId.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::getSystem(const SystemGetInfo& getInfo, SystemId& systemId,
+                                             Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetSystem(this->get(), getInfo.get(), systemId.put()));
+
+  return result;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::getSystemProperties (
-    SystemId systemId, SystemProperties& properties, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSystemProperties(this->get(), systemId.get(), properties.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::getSystemProperties(SystemId systemId,
+                                                       SystemProperties& properties,
+                                                       Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrGetSystemProperties(this->get(), systemId.get(), properties.put()));
+
+  return result;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::enumerateEnvironmentBlendModes (
-    SystemId systemId, ViewConfigurationType viewConfigurationType, uint32_t environmentBlendModeCapacityInput, uint32_t& environmentBlendModeCountOutput, EnvironmentBlendMode* environmentBlendModes, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnumerateEnvironmentBlendModes(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType), environmentBlendModeCapacityInput, &environmentBlendModeCountOutput, environmentBlendModes == nullptr ? nullptr : OPENXR_HPP_NAMESPACE::put(*environmentBlendModes)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::enumerateEnvironmentBlendModes(
+    SystemId systemId, ViewConfigurationType viewConfigurationType,
+    uint32_t environmentBlendModeCapacityInput, uint32_t& environmentBlendModeCountOutput,
+    EnvironmentBlendMode* environmentBlendModes, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrEnumerateEnvironmentBlendModes(
+      this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType),
+      environmentBlendModeCapacityInput, &environmentBlendModeCountOutput,
+      environmentBlendModes == nullptr ? nullptr
+                                       : OPENXR_HPP_NAMESPACE::put(*environmentBlendModes)));
+
+  return result;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::createSession (
-    const SessionCreateInfo& createInfo, Session& session, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSession(this->get(), createInfo.get(), session.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::createSession(const SessionCreateInfo& createInfo,
+                                                 Session& session, Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrCreateSession(this->get(), createInfo.get(), session.put()));
+
+  return result;
 }
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySession(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySession(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::enumerateReferenceSpaces (
-    uint32_t spaceCapacityInput, uint32_t& spaceCountOutput, ReferenceSpaceType* spaces, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnumerateReferenceSpaces(this->get(), spaceCapacityInput, &spaceCountOutput, spaces == nullptr ? nullptr : OPENXR_HPP_NAMESPACE::put(*spaces)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::enumerateReferenceSpaces(uint32_t spaceCapacityInput,
+                                                           uint32_t& spaceCountOutput,
+                                                           ReferenceSpaceType* spaces,
+                                                           Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrEnumerateReferenceSpaces(
+      this->get(), spaceCapacityInput, &spaceCountOutput,
+      spaces == nullptr ? nullptr : OPENXR_HPP_NAMESPACE::put(*spaces)));
+
+  return result;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createReferenceSpace (
-    const ReferenceSpaceCreateInfo& createInfo, Space& space, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateReferenceSpace(this->get(), createInfo.get(), space.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::createReferenceSpace(const ReferenceSpaceCreateInfo& createInfo,
+                                                       Space& space, Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrCreateReferenceSpace(this->get(), createInfo.get(), space.put()));
+
+  return result;
 }
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getReferenceSpaceBoundsRect (
-    ReferenceSpaceType referenceSpaceType, Extent2Df& bounds, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetReferenceSpaceBoundsRect(this->get(), OPENXR_HPP_NAMESPACE::get(referenceSpaceType), bounds.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::getReferenceSpaceBoundsRect(ReferenceSpaceType referenceSpaceType,
+                                                              Extent2Df& bounds,
+                                                              Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetReferenceSpaceBoundsRect(
+      this->get(), OPENXR_HPP_NAMESPACE::get(referenceSpaceType), bounds.put()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createActionSpace (
-    const ActionSpaceCreateInfo& createInfo, Space& space, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateActionSpace(this->get(), createInfo.get(), space.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::createActionSpace(const ActionSpaceCreateInfo& createInfo,
+                                                    Space& space, Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrCreateActionSpace(this->get(), createInfo.get(), space.put()));
+
+  return result;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Space::locateSpace (
-    Space baseSpace, Time time, SpaceLocation& location, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrLocateSpace(this->get(), baseSpace.get(), time.get(), location.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Space::locateSpace(Space baseSpace, Time time, SpaceLocation& location,
+                                            Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrLocateSpace(this->get(), baseSpace.get(), time.get(), location.put()));
+
+  return result;
 }
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Space::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySpace(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Space::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySpace(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::enumerateViewConfigurations (
-    SystemId systemId, uint32_t viewConfigurationTypeCapacityInput, uint32_t& viewConfigurationTypeCountOutput, ViewConfigurationType* viewConfigurationTypes, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnumerateViewConfigurations(this->get(), systemId.get(), viewConfigurationTypeCapacityInput, &viewConfigurationTypeCountOutput, viewConfigurationTypes == nullptr ? nullptr : OPENXR_HPP_NAMESPACE::put(*viewConfigurationTypes)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::enumerateViewConfigurations(
+    SystemId systemId, uint32_t viewConfigurationTypeCapacityInput,
+    uint32_t& viewConfigurationTypeCountOutput, ViewConfigurationType* viewConfigurationTypes,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrEnumerateViewConfigurations(
+      this->get(), systemId.get(), viewConfigurationTypeCapacityInput,
+      &viewConfigurationTypeCountOutput,
+      viewConfigurationTypes == nullptr ? nullptr
+                                        : OPENXR_HPP_NAMESPACE::put(*viewConfigurationTypes)));
+
+  return result;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::getViewConfigurationProperties (
-    SystemId systemId, ViewConfigurationType viewConfigurationType, ViewConfigurationProperties& configurationProperties, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetViewConfigurationProperties(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType), configurationProperties.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::getViewConfigurationProperties(
+    SystemId systemId, ViewConfigurationType viewConfigurationType,
+    ViewConfigurationProperties& configurationProperties, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetViewConfigurationProperties(
+      this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType),
+      configurationProperties.put()));
+
+  return result;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::enumerateViewConfigurationViews (
-    SystemId systemId, ViewConfigurationType viewConfigurationType, uint32_t viewCapacityInput, uint32_t& viewCountOutput, ViewConfigurationView* views, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnumerateViewConfigurationViews(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType), viewCapacityInput, &viewCountOutput, views == nullptr ? nullptr : views->put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::enumerateViewConfigurationViews(
+    SystemId systemId, ViewConfigurationType viewConfigurationType, uint32_t viewCapacityInput,
+    uint32_t& viewCountOutput, ViewConfigurationView* views, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrEnumerateViewConfigurationViews(
+      this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType),
+      viewCapacityInput, &viewCountOutput, views == nullptr ? nullptr : views->put(false)));
+
+  return result;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::enumerateSwapchainFormats (
-    uint32_t formatCapacityInput, uint32_t& formatCountOutput, int64_t* formats, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnumerateSwapchainFormats(this->get(), formatCapacityInput, &formatCountOutput, formats) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::enumerateSwapchainFormats(uint32_t formatCapacityInput,
+                                                            uint32_t& formatCountOutput,
+                                                            int64_t* formats, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrEnumerateSwapchainFormats(this->get(), formatCapacityInput, &formatCountOutput, formats));
+
+  return result;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createSwapchain (
-    const SwapchainCreateInfo& createInfo, Swapchain& swapchain, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSwapchain(this->get(), createInfo.get(), swapchain.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::createSwapchain(const SwapchainCreateInfo& createInfo,
+                                                  Swapchain& swapchain, Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrCreateSwapchain(this->get(), createInfo.get(), swapchain.put()));
+
+  return result;
 }
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Swapchain::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySwapchain(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Swapchain::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySwapchain(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Swapchain::enumerateSwapchainImages (
-    uint32_t imageCapacityInput, uint32_t& imageCountOutput, SwapchainImageBaseHeader* images, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnumerateSwapchainImages(this->get(), imageCapacityInput, &imageCountOutput, images == nullptr ? nullptr : images->put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Swapchain::enumerateSwapchainImages(uint32_t imageCapacityInput,
+                                                             uint32_t& imageCountOutput,
+                                                             SwapchainImageBaseHeader* images,
+                                                             Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrEnumerateSwapchainImages(this->get(), imageCapacityInput, &imageCountOutput,
+                                   images == nullptr ? nullptr : images->put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Swapchain::acquireSwapchainImage (
+OPENXR_HPP_INLINE Result Swapchain::acquireSwapchainImage(
     const SwapchainImageAcquireInfo& acquireInfo, uint32_t& index, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrAcquireSwapchainImage(this->get(), acquireInfo.get(), &index) );
-    
-    return result;
+  Result result =
+      static_cast<Result>(d.xrAcquireSwapchainImage(this->get(), acquireInfo.get(), &index));
+
+  return result;
 }
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Swapchain::waitSwapchainImage (
-    const SwapchainImageWaitInfo& waitInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrWaitSwapchainImage(this->get(), waitInfo.get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Swapchain::waitSwapchainImage(const SwapchainImageWaitInfo& waitInfo,
+                                                       Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrWaitSwapchainImage(this->get(), waitInfo.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Swapchain::releaseSwapchainImage (
-    const SwapchainImageReleaseInfo& releaseInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrReleaseSwapchainImage(this->get(), releaseInfo.get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result
+Swapchain::releaseSwapchainImage(const SwapchainImageReleaseInfo& releaseInfo, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrReleaseSwapchainImage(this->get(), releaseInfo.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::beginSession (
-    const SessionBeginInfo& beginInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrBeginSession(this->get(), beginInfo.get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::beginSession(const SessionBeginInfo& beginInfo,
+                                               Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrBeginSession(this->get(), beginInfo.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::endSession (
-    Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEndSession(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::endSession(Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrEndSession(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::requestExitSession (
-    Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrRequestExitSession(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::requestExitSession(Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrRequestExitSession(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::waitFrame (
-    const FrameWaitInfo& frameWaitInfo, FrameState& frameState, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrWaitFrame(this->get(), frameWaitInfo.get(), frameState.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::waitFrame(const FrameWaitInfo& frameWaitInfo,
+                                            FrameState& frameState, Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrWaitFrame(this->get(), frameWaitInfo.get(), frameState.put()));
+
+  return result;
 }
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::beginFrame (
-    const FrameBeginInfo& frameBeginInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrBeginFrame(this->get(), frameBeginInfo.get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::beginFrame(const FrameBeginInfo& frameBeginInfo,
+                                             Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrBeginFrame(this->get(), frameBeginInfo.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::endFrame (
-    const FrameEndInfo& frameEndInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEndFrame(this->get(), frameEndInfo.get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::endFrame(const FrameEndInfo& frameEndInfo, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrEndFrame(this->get(), frameEndInfo.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::locateViews (
-    const ViewLocateInfo& viewLocateInfo, ViewState& viewState, uint32_t viewCapacityInput, uint32_t& viewCountOutput, View* views, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrLocateViews(this->get(), viewLocateInfo.get(), viewState.put(), viewCapacityInput, &viewCountOutput, views == nullptr ? nullptr : views->put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::locateViews(const ViewLocateInfo& viewLocateInfo,
+                                              ViewState& viewState, uint32_t viewCapacityInput,
+                                              uint32_t& viewCountOutput, View* views,
+                                              Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrLocateViews(this->get(), viewLocateInfo.get(), viewState.put(), viewCapacityInput,
+                      &viewCountOutput, views == nullptr ? nullptr : views->put(false)));
+
+  return result;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::stringToPath (
-    const char* pathString, Path& path, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrStringToPath(this->get(), pathString, path.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::stringToPath(const char* pathString, Path& path,
+                                                Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrStringToPath(this->get(), pathString, path.put()));
+
+  return result;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::pathToString (
-    Path path, uint32_t bufferCapacityInput, uint32_t& bufferCountOutput, char* buffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPathToString(this->get(), path.get(), bufferCapacityInput, &bufferCountOutput, buffer) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::pathToString(Path path, uint32_t bufferCapacityInput,
+                                                uint32_t& bufferCountOutput, char* buffer,
+                                                Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrPathToString(this->get(), path.get(), bufferCapacityInput, &bufferCountOutput, buffer));
+
+  return result;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::createActionSet (
-    const ActionSetCreateInfo& createInfo, ActionSet& actionSet, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateActionSet(this->get(), createInfo.get(), actionSet.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::createActionSet(const ActionSetCreateInfo& createInfo,
+                                                   ActionSet& actionSet, Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrCreateActionSet(this->get(), createInfo.get(), actionSet.put()));
+
+  return result;
 }
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result ActionSet::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyActionSet(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result ActionSet::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyActionSet(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result ActionSet::createAction (
-    const ActionCreateInfo& createInfo, Action& action, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateAction(this->get(), createInfo.get(), action.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result ActionSet::createAction(const ActionCreateInfo& createInfo, Action& action,
+                                                 Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrCreateAction(this->get(), createInfo.get(), action.put()));
+
+  return result;
 }
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Action::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyAction(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Action::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyAction(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::suggestInteractionProfileBindings (
+OPENXR_HPP_INLINE Result Instance::suggestInteractionProfileBindings(
     const InteractionProfileSuggestedBinding& suggestedBindings, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSuggestInteractionProfileBindings(this->get(), suggestedBindings.get()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrSuggestInteractionProfileBindings(this->get(), suggestedBindings.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::attachSessionActionSets (
+OPENXR_HPP_INLINE Result Session::attachSessionActionSets(
     const SessionActionSetsAttachInfo& attachInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrAttachSessionActionSets(this->get(), attachInfo.get()) );
-    
-    return result;
+  Result result = static_cast<Result>(d.xrAttachSessionActionSets(this->get(), attachInfo.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getCurrentInteractionProfile (
+OPENXR_HPP_INLINE Result Session::getCurrentInteractionProfile(
     Path topLevelUserPath, InteractionProfileState& interactionProfile, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetCurrentInteractionProfile(this->get(), topLevelUserPath.get(), interactionProfile.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(d.xrGetCurrentInteractionProfile(
+      this->get(), topLevelUserPath.get(), interactionProfile.put()));
+
+  return result;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getActionStateBoolean (
-    const ActionStateGetInfo& getInfo, ActionStateBoolean& state, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetActionStateBoolean(this->get(), getInfo.get(), state.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::getActionStateBoolean(const ActionStateGetInfo& getInfo,
+                                                        ActionStateBoolean& state,
+                                                        Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrGetActionStateBoolean(this->get(), getInfo.get(), state.put()));
+
+  return result;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getActionStateFloat (
-    const ActionStateGetInfo& getInfo, ActionStateFloat& state, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetActionStateFloat(this->get(), getInfo.get(), state.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::getActionStateFloat(const ActionStateGetInfo& getInfo,
+                                                      ActionStateFloat& state, Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrGetActionStateFloat(this->get(), getInfo.get(), state.put()));
+
+  return result;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getActionStateVector2f (
-    const ActionStateGetInfo& getInfo, ActionStateVector2f& state, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetActionStateVector2f(this->get(), getInfo.get(), state.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::getActionStateVector2f(const ActionStateGetInfo& getInfo,
+                                                         ActionStateVector2f& state,
+                                                         Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrGetActionStateVector2f(this->get(), getInfo.get(), state.put()));
+
+  return result;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getActionStatePose (
-    const ActionStateGetInfo& getInfo, ActionStatePose& state, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetActionStatePose(this->get(), getInfo.get(), state.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::getActionStatePose(const ActionStateGetInfo& getInfo,
+                                                     ActionStatePose& state, Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrGetActionStatePose(this->get(), getInfo.get(), state.put()));
+
+  return result;
 }
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::syncActions (
-    const ActionsSyncInfo& syncInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSyncActions(this->get(), syncInfo.get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::syncActions(const ActionsSyncInfo& syncInfo, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrSyncActions(this->get(), syncInfo.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::enumerateBoundSourcesForAction (
-    const BoundSourcesForActionEnumerateInfo& enumerateInfo, uint32_t sourceCapacityInput, uint32_t& sourceCountOutput, Path* sources, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnumerateBoundSourcesForAction(this->get(), enumerateInfo.get(), sourceCapacityInput, &sourceCountOutput, sources == nullptr ? nullptr : sources->put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::enumerateBoundSourcesForAction(
+    const BoundSourcesForActionEnumerateInfo& enumerateInfo, uint32_t sourceCapacityInput,
+    uint32_t& sourceCountOutput, Path* sources, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrEnumerateBoundSourcesForAction(
+      this->get(), enumerateInfo.get(), sourceCapacityInput, &sourceCountOutput,
+      sources == nullptr ? nullptr : sources->put()));
+
+  return result;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getInputSourceLocalizedName (
-    const InputSourceLocalizedNameGetInfo& getInfo, uint32_t bufferCapacityInput, uint32_t& bufferCountOutput, char* buffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetInputSourceLocalizedName(this->get(), getInfo.get(), bufferCapacityInput, &bufferCountOutput, buffer) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::getInputSourceLocalizedName(
+    const InputSourceLocalizedNameGetInfo& getInfo, uint32_t bufferCapacityInput,
+    uint32_t& bufferCountOutput, char* buffer, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetInputSourceLocalizedName(
+      this->get(), getInfo.get(), bufferCapacityInput, &bufferCountOutput, buffer));
+
+  return result;
 }
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::applyHapticFeedback (
-    const HapticActionInfo& hapticActionInfo, const HapticBaseHeader& hapticFeedback, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrApplyHapticFeedback(this->get(), hapticActionInfo.get(), hapticFeedback.get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::applyHapticFeedback(const HapticActionInfo& hapticActionInfo,
+                                                      const HapticBaseHeader& hapticFeedback,
+                                                      Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrApplyHapticFeedback(this->get(), hapticActionInfo.get(), hapticFeedback.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::stopHapticFeedback (
-    const HapticActionInfo& hapticActionInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrStopHapticFeedback(this->get(), hapticActionInfo.get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::stopHapticFeedback(const HapticActionInfo& hapticActionInfo,
+                                                     Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrStopHapticFeedback(this->get(), hapticActionInfo.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
-
-
-
 
 #ifdef XR_LOADER_VERSION_1_0
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result createApiLayerInstance (
-    const InstanceCreateInfo& info, const ApiLayerCreateInfo& layerInfo, Instance& instance, Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrCreateApiLayerInstance(info.get(), layerInfo.get(), instance.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result createApiLayerInstance(const InstanceCreateInfo& info,
+                                                const ApiLayerCreateInfo& layerInfo,
+                                                Instance& instance, Dispatch&& d) {
+  Result result =
+      static_cast<Result>(d.xrCreateApiLayerInstance(info.get(), layerInfo.get(), instance.put()));
+
+  return result;
 }
 
 #endif  // XR_LOADER_VERSION_1_0
 
-
 #ifdef XR_LOADER_VERSION_1_0
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result negotiateLoaderRuntimeInterface (
-    const NegotiateLoaderInfo& loaderInfo, NegotiateRuntimeRequest& runtimeRequest, Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrNegotiateLoaderRuntimeInterface(loaderInfo.get(), runtimeRequest.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result negotiateLoaderRuntimeInterface(const NegotiateLoaderInfo& loaderInfo,
+                                                         NegotiateRuntimeRequest& runtimeRequest,
+                                                         Dispatch&& d) {
+  Result result = static_cast<Result>(
+      d.xrNegotiateLoaderRuntimeInterface(loaderInfo.get(), runtimeRequest.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_LOADER_VERSION_1_0
 
-
 #ifdef XR_LOADER_VERSION_1_0
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result negotiateLoaderApiLayerInterface (
-    const NegotiateLoaderInfo& loaderInfo, const char* layerName, NegotiateApiLayerRequest& apiLayerRequest, Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrNegotiateLoaderApiLayerInterface(loaderInfo.get(), layerName, apiLayerRequest.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result negotiateLoaderApiLayerInterface(const NegotiateLoaderInfo& loaderInfo,
+                                                          const char* layerName,
+                                                          NegotiateApiLayerRequest& apiLayerRequest,
+                                                          Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrNegotiateLoaderApiLayerInterface(
+      loaderInfo.get(), layerName, apiLayerRequest.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_LOADER_VERSION_1_0
 
-
-
-
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::locateSpaces (
-    const SpacesLocateInfo& locateInfo, SpaceLocations& spaceLocations, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrLocateSpaces(this->get(), locateInfo.get(), spaceLocations.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::locateSpaces(const SpacesLocateInfo& locateInfo,
+                                               SpaceLocations& spaceLocations, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrLocateSpaces(this->get(), locateInfo.get(), spaceLocations.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
-
-
-
 
 #ifdef XR_KHR_android_thread_settings
 #if defined(XR_USE_PLATFORM_ANDROID)
 
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setAndroidApplicationThreadKHR (
-    AndroidThreadTypeKHR threadType, uint32_t threadId, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetAndroidApplicationThreadKHR(this->get(), OPENXR_HPP_NAMESPACE::get(threadType), threadId) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::setAndroidApplicationThreadKHR(AndroidThreadTypeKHR threadType,
+                                                                 uint32_t threadId,
+                                                                 Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrSetAndroidApplicationThreadKHR(
+      this->get(), OPENXR_HPP_NAMESPACE::get(threadType), threadId));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-#endif // defined(XR_USE_PLATFORM_ANDROID)
+#endif  // defined(XR_USE_PLATFORM_ANDROID)
 #endif  // XR_KHR_android_thread_settings
-
 
 #ifdef XR_KHR_android_surface_swapchain
 #if defined(XR_USE_PLATFORM_ANDROID)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createSwapchainAndroidSurfaceKHR (
-    const SwapchainCreateInfo& info, Swapchain& swapchain, jobject* surface, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSwapchainAndroidSurfaceKHR(this->get(), info.get(), swapchain.put(), surface) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::createSwapchainAndroidSurfaceKHR(const SwapchainCreateInfo& info,
+                                                                   Swapchain& swapchain,
+                                                                   jobject* surface,
+                                                                   Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateSwapchainAndroidSurfaceKHR(this->get(), info.get(), swapchain.put(), surface));
+
+  return result;
 }
 
-#endif // defined(XR_USE_PLATFORM_ANDROID)
+#endif  // defined(XR_USE_PLATFORM_ANDROID)
 #endif  // XR_KHR_android_surface_swapchain
-
 
 #ifdef XR_KHR_opengl_enable
 #if defined(XR_USE_GRAPHICS_API_OPENGL)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::getOpenGLGraphicsRequirementsKHR (
+OPENXR_HPP_INLINE Result Instance::getOpenGLGraphicsRequirementsKHR(
     SystemId systemId, GraphicsRequirementsOpenGLKHR& graphicsRequirements, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetOpenGLGraphicsRequirementsKHR(this->get(), systemId.get(), graphicsRequirements.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(d.xrGetOpenGLGraphicsRequirementsKHR(
+      this->get(), systemId.get(), graphicsRequirements.put()));
+
+  return result;
 }
 
-#endif // defined(XR_USE_GRAPHICS_API_OPENGL)
+#endif  // defined(XR_USE_GRAPHICS_API_OPENGL)
 #endif  // XR_KHR_opengl_enable
-
 
 #ifdef XR_KHR_opengl_es_enable
 #if defined(XR_USE_GRAPHICS_API_OPENGL_ES)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::getOpenGLESGraphicsRequirementsKHR (
+OPENXR_HPP_INLINE Result Instance::getOpenGLESGraphicsRequirementsKHR(
     SystemId systemId, GraphicsRequirementsOpenGLESKHR& graphicsRequirements, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetOpenGLESGraphicsRequirementsKHR(this->get(), systemId.get(), graphicsRequirements.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(d.xrGetOpenGLESGraphicsRequirementsKHR(
+      this->get(), systemId.get(), graphicsRequirements.put()));
+
+  return result;
 }
 
-#endif // defined(XR_USE_GRAPHICS_API_OPENGL_ES)
+#endif  // defined(XR_USE_GRAPHICS_API_OPENGL_ES)
 #endif  // XR_KHR_opengl_es_enable
 
-
 #ifdef XR_KHR_vulkan_enable
 #if defined(XR_USE_GRAPHICS_API_VULKAN)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::getVulkanInstanceExtensionsKHR (
-    SystemId systemId, uint32_t bufferCapacityInput, uint32_t& bufferCountOutput, char* buffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetVulkanInstanceExtensionsKHR(this->get(), systemId.get(), bufferCapacityInput, &bufferCountOutput, buffer) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::getVulkanInstanceExtensionsKHR(SystemId systemId,
+                                                                  uint32_t bufferCapacityInput,
+                                                                  uint32_t& bufferCountOutput,
+                                                                  char* buffer,
+                                                                  Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetVulkanInstanceExtensionsKHR(
+      this->get(), systemId.get(), bufferCapacityInput, &bufferCountOutput, buffer));
+
+  return result;
 }
 
-#endif // defined(XR_USE_GRAPHICS_API_VULKAN)
+#endif  // defined(XR_USE_GRAPHICS_API_VULKAN)
 #endif  // XR_KHR_vulkan_enable
-
 
 #ifdef XR_KHR_vulkan_enable
 #if defined(XR_USE_GRAPHICS_API_VULKAN)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::getVulkanDeviceExtensionsKHR (
-    SystemId systemId, uint32_t bufferCapacityInput, uint32_t& bufferCountOutput, char* buffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetVulkanDeviceExtensionsKHR(this->get(), systemId.get(), bufferCapacityInput, &bufferCountOutput, buffer) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::getVulkanDeviceExtensionsKHR(SystemId systemId,
+                                                                uint32_t bufferCapacityInput,
+                                                                uint32_t& bufferCountOutput,
+                                                                char* buffer, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetVulkanDeviceExtensionsKHR(
+      this->get(), systemId.get(), bufferCapacityInput, &bufferCountOutput, buffer));
+
+  return result;
 }
 
-#endif // defined(XR_USE_GRAPHICS_API_VULKAN)
+#endif  // defined(XR_USE_GRAPHICS_API_VULKAN)
 #endif  // XR_KHR_vulkan_enable
-
 
 #ifdef XR_KHR_vulkan_enable
 #if defined(XR_USE_GRAPHICS_API_VULKAN)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::getVulkanGraphicsDeviceKHR (
-    SystemId systemId, VkInstance vkInstance, VkPhysicalDevice* vkPhysicalDevice, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetVulkanGraphicsDeviceKHR(this->get(), systemId.get(), vkInstance, vkPhysicalDevice) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::getVulkanGraphicsDeviceKHR(SystemId systemId,
+                                                              VkInstance vkInstance,
+                                                              VkPhysicalDevice* vkPhysicalDevice,
+                                                              Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetVulkanGraphicsDeviceKHR(this->get(), systemId.get(), vkInstance, vkPhysicalDevice));
+
+  return result;
 }
 
-#endif // defined(XR_USE_GRAPHICS_API_VULKAN)
+#endif  // defined(XR_USE_GRAPHICS_API_VULKAN)
 #endif  // XR_KHR_vulkan_enable
-
 
 #ifdef XR_KHR_vulkan_enable
 #if defined(XR_USE_GRAPHICS_API_VULKAN)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::getVulkanGraphicsRequirementsKHR (
+OPENXR_HPP_INLINE Result Instance::getVulkanGraphicsRequirementsKHR(
     SystemId systemId, GraphicsRequirementsVulkanKHR& graphicsRequirements, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetVulkanGraphicsRequirementsKHR(this->get(), systemId.get(), graphicsRequirements.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(d.xrGetVulkanGraphicsRequirementsKHR(
+      this->get(), systemId.get(), graphicsRequirements.put()));
+
+  return result;
 }
 
-#endif // defined(XR_USE_GRAPHICS_API_VULKAN)
+#endif  // defined(XR_USE_GRAPHICS_API_VULKAN)
 #endif  // XR_KHR_vulkan_enable
-
 
 #ifdef XR_KHR_D3D11_enable
 #if defined(XR_USE_GRAPHICS_API_D3D11)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::getD3D11GraphicsRequirementsKHR (
+OPENXR_HPP_INLINE Result Instance::getD3D11GraphicsRequirementsKHR(
     SystemId systemId, GraphicsRequirementsD3D11KHR& graphicsRequirements, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetD3D11GraphicsRequirementsKHR(this->get(), systemId.get(), graphicsRequirements.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrGetD3D11GraphicsRequirementsKHR(this->get(), systemId.get(), graphicsRequirements.put()));
+
+  return result;
 }
 
-#endif // defined(XR_USE_GRAPHICS_API_D3D11)
+#endif  // defined(XR_USE_GRAPHICS_API_D3D11)
 #endif  // XR_KHR_D3D11_enable
-
 
 #ifdef XR_KHR_D3D12_enable
 #if defined(XR_USE_GRAPHICS_API_D3D12)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::getD3D12GraphicsRequirementsKHR (
+OPENXR_HPP_INLINE Result Instance::getD3D12GraphicsRequirementsKHR(
     SystemId systemId, GraphicsRequirementsD3D12KHR& graphicsRequirements, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetD3D12GraphicsRequirementsKHR(this->get(), systemId.get(), graphicsRequirements.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrGetD3D12GraphicsRequirementsKHR(this->get(), systemId.get(), graphicsRequirements.put()));
+
+  return result;
 }
 
-#endif // defined(XR_USE_GRAPHICS_API_D3D12)
+#endif  // defined(XR_USE_GRAPHICS_API_D3D12)
 #endif  // XR_KHR_D3D12_enable
-
 
 #ifdef XR_KHR_metal_enable
 #if defined(XR_USE_GRAPHICS_API_METAL)
 
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::getMetalGraphicsRequirementsKHR (
+OPENXR_HPP_INLINE Result Instance::getMetalGraphicsRequirementsKHR(
     SystemId systemId, GraphicsRequirementsMetalKHR& graphicsRequirements, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetMetalGraphicsRequirementsKHR(this->get(), systemId.get(), graphicsRequirements.put(false)) );
-    
-    return result;
+  Result result = static_cast<Result>(d.xrGetMetalGraphicsRequirementsKHR(
+      this->get(), systemId.get(), graphicsRequirements.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-#endif // defined(XR_USE_GRAPHICS_API_METAL)
+#endif  // defined(XR_USE_GRAPHICS_API_METAL)
 #endif  // XR_KHR_metal_enable
-
 
 #ifdef XR_KHR_visibility_mask
 
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getVisibilityMaskKHR (
-    ViewConfigurationType viewConfigurationType, uint32_t viewIndex, VisibilityMaskTypeKHR visibilityMaskType, VisibilityMaskKHR& visibilityMask, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetVisibilityMaskKHR(this->get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType), viewIndex, OPENXR_HPP_NAMESPACE::get(visibilityMaskType), visibilityMask.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::getVisibilityMaskKHR(ViewConfigurationType viewConfigurationType,
+                                                       uint32_t viewIndex,
+                                                       VisibilityMaskTypeKHR visibilityMaskType,
+                                                       VisibilityMaskKHR& visibilityMask,
+                                                       Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetVisibilityMaskKHR(
+      this->get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType), viewIndex,
+      OPENXR_HPP_NAMESPACE::get(visibilityMaskType), visibilityMask.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_KHR_visibility_mask
 
-
 #ifdef XR_KHR_win32_convert_performance_counter_time
 #if defined(XR_USE_PLATFORM_WIN32)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::convertWin32PerformanceCounterToTimeKHR (
+OPENXR_HPP_INLINE Result Instance::convertWin32PerformanceCounterToTimeKHR(
     const LARGE_INTEGER* performanceCounter, Time& time, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrConvertWin32PerformanceCounterToTimeKHR(this->get(), performanceCounter, time.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrConvertWin32PerformanceCounterToTimeKHR(this->get(), performanceCounter, time.put()));
+
+  return result;
 }
 
-#endif // defined(XR_USE_PLATFORM_WIN32)
+#endif  // defined(XR_USE_PLATFORM_WIN32)
 #endif  // XR_KHR_win32_convert_performance_counter_time
-
 
 #ifdef XR_KHR_win32_convert_performance_counter_time
 #if defined(XR_USE_PLATFORM_WIN32)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::convertTimeToWin32PerformanceCounterKHR (
+OPENXR_HPP_INLINE Result Instance::convertTimeToWin32PerformanceCounterKHR(
     Time time, LARGE_INTEGER* performanceCounter, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrConvertTimeToWin32PerformanceCounterKHR(this->get(), time.get(), performanceCounter) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrConvertTimeToWin32PerformanceCounterKHR(this->get(), time.get(), performanceCounter));
+
+  return result;
 }
 
-#endif // defined(XR_USE_PLATFORM_WIN32)
+#endif  // defined(XR_USE_PLATFORM_WIN32)
 #endif  // XR_KHR_win32_convert_performance_counter_time
 
+#ifdef XR_KHR_convert_timespec_time
+#if defined(XR_USE_TIMESPEC)
+
+template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
+OPENXR_HPP_INLINE Result Instance::convertTimespecTimeToTimeKHR(const struct timespec* timespecTime,
+                                                                Time& time, Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrConvertTimespecTimeToTimeKHR(this->get(), timespecTime, time.put()));
+
+  return result;
+}
+
+#endif  // defined(XR_USE_TIMESPEC)
+#endif  // XR_KHR_convert_timespec_time
 
 #ifdef XR_KHR_convert_timespec_time
 #if defined(XR_USE_TIMESPEC)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::convertTimespecTimeToTimeKHR (
-    const struct timespec* timespecTime, Time& time, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrConvertTimespecTimeToTimeKHR(this->get(), timespecTime, time.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::convertTimeToTimespecTimeKHR(Time time,
+                                                                struct timespec* timespecTime,
+                                                                Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrConvertTimeToTimespecTimeKHR(this->get(), time.get(), timespecTime));
+
+  return result;
 }
 
-#endif // defined(XR_USE_TIMESPEC)
+#endif  // defined(XR_USE_TIMESPEC)
 #endif  // XR_KHR_convert_timespec_time
-
-
-#ifdef XR_KHR_convert_timespec_time
-#if defined(XR_USE_TIMESPEC)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::convertTimeToTimespecTimeKHR (
-    Time time, struct timespec* timespecTime, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrConvertTimeToTimespecTimeKHR(this->get(), time.get(), timespecTime) );
-    
-    return result;
-}
-
-#endif // defined(XR_USE_TIMESPEC)
-#endif  // XR_KHR_convert_timespec_time
-
 
 #ifdef XR_KHR_loader_init
 
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result initializeLoaderKHR (
-    const LoaderInitInfoBaseHeaderKHR& loaderInitInfo, Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrInitializeLoaderKHR(loaderInitInfo.get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result initializeLoaderKHR(const LoaderInitInfoBaseHeaderKHR& loaderInitInfo,
+                                             Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrInitializeLoaderKHR(loaderInitInfo.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_KHR_loader_init
 
-
 #ifdef XR_KHR_vulkan_enable2
 #if defined(XR_USE_GRAPHICS_API_VULKAN)
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::createVulkanInstanceKHR (
-    const VulkanInstanceCreateInfoKHR& createInfo, VkInstance* vulkanInstance, VkResult* vulkanResult, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateVulkanInstanceKHR(this->get(), createInfo.get(), vulkanInstance, vulkanResult) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::createVulkanInstanceKHR(
+    const VulkanInstanceCreateInfoKHR& createInfo, VkInstance* vulkanInstance,
+    VkResult* vulkanResult, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateVulkanInstanceKHR(this->get(), createInfo.get(), vulkanInstance, vulkanResult));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-#endif // defined(XR_USE_GRAPHICS_API_VULKAN)
+#endif  // defined(XR_USE_GRAPHICS_API_VULKAN)
 #endif  // XR_KHR_vulkan_enable2
-
 
 #ifdef XR_KHR_vulkan_enable2
 #if defined(XR_USE_GRAPHICS_API_VULKAN)
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::createVulkanDeviceKHR (
-    const VulkanDeviceCreateInfoKHR& createInfo, VkDevice* vulkanDevice, VkResult* vulkanResult, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateVulkanDeviceKHR(this->get(), createInfo.get(), vulkanDevice, vulkanResult) );
-    
-    return result;
+OPENXR_HPP_INLINE Result
+Instance::createVulkanDeviceKHR(const VulkanDeviceCreateInfoKHR& createInfo, VkDevice* vulkanDevice,
+                                VkResult* vulkanResult, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateVulkanDeviceKHR(this->get(), createInfo.get(), vulkanDevice, vulkanResult));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-#endif // defined(XR_USE_GRAPHICS_API_VULKAN)
+#endif  // defined(XR_USE_GRAPHICS_API_VULKAN)
 #endif  // XR_KHR_vulkan_enable2
-
 
 #ifdef XR_KHR_vulkan_enable2
 #if defined(XR_USE_GRAPHICS_API_VULKAN)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::getVulkanGraphicsDevice2KHR (
-    const VulkanGraphicsDeviceGetInfoKHR& getInfo, VkPhysicalDevice* vulkanPhysicalDevice, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetVulkanGraphicsDevice2KHR(this->get(), getInfo.get(), vulkanPhysicalDevice) );
-    
-    return result;
+OPENXR_HPP_INLINE Result
+Instance::getVulkanGraphicsDevice2KHR(const VulkanGraphicsDeviceGetInfoKHR& getInfo,
+                                      VkPhysicalDevice* vulkanPhysicalDevice, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetVulkanGraphicsDevice2KHR(this->get(), getInfo.get(), vulkanPhysicalDevice));
+
+  return result;
 }
 
-#endif // defined(XR_USE_GRAPHICS_API_VULKAN)
+#endif  // defined(XR_USE_GRAPHICS_API_VULKAN)
 #endif  // XR_KHR_vulkan_enable2
-
 
 #ifdef XR_KHR_vulkan_enable2
 #if defined(XR_USE_GRAPHICS_API_VULKAN)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::getVulkanGraphicsRequirements2KHR (
+OPENXR_HPP_INLINE Result Instance::getVulkanGraphicsRequirements2KHR(
     SystemId systemId, GraphicsRequirementsVulkanKHR& graphicsRequirements, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetVulkanGraphicsRequirements2KHR(this->get(), systemId.get(), graphicsRequirements.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(d.xrGetVulkanGraphicsRequirements2KHR(
+      this->get(), systemId.get(), graphicsRequirements.put()));
+
+  return result;
 }
 
-#endif // defined(XR_USE_GRAPHICS_API_VULKAN)
+#endif  // defined(XR_USE_GRAPHICS_API_VULKAN)
 #endif  // XR_KHR_vulkan_enable2
-
 
 #ifdef XR_KHR_extended_struct_name_lengths
 
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::structureTypeToString2KHR (
+OPENXR_HPP_INLINE Result Instance::structureTypeToString2KHR(
     StructureType value, char buffer[XR_MAX_STRUCTURE_NAME_SIZE_EXTENDED_KHR], Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrStructureTypeToString2KHR(this->get(), OPENXR_HPP_NAMESPACE::get(value), buffer) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrStructureTypeToString2KHR(this->get(), OPENXR_HPP_NAMESPACE::get(value), buffer));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_KHR_extended_struct_name_lengths
 
-
 #ifdef XR_KHR_locate_spaces
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::locateSpacesKHR (
-    const SpacesLocateInfo& locateInfo, SpaceLocations& spaceLocations, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrLocateSpacesKHR(this->get(), locateInfo.get(), spaceLocations.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::locateSpacesKHR(const SpacesLocateInfo& locateInfo,
+                                                  SpaceLocations& spaceLocations,
+                                                  Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrLocateSpacesKHR(this->get(), locateInfo.get(), spaceLocations.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_KHR_locate_spaces
 
-
 #ifdef XR_EXT_performance_settings
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::perfSettingsSetPerformanceLevelEXT (
-    PerfSettingsDomainEXT domain, PerfSettingsLevelEXT level, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPerfSettingsSetPerformanceLevelEXT(this->get(), OPENXR_HPP_NAMESPACE::get(domain), OPENXR_HPP_NAMESPACE::get(level)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::perfSettingsSetPerformanceLevelEXT(PerfSettingsDomainEXT domain,
+                                                                     PerfSettingsLevelEXT level,
+                                                                     Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrPerfSettingsSetPerformanceLevelEXT(
+      this->get(), OPENXR_HPP_NAMESPACE::get(domain), OPENXR_HPP_NAMESPACE::get(level)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_performance_settings
 
-
 #ifdef XR_EXT_thermal_query
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::thermalGetTemperatureTrendEXT (
-    PerfSettingsDomainEXT domain, PerfSettingsNotificationLevelEXT& notificationLevel, float& tempHeadroom, float& tempSlope, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrThermalGetTemperatureTrendEXT(this->get(), OPENXR_HPP_NAMESPACE::get(domain), OPENXR_HPP_NAMESPACE::put(notificationLevel), &tempHeadroom, &tempSlope) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::thermalGetTemperatureTrendEXT(
+    PerfSettingsDomainEXT domain, PerfSettingsNotificationLevelEXT& notificationLevel,
+    float& tempHeadroom, float& tempSlope, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrThermalGetTemperatureTrendEXT(
+      this->get(), OPENXR_HPP_NAMESPACE::get(domain), OPENXR_HPP_NAMESPACE::put(notificationLevel),
+      &tempHeadroom, &tempSlope));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_thermal_query
 
-
 #ifdef XR_EXT_debug_utils
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::setDebugUtilsObjectNameEXT (
+OPENXR_HPP_INLINE Result Instance::setDebugUtilsObjectNameEXT(
     const DebugUtilsObjectNameInfoEXT& nameInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetDebugUtilsObjectNameEXT(this->get(), nameInfo.get()) );
-    
-    return result;
+  Result result = static_cast<Result>(d.xrSetDebugUtilsObjectNameEXT(this->get(), nameInfo.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_debug_utils
 
-
 #ifdef XR_EXT_debug_utils
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::createDebugUtilsMessengerEXT (
-    const DebugUtilsMessengerCreateInfoEXT& createInfo, DebugUtilsMessengerEXT& messenger, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateDebugUtilsMessengerEXT(this->get(), createInfo.get(), messenger.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result
+Instance::createDebugUtilsMessengerEXT(const DebugUtilsMessengerCreateInfoEXT& createInfo,
+                                       DebugUtilsMessengerEXT& messenger, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateDebugUtilsMessengerEXT(this->get(), createInfo.get(), messenger.put()));
+
+  return result;
 }
 
 #endif  // XR_EXT_debug_utils
 
-
 #ifdef XR_EXT_debug_utils
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result DebugUtilsMessengerEXT::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyDebugUtilsMessengerEXT(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result DebugUtilsMessengerEXT::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyDebugUtilsMessengerEXT(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_debug_utils
 
-
 #ifdef XR_EXT_debug_utils
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::submitDebugUtilsMessageEXT (
-    XrDebugUtilsMessageSeverityFlagsEXT messageSeverity, XrDebugUtilsMessageTypeFlagsEXT messageTypes, const DebugUtilsMessengerCallbackDataEXT& callbackData, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSubmitDebugUtilsMessageEXT(this->get(), messageSeverity, messageTypes, callbackData.get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::submitDebugUtilsMessageEXT(
+    XrDebugUtilsMessageSeverityFlagsEXT messageSeverity,
+    XrDebugUtilsMessageTypeFlagsEXT messageTypes,
+    const DebugUtilsMessengerCallbackDataEXT& callbackData, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrSubmitDebugUtilsMessageEXT(
+      this->get(), messageSeverity, messageTypes, callbackData.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_debug_utils
 
-
 #ifdef XR_EXT_debug_utils
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::sessionBeginDebugUtilsLabelRegionEXT (
+OPENXR_HPP_INLINE Result Session::sessionBeginDebugUtilsLabelRegionEXT(
     const DebugUtilsLabelEXT& labelInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSessionBeginDebugUtilsLabelRegionEXT(this->get(), labelInfo.get()) );
-    
-    return result;
+  Result result =
+      static_cast<Result>(d.xrSessionBeginDebugUtilsLabelRegionEXT(this->get(), labelInfo.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_debug_utils
-
 
 #ifdef XR_EXT_debug_utils
 
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::sessionEndDebugUtilsLabelRegionEXT (
-    Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSessionEndDebugUtilsLabelRegionEXT(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::sessionEndDebugUtilsLabelRegionEXT(Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrSessionEndDebugUtilsLabelRegionEXT(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_debug_utils
-
 
 #ifdef XR_EXT_debug_utils
 
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::sessionInsertDebugUtilsLabelEXT (
-    const DebugUtilsLabelEXT& labelInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSessionInsertDebugUtilsLabelEXT(this->get(), labelInfo.get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result
+Session::sessionInsertDebugUtilsLabelEXT(const DebugUtilsLabelEXT& labelInfo, Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrSessionInsertDebugUtilsLabelEXT(this->get(), labelInfo.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_debug_utils
-
 
 #ifdef XR_MSFT_spatial_anchor
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createSpatialAnchorMSFT (
+OPENXR_HPP_INLINE Result Session::createSpatialAnchorMSFT(
     const SpatialAnchorCreateInfoMSFT& createInfo, SpatialAnchorMSFT& anchor, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorMSFT(this->get(), createInfo.get(), anchor.put()) );
-    
-    return result;
+  Result result =
+      static_cast<Result>(d.xrCreateSpatialAnchorMSFT(this->get(), createInfo.get(), anchor.put()));
+
+  return result;
 }
 
 #endif  // XR_MSFT_spatial_anchor
 
-
 #ifdef XR_MSFT_spatial_anchor
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createSpatialAnchorSpaceMSFT (
+OPENXR_HPP_INLINE Result Session::createSpatialAnchorSpaceMSFT(
     const SpatialAnchorSpaceCreateInfoMSFT& createInfo, Space& space, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorSpaceMSFT(this->get(), createInfo.get(), space.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialAnchorSpaceMSFT(this->get(), createInfo.get(), space.put()));
+
+  return result;
 }
 
 #endif  // XR_MSFT_spatial_anchor
-
 
 #ifdef XR_MSFT_spatial_anchor
 
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialAnchorMSFT::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySpatialAnchorMSFT(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SpatialAnchorMSFT::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySpatialAnchorMSFT(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_MSFT_spatial_anchor
 
-
 #ifdef XR_EXT_conformance_automation
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setInputDeviceActiveEXT (
-    Path interactionProfile, Path topLevelPath, Bool32 isActive, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetInputDeviceActiveEXT(this->get(), interactionProfile.get(), topLevelPath.get(), isActive.get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::setInputDeviceActiveEXT(Path interactionProfile,
+                                                          Path topLevelPath, Bool32 isActive,
+                                                          Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrSetInputDeviceActiveEXT(
+      this->get(), interactionProfile.get(), topLevelPath.get(), isActive.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_conformance_automation
 
-
 #ifdef XR_EXT_conformance_automation
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setInputDeviceStateBoolEXT (
-    Path topLevelPath, Path inputSourcePath, Bool32 state, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetInputDeviceStateBoolEXT(this->get(), topLevelPath.get(), inputSourcePath.get(), state.get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::setInputDeviceStateBoolEXT(Path topLevelPath,
+                                                             Path inputSourcePath, Bool32 state,
+                                                             Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrSetInputDeviceStateBoolEXT(
+      this->get(), topLevelPath.get(), inputSourcePath.get(), state.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_conformance_automation
 
-
 #ifdef XR_EXT_conformance_automation
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setInputDeviceStateFloatEXT (
-    Path topLevelPath, Path inputSourcePath, float state, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetInputDeviceStateFloatEXT(this->get(), topLevelPath.get(), inputSourcePath.get(), state) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::setInputDeviceStateFloatEXT(Path topLevelPath,
+                                                              Path inputSourcePath, float state,
+                                                              Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrSetInputDeviceStateFloatEXT(
+      this->get(), topLevelPath.get(), inputSourcePath.get(), state));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_conformance_automation
 
-
 #ifdef XR_EXT_conformance_automation
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setInputDeviceStateVector2fEXT (
-    Path topLevelPath, Path inputSourcePath, Vector2f state, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetInputDeviceStateVector2fEXT(this->get(), topLevelPath.get(), inputSourcePath.get(), state) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::setInputDeviceStateVector2fEXT(Path topLevelPath,
+                                                                 Path inputSourcePath,
+                                                                 Vector2f state,
+                                                                 Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrSetInputDeviceStateVector2fEXT(
+      this->get(), topLevelPath.get(), inputSourcePath.get(), state));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_conformance_automation
 
-
 #ifdef XR_EXT_conformance_automation
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setInputDeviceLocationEXT (
-    Path topLevelPath, Path inputSourcePath, Space space, Posef pose, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetInputDeviceLocationEXT(this->get(), topLevelPath.get(), inputSourcePath.get(), space.get(), pose) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::setInputDeviceLocationEXT(Path topLevelPath, Path inputSourcePath,
+                                                            Space space, Posef pose,
+                                                            Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrSetInputDeviceLocationEXT(
+      this->get(), topLevelPath.get(), inputSourcePath.get(), space.get(), pose));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_conformance_automation
-
 
 #ifdef XR_MSFT_spatial_graph_bridge
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createSpatialGraphNodeSpaceMSFT (
+OPENXR_HPP_INLINE Result Session::createSpatialGraphNodeSpaceMSFT(
     const SpatialGraphNodeSpaceCreateInfoMSFT& createInfo, Space& space, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSpatialGraphNodeSpaceMSFT(this->get(), createInfo.get(), space.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialGraphNodeSpaceMSFT(this->get(), createInfo.get(), space.put()));
+
+  return result;
 }
 
 #endif  // XR_MSFT_spatial_graph_bridge
 
-
 #ifdef XR_MSFT_spatial_graph_bridge
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::tryCreateSpatialGraphStaticNodeBindingMSFT (
-    const SpatialGraphStaticNodeBindingCreateInfoMSFT& createInfo, SpatialGraphNodeBindingMSFT& nodeBinding, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrTryCreateSpatialGraphStaticNodeBindingMSFT(this->get(), createInfo.get(), nodeBinding.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::tryCreateSpatialGraphStaticNodeBindingMSFT(
+    const SpatialGraphStaticNodeBindingCreateInfoMSFT& createInfo,
+    SpatialGraphNodeBindingMSFT& nodeBinding, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrTryCreateSpatialGraphStaticNodeBindingMSFT(
+      this->get(), createInfo.get(), nodeBinding.put()));
+
+  return result;
 }
 
 #endif  // XR_MSFT_spatial_graph_bridge
 
-
 #ifdef XR_MSFT_spatial_graph_bridge
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialGraphNodeBindingMSFT::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySpatialGraphNodeBindingMSFT(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SpatialGraphNodeBindingMSFT::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySpatialGraphNodeBindingMSFT(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_MSFT_spatial_graph_bridge
 
-
 #ifdef XR_MSFT_spatial_graph_bridge
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialGraphNodeBindingMSFT::getSpatialGraphNodeBindingPropertiesMSFT (
-    const SpatialGraphNodeBindingPropertiesGetInfoMSFT& getInfo, SpatialGraphNodeBindingPropertiesMSFT& properties, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSpatialGraphNodeBindingPropertiesMSFT(this->get(), getInfo.get(), properties.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SpatialGraphNodeBindingMSFT::getSpatialGraphNodeBindingPropertiesMSFT(
+    const SpatialGraphNodeBindingPropertiesGetInfoMSFT& getInfo,
+    SpatialGraphNodeBindingPropertiesMSFT& properties, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetSpatialGraphNodeBindingPropertiesMSFT(this->get(), getInfo.get(), properties.put()));
+
+  return result;
 }
 
 #endif  // XR_MSFT_spatial_graph_bridge
 
-
 #ifdef XR_EXT_hand_tracking
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createHandTrackerEXT (
-    const HandTrackerCreateInfoEXT& createInfo, HandTrackerEXT& handTracker, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateHandTrackerEXT(this->get(), createInfo.get(), handTracker.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::createHandTrackerEXT(const HandTrackerCreateInfoEXT& createInfo,
+                                                       HandTrackerEXT& handTracker,
+                                                       Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateHandTrackerEXT(this->get(), createInfo.get(), handTracker.put()));
+
+  return result;
 }
 
 #endif  // XR_EXT_hand_tracking
 
-
 #ifdef XR_EXT_hand_tracking
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result HandTrackerEXT::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyHandTrackerEXT(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result HandTrackerEXT::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyHandTrackerEXT(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_hand_tracking
 
-
 #ifdef XR_EXT_hand_tracking
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result HandTrackerEXT::locateHandJointsEXT (
-    const HandJointsLocateInfoEXT& locateInfo, HandJointLocationsEXT& locations, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrLocateHandJointsEXT(this->get(), locateInfo.get(), locations.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result
+HandTrackerEXT::locateHandJointsEXT(const HandJointsLocateInfoEXT& locateInfo,
+                                    HandJointLocationsEXT& locations, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrLocateHandJointsEXT(this->get(), locateInfo.get(), locations.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_hand_tracking
-
 
 #ifdef XR_MSFT_hand_tracking_mesh
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result HandTrackerEXT::createHandMeshSpaceMSFT (
+OPENXR_HPP_INLINE Result HandTrackerEXT::createHandMeshSpaceMSFT(
     const HandMeshSpaceCreateInfoMSFT& createInfo, Space& space, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateHandMeshSpaceMSFT(this->get(), createInfo.get(), space.put()) );
-    
-    return result;
+  Result result =
+      static_cast<Result>(d.xrCreateHandMeshSpaceMSFT(this->get(), createInfo.get(), space.put()));
+
+  return result;
 }
 
 #endif  // XR_MSFT_hand_tracking_mesh
-
 
 #ifdef XR_MSFT_hand_tracking_mesh
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result HandTrackerEXT::updateHandMeshMSFT (
+OPENXR_HPP_INLINE Result HandTrackerEXT::updateHandMeshMSFT(
     const HandMeshUpdateInfoMSFT& updateInfo, HandMeshMSFT& handMesh, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrUpdateHandMeshMSFT(this->get(), updateInfo.get(), handMesh.put()) );
-    
-    return result;
+  Result result =
+      static_cast<Result>(d.xrUpdateHandMeshMSFT(this->get(), updateInfo.get(), handMesh.put()));
+
+  return result;
 }
 
 #endif  // XR_MSFT_hand_tracking_mesh
 
-
 #ifdef XR_MSFT_controller_model
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getControllerModelKeyMSFT (
-    Path topLevelUserPath, ControllerModelKeyStateMSFT& controllerModelKeyState, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetControllerModelKeyMSFT(this->get(), topLevelUserPath.get(), controllerModelKeyState.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::getControllerModelKeyMSFT(
+    Path topLevelUserPath, ControllerModelKeyStateMSFT& controllerModelKeyState,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetControllerModelKeyMSFT(
+      this->get(), topLevelUserPath.get(), controllerModelKeyState.put()));
+
+  return result;
 }
 
 #endif  // XR_MSFT_controller_model
 
-
 #ifdef XR_MSFT_controller_model
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::loadControllerModelMSFT (
-    ControllerModelKeyMSFT modelKey, uint32_t bufferCapacityInput, uint32_t& bufferCountOutput, uint8_t* buffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrLoadControllerModelMSFT(this->get(), modelKey.get(), bufferCapacityInput, &bufferCountOutput, buffer) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::loadControllerModelMSFT(ControllerModelKeyMSFT modelKey,
+                                                          uint32_t bufferCapacityInput,
+                                                          uint32_t& bufferCountOutput,
+                                                          uint8_t* buffer, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrLoadControllerModelMSFT(
+      this->get(), modelKey.get(), bufferCapacityInput, &bufferCountOutput, buffer));
+
+  return result;
 }
 
 #endif  // XR_MSFT_controller_model
 
-
 #ifdef XR_MSFT_controller_model
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getControllerModelPropertiesMSFT (
-    ControllerModelKeyMSFT modelKey, ControllerModelPropertiesMSFT& properties, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetControllerModelPropertiesMSFT(this->get(), modelKey.get(), properties.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::getControllerModelPropertiesMSFT(
+    ControllerModelKeyMSFT modelKey, ControllerModelPropertiesMSFT& properties,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetControllerModelPropertiesMSFT(this->get(), modelKey.get(), properties.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_MSFT_controller_model
 
-
 #ifdef XR_MSFT_controller_model
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getControllerModelStateMSFT (
-    ControllerModelKeyMSFT modelKey, ControllerModelStateMSFT& state, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetControllerModelStateMSFT(this->get(), modelKey.get(), state.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::getControllerModelStateMSFT(ControllerModelKeyMSFT modelKey,
+                                                              ControllerModelStateMSFT& state,
+                                                              Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetControllerModelStateMSFT(this->get(), modelKey.get(), state.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_MSFT_controller_model
-
 
 #ifdef XR_MSFT_perception_anchor_interop
 #if defined(XR_USE_PLATFORM_WIN32)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createSpatialAnchorFromPerceptionAnchorMSFT (
+OPENXR_HPP_INLINE Result Session::createSpatialAnchorFromPerceptionAnchorMSFT(
     IUnknown* perceptionAnchor, SpatialAnchorMSFT& anchor, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorFromPerceptionAnchorMSFT(this->get(), perceptionAnchor, anchor.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialAnchorFromPerceptionAnchorMSFT(this->get(), perceptionAnchor, anchor.put()));
+
+  return result;
 }
 
-#endif // defined(XR_USE_PLATFORM_WIN32)
+#endif  // defined(XR_USE_PLATFORM_WIN32)
 #endif  // XR_MSFT_perception_anchor_interop
-
 
 #ifdef XR_MSFT_perception_anchor_interop
 #if defined(XR_USE_PLATFORM_WIN32)
 
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::tryGetPerceptionAnchorFromSpatialAnchorMSFT (
+OPENXR_HPP_INLINE Result Session::tryGetPerceptionAnchorFromSpatialAnchorMSFT(
     SpatialAnchorMSFT anchor, IUnknown** perceptionAnchor, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrTryGetPerceptionAnchorFromSpatialAnchorMSFT(this->get(), anchor.get(), perceptionAnchor) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrTryGetPerceptionAnchorFromSpatialAnchorMSFT(this->get(), anchor.get(), perceptionAnchor));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-#endif // defined(XR_USE_PLATFORM_WIN32)
+#endif  // defined(XR_USE_PLATFORM_WIN32)
 #endif  // XR_MSFT_perception_anchor_interop
-
 
 #ifdef XR_MSFT_composition_layer_reprojection
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::enumerateReprojectionModesMSFT (
-    SystemId systemId, ViewConfigurationType viewConfigurationType, uint32_t modeCapacityInput, uint32_t& modeCountOutput, ReprojectionModeMSFT* modes, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnumerateReprojectionModesMSFT(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType), modeCapacityInput, &modeCountOutput, modes == nullptr ? nullptr : OPENXR_HPP_NAMESPACE::put(*modes)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::enumerateReprojectionModesMSFT(
+    SystemId systemId, ViewConfigurationType viewConfigurationType, uint32_t modeCapacityInput,
+    uint32_t& modeCountOutput, ReprojectionModeMSFT* modes, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrEnumerateReprojectionModesMSFT(
+      this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType),
+      modeCapacityInput, &modeCountOutput,
+      modes == nullptr ? nullptr : OPENXR_HPP_NAMESPACE::put(*modes)));
+
+  return result;
 }
 
 #endif  // XR_MSFT_composition_layer_reprojection
 
-
 #ifdef XR_FB_swapchain_update_state
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Swapchain::updateSwapchainFB (
-    const SwapchainStateBaseHeaderFB& state, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrUpdateSwapchainFB(this->get(), state.get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Swapchain::updateSwapchainFB(const SwapchainStateBaseHeaderFB& state,
+                                                      Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrUpdateSwapchainFB(this->get(), state.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_swapchain_update_state
 
-
 #ifdef XR_FB_swapchain_update_state
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Swapchain::getSwapchainStateFB (
-    SwapchainStateBaseHeaderFB& state, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSwapchainStateFB(this->get(), state.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Swapchain::getSwapchainStateFB(SwapchainStateBaseHeaderFB& state,
+                                                        Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetSwapchainStateFB(this->get(), state.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_swapchain_update_state
 
-
 #ifdef XR_FB_body_tracking
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createBodyTrackerFB (
-    const BodyTrackerCreateInfoFB& createInfo, BodyTrackerFB& bodyTracker, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateBodyTrackerFB(this->get(), createInfo.get(), bodyTracker.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::createBodyTrackerFB(const BodyTrackerCreateInfoFB& createInfo,
+                                                      BodyTrackerFB& bodyTracker,
+                                                      Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateBodyTrackerFB(this->get(), createInfo.get(), bodyTracker.put()));
+
+  return result;
 }
 
 #endif  // XR_FB_body_tracking
 
-
 #ifdef XR_FB_body_tracking
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result BodyTrackerFB::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyBodyTrackerFB(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result BodyTrackerFB::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyBodyTrackerFB(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_body_tracking
 
-
 #ifdef XR_FB_body_tracking
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result BodyTrackerFB::locateBodyJointsFB (
-    const BodyJointsLocateInfoFB& locateInfo, BodyJointLocationsFB& locations, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrLocateBodyJointsFB(this->get(), locateInfo.get(), locations.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result BodyTrackerFB::locateBodyJointsFB(const BodyJointsLocateInfoFB& locateInfo,
+                                                           BodyJointLocationsFB& locations,
+                                                           Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrLocateBodyJointsFB(this->get(), locateInfo.get(), locations.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_body_tracking
 
-
 #ifdef XR_FB_body_tracking
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result BodyTrackerFB::getBodySkeletonFB (
-    BodySkeletonFB& skeleton, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetBodySkeletonFB(this->get(), skeleton.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result BodyTrackerFB::getBodySkeletonFB(BodySkeletonFB& skeleton,
+                                                          Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetBodySkeletonFB(this->get(), skeleton.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_body_tracking
 
-
 #ifdef XR_MSFT_scene_understanding
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::enumerateSceneComputeFeaturesMSFT (
-    SystemId systemId, uint32_t featureCapacityInput, uint32_t& featureCountOutput, SceneComputeFeatureMSFT* features, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnumerateSceneComputeFeaturesMSFT(this->get(), systemId.get(), featureCapacityInput, &featureCountOutput, features == nullptr ? nullptr : OPENXR_HPP_NAMESPACE::put(*features)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::enumerateSceneComputeFeaturesMSFT(
+    SystemId systemId, uint32_t featureCapacityInput, uint32_t& featureCountOutput,
+    SceneComputeFeatureMSFT* features, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrEnumerateSceneComputeFeaturesMSFT(
+      this->get(), systemId.get(), featureCapacityInput, &featureCountOutput,
+      features == nullptr ? nullptr : OPENXR_HPP_NAMESPACE::put(*features)));
+
+  return result;
 }
 
 #endif  // XR_MSFT_scene_understanding
 
-
 #ifdef XR_MSFT_scene_understanding
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createSceneObserverMSFT (
-    const SceneObserverCreateInfoMSFT& createInfo, SceneObserverMSFT& sceneObserver, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSceneObserverMSFT(this->get(), createInfo.get(), sceneObserver.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result
+Session::createSceneObserverMSFT(const SceneObserverCreateInfoMSFT& createInfo,
+                                 SceneObserverMSFT& sceneObserver, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateSceneObserverMSFT(this->get(), createInfo.get(), sceneObserver.put()));
+
+  return result;
 }
 
 #endif  // XR_MSFT_scene_understanding
 
-
 #ifdef XR_MSFT_scene_understanding
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SceneObserverMSFT::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySceneObserverMSFT(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SceneObserverMSFT::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySceneObserverMSFT(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_MSFT_scene_understanding
 
-
 #ifdef XR_MSFT_scene_understanding
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SceneObserverMSFT::createSceneMSFT (
-    const SceneCreateInfoMSFT& createInfo, SceneMSFT& scene, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSceneMSFT(this->get(), createInfo.get(), scene.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SceneObserverMSFT::createSceneMSFT(const SceneCreateInfoMSFT& createInfo,
+                                                            SceneMSFT& scene, Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrCreateSceneMSFT(this->get(), createInfo.get(), scene.put()));
+
+  return result;
 }
 
 #endif  // XR_MSFT_scene_understanding
 
-
 #ifdef XR_MSFT_scene_understanding
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SceneMSFT::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySceneMSFT(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SceneMSFT::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySceneMSFT(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_MSFT_scene_understanding
 
-
 #ifdef XR_MSFT_scene_understanding
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SceneObserverMSFT::computeNewSceneMSFT (
+OPENXR_HPP_INLINE Result SceneObserverMSFT::computeNewSceneMSFT(
     const NewSceneComputeInfoMSFT& computeInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrComputeNewSceneMSFT(this->get(), computeInfo.get()) );
-    
-    return result;
+  Result result = static_cast<Result>(d.xrComputeNewSceneMSFT(this->get(), computeInfo.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_MSFT_scene_understanding
 
-
 #ifdef XR_MSFT_scene_understanding
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SceneObserverMSFT::getSceneComputeStateMSFT (
-    SceneComputeStateMSFT& state, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSceneComputeStateMSFT(this->get(), OPENXR_HPP_NAMESPACE::put(state)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SceneObserverMSFT::getSceneComputeStateMSFT(SceneComputeStateMSFT& state,
+                                                                     Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetSceneComputeStateMSFT(this->get(), OPENXR_HPP_NAMESPACE::put(state)));
+
+  return result;
 }
 
 #endif  // XR_MSFT_scene_understanding
 
-
 #ifdef XR_MSFT_scene_understanding
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SceneMSFT::getSceneComponentsMSFT (
-    const SceneComponentsGetInfoMSFT& getInfo, SceneComponentsMSFT& components, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSceneComponentsMSFT(this->get(), getInfo.get(), components.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result
+SceneMSFT::getSceneComponentsMSFT(const SceneComponentsGetInfoMSFT& getInfo,
+                                  SceneComponentsMSFT& components, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetSceneComponentsMSFT(this->get(), getInfo.get(), components.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_MSFT_scene_understanding
 
-
 #ifdef XR_MSFT_scene_understanding
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SceneMSFT::locateSceneComponentsMSFT (
-    const SceneComponentsLocateInfoMSFT& locateInfo, SceneComponentLocationsMSFT& locations, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrLocateSceneComponentsMSFT(this->get(), locateInfo.get(), locations.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result
+SceneMSFT::locateSceneComponentsMSFT(const SceneComponentsLocateInfoMSFT& locateInfo,
+                                     SceneComponentLocationsMSFT& locations, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrLocateSceneComponentsMSFT(this->get(), locateInfo.get(), locations.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_MSFT_scene_understanding
 
-
 #ifdef XR_MSFT_scene_understanding
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SceneMSFT::getSceneMeshBuffersMSFT (
+OPENXR_HPP_INLINE Result SceneMSFT::getSceneMeshBuffersMSFT(
     const SceneMeshBuffersGetInfoMSFT& getInfo, SceneMeshBuffersMSFT& buffers, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSceneMeshBuffersMSFT(this->get(), getInfo.get(), buffers.put()) );
-    
-    return result;
+  Result result =
+      static_cast<Result>(d.xrGetSceneMeshBuffersMSFT(this->get(), getInfo.get(), buffers.put()));
+
+  return result;
 }
 
 #endif  // XR_MSFT_scene_understanding
 
-
 #ifdef XR_MSFT_scene_understanding_serialization
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SceneObserverMSFT::deserializeSceneMSFT (
+OPENXR_HPP_INLINE Result SceneObserverMSFT::deserializeSceneMSFT(
     const SceneDeserializeInfoMSFT& deserializeInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrDeserializeSceneMSFT(this->get(), deserializeInfo.get()) );
-    
-    return result;
+  Result result = static_cast<Result>(d.xrDeserializeSceneMSFT(this->get(), deserializeInfo.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_MSFT_scene_understanding_serialization
-
 
 #ifdef XR_MSFT_scene_understanding_serialization
 
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SceneMSFT::getSerializedSceneFragmentDataMSFT (
-    const SerializedSceneFragmentDataGetInfoMSFT& getInfo, uint32_t countInput, uint32_t& readOutput, uint8_t* buffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSerializedSceneFragmentDataMSFT(this->get(), getInfo.get(), countInput, &readOutput, buffer) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SceneMSFT::getSerializedSceneFragmentDataMSFT(
+    const SerializedSceneFragmentDataGetInfoMSFT& getInfo, uint32_t countInput,
+    uint32_t& readOutput, uint8_t* buffer, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetSerializedSceneFragmentDataMSFT(
+      this->get(), getInfo.get(), countInput, &readOutput, buffer));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_MSFT_scene_understanding_serialization
 
-
 #ifdef XR_FB_display_refresh_rate
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::enumerateDisplayRefreshRatesFB (
-    uint32_t displayRefreshRateCapacityInput, uint32_t& displayRefreshRateCountOutput, float* displayRefreshRates, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnumerateDisplayRefreshRatesFB(this->get(), displayRefreshRateCapacityInput, &displayRefreshRateCountOutput, displayRefreshRates) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::enumerateDisplayRefreshRatesFB(
+    uint32_t displayRefreshRateCapacityInput, uint32_t& displayRefreshRateCountOutput,
+    float* displayRefreshRates, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrEnumerateDisplayRefreshRatesFB(this->get(), displayRefreshRateCapacityInput,
+                                         &displayRefreshRateCountOutput, displayRefreshRates));
+
+  return result;
 }
 
 #endif  // XR_FB_display_refresh_rate
 
-
 #ifdef XR_FB_display_refresh_rate
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getDisplayRefreshRateFB (
-    float& displayRefreshRate, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetDisplayRefreshRateFB(this->get(), &displayRefreshRate) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::getDisplayRefreshRateFB(float& displayRefreshRate,
+                                                          Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrGetDisplayRefreshRateFB(this->get(), &displayRefreshRate));
+
+  return result;
 }
 
 #endif  // XR_FB_display_refresh_rate
 
-
 #ifdef XR_FB_display_refresh_rate
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::requestDisplayRefreshRateFB (
-    float displayRefreshRate, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrRequestDisplayRefreshRateFB(this->get(), displayRefreshRate) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::requestDisplayRefreshRateFB(float displayRefreshRate,
+                                                              Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrRequestDisplayRefreshRateFB(this->get(), displayRefreshRate));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_display_refresh_rate
-
 
 #ifdef XR_HTCX_vive_tracker_interaction
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::enumerateViveTrackerPathsHTCX (
-    uint32_t pathCapacityInput, uint32_t& pathCountOutput, ViveTrackerPathsHTCX* paths, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnumerateViveTrackerPathsHTCX(this->get(), pathCapacityInput, &pathCountOutput, paths == nullptr ? nullptr : paths->put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::enumerateViveTrackerPathsHTCX(uint32_t pathCapacityInput,
+                                                                 uint32_t& pathCountOutput,
+                                                                 ViveTrackerPathsHTCX* paths,
+                                                                 Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrEnumerateViveTrackerPathsHTCX(this->get(), pathCapacityInput, &pathCountOutput,
+                                        paths == nullptr ? nullptr : paths->put(false)));
+
+  return result;
 }
 
 #endif  // XR_HTCX_vive_tracker_interaction
 
-
 #ifdef XR_HTC_facial_tracking
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createFacialTrackerHTC (
-    const FacialTrackerCreateInfoHTC& createInfo, FacialTrackerHTC& facialTracker, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateFacialTrackerHTC(this->get(), createInfo.get(), facialTracker.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result
+Session::createFacialTrackerHTC(const FacialTrackerCreateInfoHTC& createInfo,
+                                FacialTrackerHTC& facialTracker, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateFacialTrackerHTC(this->get(), createInfo.get(), facialTracker.put()));
+
+  return result;
 }
 
 #endif  // XR_HTC_facial_tracking
 
-
 #ifdef XR_HTC_facial_tracking
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result FacialTrackerHTC::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyFacialTrackerHTC(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result FacialTrackerHTC::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyFacialTrackerHTC(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_HTC_facial_tracking
 
-
 #ifdef XR_HTC_facial_tracking
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result FacialTrackerHTC::getFacialExpressionsHTC (
+OPENXR_HPP_INLINE Result FacialTrackerHTC::getFacialExpressionsHTC(
     FacialExpressionsHTC& facialExpressions, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetFacialExpressionsHTC(this->get(), facialExpressions.put(false)) );
-    
-    return result;
+  Result result =
+      static_cast<Result>(d.xrGetFacialExpressionsHTC(this->get(), facialExpressions.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_HTC_facial_tracking
 
-
 #ifdef XR_FB_color_space
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::enumerateColorSpacesFB (
-    uint32_t colorSpaceCapacityInput, uint32_t& colorSpaceCountOutput, ColorSpaceFB* colorSpaces, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnumerateColorSpacesFB(this->get(), colorSpaceCapacityInput, &colorSpaceCountOutput, colorSpaces == nullptr ? nullptr : OPENXR_HPP_NAMESPACE::put(*colorSpaces)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::enumerateColorSpacesFB(uint32_t colorSpaceCapacityInput,
+                                                         uint32_t& colorSpaceCountOutput,
+                                                         ColorSpaceFB* colorSpaces,
+                                                         Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrEnumerateColorSpacesFB(
+      this->get(), colorSpaceCapacityInput, &colorSpaceCountOutput,
+      colorSpaces == nullptr ? nullptr : OPENXR_HPP_NAMESPACE::put(*colorSpaces)));
+
+  return result;
 }
 
 #endif  // XR_FB_color_space
 
-
 #ifdef XR_FB_color_space
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setColorSpaceFB (
-    ColorSpaceFB colorSpace, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetColorSpaceFB(this->get(), OPENXR_HPP_NAMESPACE::get(colorSpace)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::setColorSpaceFB(ColorSpaceFB colorSpace, Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrSetColorSpaceFB(this->get(), OPENXR_HPP_NAMESPACE::get(colorSpace)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_color_space
-
 
 #ifdef XR_FB_hand_tracking_mesh
 
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result HandTrackerEXT::getHandMeshFB (
-    HandTrackingMeshFB& mesh, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetHandMeshFB(this->get(), mesh.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result HandTrackerEXT::getHandMeshFB(HandTrackingMeshFB& mesh,
+                                                       Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetHandMeshFB(this->get(), mesh.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_hand_tracking_mesh
 
-
 #ifdef XR_FB_spatial_entity
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createSpatialAnchorFB (
-    const SpatialAnchorCreateInfoFB& info, AsyncRequestIdFB& requestId, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorFB(this->get(), info.get(), requestId.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::createSpatialAnchorFB(const SpatialAnchorCreateInfoFB& info,
+                                                        AsyncRequestIdFB& requestId,
+                                                        Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrCreateSpatialAnchorFB(this->get(), info.get(), requestId.put()));
+
+  return result;
 }
 
 #endif  // XR_FB_spatial_entity
 
-
 #ifdef XR_FB_spatial_entity
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Space::getSpaceUuidFB (
-    XrUuidEXT* uuid, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSpaceUuidFB(this->get(), uuid) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Space::getSpaceUuidFB(XrUuidEXT* uuid, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetSpaceUuidFB(this->get(), uuid));
+
+  return result;
 }
 
 #endif  // XR_FB_spatial_entity
 
-
 #ifdef XR_FB_spatial_entity
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Space::enumerateSpaceSupportedComponentsFB (
-    uint32_t componentTypeCapacityInput, uint32_t& componentTypeCountOutput, SpaceComponentTypeFB* componentTypes, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnumerateSpaceSupportedComponentsFB(this->get(), componentTypeCapacityInput, &componentTypeCountOutput, componentTypes == nullptr ? nullptr : OPENXR_HPP_NAMESPACE::put(*componentTypes)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Space::enumerateSpaceSupportedComponentsFB(
+    uint32_t componentTypeCapacityInput, uint32_t& componentTypeCountOutput,
+    SpaceComponentTypeFB* componentTypes, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrEnumerateSpaceSupportedComponentsFB(
+      this->get(), componentTypeCapacityInput, &componentTypeCountOutput,
+      componentTypes == nullptr ? nullptr : OPENXR_HPP_NAMESPACE::put(*componentTypes)));
+
+  return result;
 }
 
 #endif  // XR_FB_spatial_entity
 
-
 #ifdef XR_FB_spatial_entity
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Space::setSpaceComponentStatusFB (
-    const SpaceComponentStatusSetInfoFB& info, AsyncRequestIdFB& requestId, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetSpaceComponentStatusFB(this->get(), info.get(), requestId.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Space::setSpaceComponentStatusFB(const SpaceComponentStatusSetInfoFB& info,
+                                                          AsyncRequestIdFB& requestId,
+                                                          Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrSetSpaceComponentStatusFB(this->get(), info.get(), requestId.put()));
+
+  return result;
 }
 
 #endif  // XR_FB_spatial_entity
 
-
 #ifdef XR_FB_spatial_entity
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Space::getSpaceComponentStatusFB (
-    SpaceComponentTypeFB componentType, SpaceComponentStatusFB& status, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSpaceComponentStatusFB(this->get(), OPENXR_HPP_NAMESPACE::get(componentType), status.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Space::getSpaceComponentStatusFB(SpaceComponentTypeFB componentType,
+                                                          SpaceComponentStatusFB& status,
+                                                          Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetSpaceComponentStatusFB(
+      this->get(), OPENXR_HPP_NAMESPACE::get(componentType), status.put()));
+
+  return result;
 }
 
 #endif  // XR_FB_spatial_entity
-
 
 #ifdef XR_FB_foveation
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createFoveationProfileFB (
-    const FoveationProfileCreateInfoFB& createInfo, FoveationProfileFB& profile, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateFoveationProfileFB(this->get(), createInfo.get(), profile.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result
+Session::createFoveationProfileFB(const FoveationProfileCreateInfoFB& createInfo,
+                                  FoveationProfileFB& profile, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateFoveationProfileFB(this->get(), createInfo.get(), profile.put()));
+
+  return result;
 }
 
 #endif  // XR_FB_foveation
 
-
 #ifdef XR_FB_foveation
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result FoveationProfileFB::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyFoveationProfileFB(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result FoveationProfileFB::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyFoveationProfileFB(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_foveation
 
-
 #ifdef XR_FB_keyboard_tracking
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::querySystemTrackedKeyboardFB (
-    const KeyboardTrackingQueryFB& queryInfo, KeyboardTrackingDescriptionFB& keyboard, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrQuerySystemTrackedKeyboardFB(this->get(), queryInfo.get(), keyboard.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result
+Session::querySystemTrackedKeyboardFB(const KeyboardTrackingQueryFB& queryInfo,
+                                      KeyboardTrackingDescriptionFB& keyboard, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrQuerySystemTrackedKeyboardFB(this->get(), queryInfo.get(), keyboard.put()));
+
+  return result;
 }
 
 #endif  // XR_FB_keyboard_tracking
 
-
 #ifdef XR_FB_keyboard_tracking
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createKeyboardSpaceFB (
-    const KeyboardSpaceCreateInfoFB& createInfo, Space& keyboardSpace, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateKeyboardSpaceFB(this->get(), createInfo.get(), keyboardSpace.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::createKeyboardSpaceFB(const KeyboardSpaceCreateInfoFB& createInfo,
+                                                        Space& keyboardSpace, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateKeyboardSpaceFB(this->get(), createInfo.get(), keyboardSpace.put()));
+
+  return result;
 }
 
 #endif  // XR_FB_keyboard_tracking
 
-
 #ifdef XR_FB_triangle_mesh
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createTriangleMeshFB (
-    const TriangleMeshCreateInfoFB& createInfo, TriangleMeshFB& outTriangleMesh, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateTriangleMeshFB(this->get(), createInfo.get(), outTriangleMesh.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::createTriangleMeshFB(const TriangleMeshCreateInfoFB& createInfo,
+                                                       TriangleMeshFB& outTriangleMesh,
+                                                       Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateTriangleMeshFB(this->get(), createInfo.get(), outTriangleMesh.put()));
+
+  return result;
 }
 
 #endif  // XR_FB_triangle_mesh
 
-
 #ifdef XR_FB_triangle_mesh
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result TriangleMeshFB::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyTriangleMeshFB(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result TriangleMeshFB::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyTriangleMeshFB(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_triangle_mesh
 
-
 #ifdef XR_FB_triangle_mesh
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result TriangleMeshFB::triangleMeshGetVertexBufferFB (
-    Vector3f*& outVertexBuffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrTriangleMeshGetVertexBufferFB(this->get(), reinterpret_cast<XrVector3f**>(&outVertexBuffer)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result TriangleMeshFB::triangleMeshGetVertexBufferFB(Vector3f*& outVertexBuffer,
+                                                                       Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrTriangleMeshGetVertexBufferFB(
+      this->get(), reinterpret_cast<XrVector3f**>(&outVertexBuffer)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_triangle_mesh
 
-
 #ifdef XR_FB_triangle_mesh
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result TriangleMeshFB::triangleMeshGetIndexBufferFB (
-    uint32_t*& outIndexBuffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrTriangleMeshGetIndexBufferFB(this->get(), &outIndexBuffer) );
-    
-    return result;
+OPENXR_HPP_INLINE Result TriangleMeshFB::triangleMeshGetIndexBufferFB(uint32_t*& outIndexBuffer,
+                                                                      Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrTriangleMeshGetIndexBufferFB(this->get(), &outIndexBuffer));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_triangle_mesh
 
-
 #ifdef XR_FB_triangle_mesh
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result TriangleMeshFB::triangleMeshBeginUpdateFB (
-    Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrTriangleMeshBeginUpdateFB(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result TriangleMeshFB::triangleMeshBeginUpdateFB(Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrTriangleMeshBeginUpdateFB(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_triangle_mesh
 
-
 #ifdef XR_FB_triangle_mesh
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result TriangleMeshFB::triangleMeshEndUpdateFB (
-    uint32_t vertexCount, uint32_t triangleCount, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrTriangleMeshEndUpdateFB(this->get(), vertexCount, triangleCount) );
-    
-    return result;
+OPENXR_HPP_INLINE Result TriangleMeshFB::triangleMeshEndUpdateFB(uint32_t vertexCount,
+                                                                 uint32_t triangleCount,
+                                                                 Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrTriangleMeshEndUpdateFB(this->get(), vertexCount, triangleCount));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_triangle_mesh
 
-
 #ifdef XR_FB_triangle_mesh
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result TriangleMeshFB::triangleMeshBeginVertexBufferUpdateFB (
+OPENXR_HPP_INLINE Result TriangleMeshFB::triangleMeshBeginVertexBufferUpdateFB(
     uint32_t& outVertexCount, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrTriangleMeshBeginVertexBufferUpdateFB(this->get(), &outVertexCount) );
-    
-    return result;
+  Result result =
+      static_cast<Result>(d.xrTriangleMeshBeginVertexBufferUpdateFB(this->get(), &outVertexCount));
+
+  return result;
 }
 
 #endif  // XR_FB_triangle_mesh
-
 
 #ifdef XR_FB_triangle_mesh
 
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result TriangleMeshFB::triangleMeshEndVertexBufferUpdateFB (
-    Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrTriangleMeshEndVertexBufferUpdateFB(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result TriangleMeshFB::triangleMeshEndVertexBufferUpdateFB(Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrTriangleMeshEndVertexBufferUpdateFB(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_triangle_mesh
 
-
 #ifdef XR_FB_passthrough
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createPassthroughFB (
-    const PassthroughCreateInfoFB& createInfo, PassthroughFB& outPassthrough, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreatePassthroughFB(this->get(), createInfo.get(), outPassthrough.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::createPassthroughFB(const PassthroughCreateInfoFB& createInfo,
+                                                      PassthroughFB& outPassthrough,
+                                                      Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreatePassthroughFB(this->get(), createInfo.get(), outPassthrough.put()));
+
+  return result;
 }
 
 #endif  // XR_FB_passthrough
 
-
 #ifdef XR_FB_passthrough
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PassthroughFB::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyPassthroughFB(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result PassthroughFB::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyPassthroughFB(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_passthrough
 
-
 #ifdef XR_FB_passthrough
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PassthroughFB::passthroughStartFB (
-    Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPassthroughStartFB(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result PassthroughFB::passthroughStartFB(Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrPassthroughStartFB(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_passthrough
 
-
 #ifdef XR_FB_passthrough
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PassthroughFB::passthroughPauseFB (
-    Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPassthroughPauseFB(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result PassthroughFB::passthroughPauseFB(Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrPassthroughPauseFB(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_passthrough
 
-
 #ifdef XR_FB_passthrough
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createPassthroughLayerFB (
-    const PassthroughLayerCreateInfoFB& createInfo, PassthroughLayerFB& outLayer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreatePassthroughLayerFB(this->get(), createInfo.get(), outLayer.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result
+Session::createPassthroughLayerFB(const PassthroughLayerCreateInfoFB& createInfo,
+                                  PassthroughLayerFB& outLayer, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreatePassthroughLayerFB(this->get(), createInfo.get(), outLayer.put()));
+
+  return result;
 }
 
 #endif  // XR_FB_passthrough
 
-
 #ifdef XR_FB_passthrough
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PassthroughLayerFB::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyPassthroughLayerFB(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result PassthroughLayerFB::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyPassthroughLayerFB(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_passthrough
 
-
 #ifdef XR_FB_passthrough
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PassthroughLayerFB::passthroughLayerPauseFB (
-    Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPassthroughLayerPauseFB(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result PassthroughLayerFB::passthroughLayerPauseFB(Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrPassthroughLayerPauseFB(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_passthrough
 
-
 #ifdef XR_FB_passthrough
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PassthroughLayerFB::passthroughLayerResumeFB (
-    Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPassthroughLayerResumeFB(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result PassthroughLayerFB::passthroughLayerResumeFB(Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrPassthroughLayerResumeFB(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_passthrough
 
-
 #ifdef XR_FB_passthrough
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PassthroughLayerFB::passthroughLayerSetStyleFB (
+OPENXR_HPP_INLINE Result PassthroughLayerFB::passthroughLayerSetStyleFB(
     const PassthroughStyleFB& style, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPassthroughLayerSetStyleFB(this->get(), style.get()) );
-    
-    return result;
+  Result result = static_cast<Result>(d.xrPassthroughLayerSetStyleFB(this->get(), style.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_passthrough
 
-
 #ifdef XR_FB_passthrough
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createGeometryInstanceFB (
-    const GeometryInstanceCreateInfoFB& createInfo, GeometryInstanceFB& outGeometryInstance, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateGeometryInstanceFB(this->get(), createInfo.get(), outGeometryInstance.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result
+Session::createGeometryInstanceFB(const GeometryInstanceCreateInfoFB& createInfo,
+                                  GeometryInstanceFB& outGeometryInstance, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateGeometryInstanceFB(this->get(), createInfo.get(), outGeometryInstance.put()));
+
+  return result;
 }
 
 #endif  // XR_FB_passthrough
 
-
 #ifdef XR_FB_passthrough
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result GeometryInstanceFB::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyGeometryInstanceFB(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result GeometryInstanceFB::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyGeometryInstanceFB(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_passthrough
 
-
 #ifdef XR_FB_passthrough
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result GeometryInstanceFB::geometryInstanceSetTransformFB (
+OPENXR_HPP_INLINE Result GeometryInstanceFB::geometryInstanceSetTransformFB(
     const GeometryInstanceTransformFB& transformation, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGeometryInstanceSetTransformFB(this->get(), transformation.get()) );
-    
-    return result;
+  Result result =
+      static_cast<Result>(d.xrGeometryInstanceSetTransformFB(this->get(), transformation.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_passthrough
 
-
 #ifdef XR_FB_render_model
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::enumerateRenderModelPathsFB (
-    uint32_t pathCapacityInput, uint32_t& pathCountOutput, RenderModelPathInfoFB* paths, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnumerateRenderModelPathsFB(this->get(), pathCapacityInput, &pathCountOutput, paths == nullptr ? nullptr : paths->put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::enumerateRenderModelPathsFB(uint32_t pathCapacityInput,
+                                                              uint32_t& pathCountOutput,
+                                                              RenderModelPathInfoFB* paths,
+                                                              Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrEnumerateRenderModelPathsFB(this->get(), pathCapacityInput, &pathCountOutput,
+                                      paths == nullptr ? nullptr : paths->put(false)));
+
+  return result;
 }
 
 #endif  // XR_FB_render_model
 
-
 #ifdef XR_FB_render_model
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getRenderModelPropertiesFB (
-    Path path, RenderModelPropertiesFB& properties, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetRenderModelPropertiesFB(this->get(), path.get(), properties.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::getRenderModelPropertiesFB(Path path,
+                                                             RenderModelPropertiesFB& properties,
+                                                             Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetRenderModelPropertiesFB(this->get(), path.get(), properties.put()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_render_model
 
-
 #ifdef XR_FB_render_model
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::loadRenderModelFB (
-    const RenderModelLoadInfoFB& info, RenderModelBufferFB& buffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrLoadRenderModelFB(this->get(), info.get(), buffer.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::loadRenderModelFB(const RenderModelLoadInfoFB& info,
+                                                    RenderModelBufferFB& buffer,
+                                                    Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrLoadRenderModelFB(this->get(), info.get(), buffer.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_render_model
-
 
 #ifdef XR_VARJO_environment_depth_estimation
 
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setEnvironmentDepthEstimationVARJO (
-    Bool32 enabled, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetEnvironmentDepthEstimationVARJO(this->get(), enabled.get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::setEnvironmentDepthEstimationVARJO(Bool32 enabled,
+                                                                     Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrSetEnvironmentDepthEstimationVARJO(this->get(), enabled.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_VARJO_environment_depth_estimation
 
-
 #ifdef XR_VARJO_marker_tracking
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setMarkerTrackingVARJO (
-    Bool32 enabled, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetMarkerTrackingVARJO(this->get(), enabled.get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::setMarkerTrackingVARJO(Bool32 enabled, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrSetMarkerTrackingVARJO(this->get(), enabled.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_VARJO_marker_tracking
 
-
 #ifdef XR_VARJO_marker_tracking
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setMarkerTrackingTimeoutVARJO (
-    uint64_t markerId, Duration timeout, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetMarkerTrackingTimeoutVARJO(this->get(), markerId, timeout.get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::setMarkerTrackingTimeoutVARJO(uint64_t markerId, Duration timeout,
+                                                                Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrSetMarkerTrackingTimeoutVARJO(this->get(), markerId, timeout.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_VARJO_marker_tracking
 
-
 #ifdef XR_VARJO_marker_tracking
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setMarkerTrackingPredictionVARJO (
-    uint64_t markerId, Bool32 enable, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetMarkerTrackingPredictionVARJO(this->get(), markerId, enable.get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::setMarkerTrackingPredictionVARJO(uint64_t markerId, Bool32 enable,
+                                                                   Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrSetMarkerTrackingPredictionVARJO(this->get(), markerId, enable.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_VARJO_marker_tracking
 
-
 #ifdef XR_VARJO_marker_tracking
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getMarkerSizeVARJO (
-    uint64_t markerId, Extent2Df& size, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetMarkerSizeVARJO(this->get(), markerId, size.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::getMarkerSizeVARJO(uint64_t markerId, Extent2Df& size,
+                                                     Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetMarkerSizeVARJO(this->get(), markerId, size.put()));
+
+  return result;
 }
 
 #endif  // XR_VARJO_marker_tracking
 
-
 #ifdef XR_VARJO_marker_tracking
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createMarkerSpaceVARJO (
+OPENXR_HPP_INLINE Result Session::createMarkerSpaceVARJO(
     const MarkerSpaceCreateInfoVARJO& createInfo, Space& space, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateMarkerSpaceVARJO(this->get(), createInfo.get(), space.put()) );
-    
-    return result;
+  Result result =
+      static_cast<Result>(d.xrCreateMarkerSpaceVARJO(this->get(), createInfo.get(), space.put()));
+
+  return result;
 }
 
 #endif  // XR_VARJO_marker_tracking
-
 
 #ifdef XR_VARJO_view_offset
 
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setViewOffsetVARJO (
-    float offset, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetViewOffsetVARJO(this->get(), offset) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::setViewOffsetVARJO(float offset, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrSetViewOffsetVARJO(this->get(), offset));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_VARJO_view_offset
 
-
 #ifdef XR_ML_compat
 #if defined(XR_USE_PLATFORM_ML)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createSpaceFromCoordinateFrameUIDML (
+OPENXR_HPP_INLINE Result Session::createSpaceFromCoordinateFrameUIDML(
     const CoordinateSpaceCreateInfoML& createInfo, Space& space, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSpaceFromCoordinateFrameUIDML(this->get(), createInfo.get(), space.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrCreateSpaceFromCoordinateFrameUIDML(this->get(), createInfo.get(), space.put()));
+
+  return result;
 }
 
-#endif // defined(XR_USE_PLATFORM_ML)
+#endif  // defined(XR_USE_PLATFORM_ML)
 #endif  // XR_ML_compat
 
-
 #ifdef XR_ML_marker_understanding
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createMarkerDetectorML (
-    const MarkerDetectorCreateInfoML& createInfo, MarkerDetectorML& markerDetector, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateMarkerDetectorML(this->get(), createInfo.get(), markerDetector.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result
+Session::createMarkerDetectorML(const MarkerDetectorCreateInfoML& createInfo,
+                                MarkerDetectorML& markerDetector, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateMarkerDetectorML(this->get(), createInfo.get(), markerDetector.put()));
+
+  return result;
 }
 
 #endif  // XR_ML_marker_understanding
 
-
 #ifdef XR_ML_marker_understanding
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result MarkerDetectorML::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyMarkerDetectorML(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result MarkerDetectorML::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyMarkerDetectorML(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_ML_marker_understanding
 
-
 #ifdef XR_ML_marker_understanding
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result MarkerDetectorML::snapshotMarkerDetectorML (
+OPENXR_HPP_INLINE Result MarkerDetectorML::snapshotMarkerDetectorML(
     MarkerDetectorSnapshotInfoML& snapshotInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSnapshotMarkerDetectorML(this->get(), snapshotInfo.put()) );
-    
-    return result;
+  Result result =
+      static_cast<Result>(d.xrSnapshotMarkerDetectorML(this->get(), snapshotInfo.put()));
+
+  return result;
 }
 
 #endif  // XR_ML_marker_understanding
 
-
 #ifdef XR_ML_marker_understanding
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result MarkerDetectorML::getMarkerDetectorStateML (
-    MarkerDetectorStateML& state, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetMarkerDetectorStateML(this->get(), state.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result MarkerDetectorML::getMarkerDetectorStateML(MarkerDetectorStateML& state,
+                                                                    Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetMarkerDetectorStateML(this->get(), state.put()));
+
+  return result;
 }
 
 #endif  // XR_ML_marker_understanding
 
-
 #ifdef XR_ML_marker_understanding
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result MarkerDetectorML::getMarkersML (
-    uint32_t markerCapacityInput, uint32_t& markerCountOutput, MarkerML* markers, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetMarkersML(this->get(), markerCapacityInput, &markerCountOutput, markers == nullptr ? nullptr : markers->put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result MarkerDetectorML::getMarkersML(uint32_t markerCapacityInput,
+                                                        uint32_t& markerCountOutput,
+                                                        MarkerML* markers, Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrGetMarkersML(this->get(), markerCapacityInput, &markerCountOutput,
+                                           markers == nullptr ? nullptr : markers->put()));
+
+  return result;
 }
 
 #endif  // XR_ML_marker_understanding
 
-
 #ifdef XR_ML_marker_understanding
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result MarkerDetectorML::getMarkerReprojectionErrorML (
+OPENXR_HPP_INLINE Result MarkerDetectorML::getMarkerReprojectionErrorML(
     MarkerML marker, float& reprojectionErrorMeters, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetMarkerReprojectionErrorML(this->get(), marker.get(), &reprojectionErrorMeters) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrGetMarkerReprojectionErrorML(this->get(), marker.get(), &reprojectionErrorMeters));
+
+  return result;
 }
 
 #endif  // XR_ML_marker_understanding
-
 
 #ifdef XR_ML_marker_understanding
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result MarkerDetectorML::getMarkerLengthML (
-    MarkerML marker, float& meters, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetMarkerLengthML(this->get(), marker.get(), &meters) );
-    
-    return result;
+OPENXR_HPP_INLINE Result MarkerDetectorML::getMarkerLengthML(MarkerML marker, float& meters,
+                                                             Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetMarkerLengthML(this->get(), marker.get(), &meters));
+
+  return result;
 }
 
 #endif  // XR_ML_marker_understanding
-
 
 #ifdef XR_ML_marker_understanding
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result MarkerDetectorML::getMarkerNumberML (
-    MarkerML marker, uint64_t& number, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetMarkerNumberML(this->get(), marker.get(), &number) );
-    
-    return result;
+OPENXR_HPP_INLINE Result MarkerDetectorML::getMarkerNumberML(MarkerML marker, uint64_t& number,
+                                                             Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetMarkerNumberML(this->get(), marker.get(), &number));
+
+  return result;
 }
 
 #endif  // XR_ML_marker_understanding
-
 
 #ifdef XR_ML_marker_understanding
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result MarkerDetectorML::getMarkerStringML (
-    MarkerML marker, uint32_t bufferCapacityInput, uint32_t& bufferCountOutput, char* buffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetMarkerStringML(this->get(), marker.get(), bufferCapacityInput, &bufferCountOutput, buffer) );
-    
-    return result;
+OPENXR_HPP_INLINE Result MarkerDetectorML::getMarkerStringML(MarkerML marker,
+                                                             uint32_t bufferCapacityInput,
+                                                             uint32_t& bufferCountOutput,
+                                                             char* buffer, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetMarkerStringML(
+      this->get(), marker.get(), bufferCapacityInput, &bufferCountOutput, buffer));
+
+  return result;
 }
 
 #endif  // XR_ML_marker_understanding
-
 
 #ifdef XR_ML_marker_understanding
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createMarkerSpaceML (
-    const MarkerSpaceCreateInfoML& createInfo, Space& space, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateMarkerSpaceML(this->get(), createInfo.get(), space.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::createMarkerSpaceML(const MarkerSpaceCreateInfoML& createInfo,
+                                                      Space& space, Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrCreateMarkerSpaceML(this->get(), createInfo.get(), space.put()));
+
+  return result;
 }
 
 #endif  // XR_ML_marker_understanding
-
 
 #ifdef XR_ML_localization_map
 
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::enableLocalizationEventsML (
+OPENXR_HPP_INLINE Result Session::enableLocalizationEventsML(
     const LocalizationEnableEventsInfoML& info, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnableLocalizationEventsML(this->get(), info.get()) );
-    
-    return result;
+  Result result = static_cast<Result>(d.xrEnableLocalizationEventsML(this->get(), info.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_ML_localization_map
 
-
 #ifdef XR_ML_localization_map
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::queryLocalizationMapsML (
-    const LocalizationMapQueryInfoBaseHeaderML& queryInfo, uint32_t mapCapacityInput, uint32_t& mapCountOutput, LocalizationMapML* maps, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrQueryLocalizationMapsML(this->get(), queryInfo.get(), mapCapacityInput, &mapCountOutput, maps == nullptr ? nullptr : maps->put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::queryLocalizationMapsML(
+    const LocalizationMapQueryInfoBaseHeaderML& queryInfo, uint32_t mapCapacityInput,
+    uint32_t& mapCountOutput, LocalizationMapML* maps, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrQueryLocalizationMapsML(this->get(), queryInfo.get(), mapCapacityInput, &mapCountOutput,
+                                  maps == nullptr ? nullptr : maps->put(false)));
+
+  return result;
 }
 
 #endif  // XR_ML_localization_map
 
-
 #ifdef XR_ML_localization_map
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::requestMapLocalizationML (
+OPENXR_HPP_INLINE Result Session::requestMapLocalizationML(
     const MapLocalizationRequestInfoML& requestInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrRequestMapLocalizationML(this->get(), requestInfo.get()) );
-    
-    return result;
+  Result result = static_cast<Result>(d.xrRequestMapLocalizationML(this->get(), requestInfo.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_ML_localization_map
 
-
 #ifdef XR_ML_localization_map
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::importLocalizationMapML (
+OPENXR_HPP_INLINE Result Session::importLocalizationMapML(
     const LocalizationMapImportInfoML& importInfo, XrUuidEXT* mapUuid, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrImportLocalizationMapML(this->get(), importInfo.get(), mapUuid) );
-    
-    return result;
+  Result result =
+      static_cast<Result>(d.xrImportLocalizationMapML(this->get(), importInfo.get(), mapUuid));
+
+  return result;
 }
 
 #endif  // XR_ML_localization_map
 
-
 #ifdef XR_ML_localization_map
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createExportedLocalizationMapML (
-    const XrUuidEXT* mapUuid, ExportedLocalizationMapML& map, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateExportedLocalizationMapML(this->get(), mapUuid, map.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::createExportedLocalizationMapML(const XrUuidEXT* mapUuid,
+                                                                  ExportedLocalizationMapML& map,
+                                                                  Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrCreateExportedLocalizationMapML(this->get(), mapUuid, map.put()));
+
+  return result;
 }
 
 #endif  // XR_ML_localization_map
 
-
 #ifdef XR_ML_localization_map
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result ExportedLocalizationMapML::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyExportedLocalizationMapML(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result ExportedLocalizationMapML::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyExportedLocalizationMapML(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_ML_localization_map
 
-
 #ifdef XR_ML_localization_map
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result ExportedLocalizationMapML::getExportedLocalizationMapDataML (
+OPENXR_HPP_INLINE Result ExportedLocalizationMapML::getExportedLocalizationMapDataML(
     uint32_t bufferCapacityInput, uint32_t& bufferCountOutput, char* buffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetExportedLocalizationMapDataML(this->get(), bufferCapacityInput, &bufferCountOutput, buffer) );
-    
-    return result;
+  Result result = static_cast<Result>(d.xrGetExportedLocalizationMapDataML(
+      this->get(), bufferCapacityInput, &bufferCountOutput, buffer));
+
+  return result;
 }
 
 #endif  // XR_ML_localization_map
 
-
-#ifdef XR_ML_spatial_anchors
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_spatial_anchors
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createSpatialAnchorsAsyncML (
+OPENXR_HPP_INLINE Result Session::createSpatialAnchorsAsyncML(
     const SpatialAnchorsCreateInfoBaseHeaderML& createInfo, FutureEXT& future, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorsAsyncML(this->get(), createInfo.get(), future.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialAnchorsAsyncML(this->get(), createInfo.get(), future.put()));
+
+  return result;
 }
 
 #endif  // XR_ML_spatial_anchors
 
-
-#ifdef XR_ML_spatial_anchors
-
-
+#ifdef dsaXR_ML_spatial_anchors
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createSpatialAnchorsCompleteML (
+OPENXR_HPP_INLINE Result Session::createSpatialAnchorsCompleteML(
     FutureEXT future, CreateSpatialAnchorsCompletionML& completion, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorsCompleteML(this->get(), future.get(), completion.put(false)) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialAnchorsCompleteML(this->get(), future.get(), completion.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_ML_spatial_anchors
 
-
-#ifdef XR_ML_spatial_anchors
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_spatial_anchors
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Space::getSpatialAnchorStateML (
-    SpatialAnchorStateML& state, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSpatialAnchorStateML(this->get(), state.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Space::getSpatialAnchorStateML(SpatialAnchorStateML& state,
+                                                        Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetSpatialAnchorStateML(this->get(), state.put()));
+
+  return result;
 }
 
 #endif  // XR_ML_spatial_anchors
 
-
-#ifdef XR_ML_spatial_anchors_storage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_spatial_anchors_storage
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createSpatialAnchorsStorageML (
-    const SpatialAnchorsCreateStorageInfoML& createInfo, SpatialAnchorsStorageML& storage, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorsStorageML(this->get(), createInfo.get(), storage.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result
+Session::createSpatialAnchorsStorageML(const SpatialAnchorsCreateStorageInfoML& createInfo,
+                                       SpatialAnchorsStorageML& storage, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialAnchorsStorageML(this->get(), createInfo.get(), storage.put()));
+
+  return result;
 }
 
 #endif  // XR_ML_spatial_anchors_storage
 
-
-#ifdef XR_ML_spatial_anchors_storage
-
-
+#ifdef dsaXR_ML_spatial_anchors_storage
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialAnchorsStorageML::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySpatialAnchorsStorageML(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SpatialAnchorsStorageML::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySpatialAnchorsStorageML(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_ML_spatial_anchors_storage
 
-
-#ifdef XR_ML_spatial_anchors_storage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_spatial_anchors_storage
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialAnchorsStorageML::querySpatialAnchorsAsyncML (
+OPENXR_HPP_INLINE Result SpatialAnchorsStorageML::querySpatialAnchorsAsyncML(
     const SpatialAnchorsQueryInfoBaseHeaderML& queryInfo, FutureEXT& future, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrQuerySpatialAnchorsAsyncML(this->get(), queryInfo.get(), future.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrQuerySpatialAnchorsAsyncML(this->get(), queryInfo.get(), future.put()));
+
+  return result;
 }
 
 #endif  // XR_ML_spatial_anchors_storage
 
-
-#ifdef XR_ML_spatial_anchors_storage
-
-
+#ifdef dsaXR_ML_spatial_anchors_storage
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialAnchorsStorageML::querySpatialAnchorsCompleteML (
+OPENXR_HPP_INLINE Result SpatialAnchorsStorageML::querySpatialAnchorsCompleteML(
     FutureEXT future, SpatialAnchorsQueryCompletionML& completion, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrQuerySpatialAnchorsCompleteML(this->get(), future.get(), completion.put(false)) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrQuerySpatialAnchorsCompleteML(this->get(), future.get(), completion.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_ML_spatial_anchors_storage
 
-
-#ifdef XR_ML_spatial_anchors_storage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_spatial_anchors_storage
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialAnchorsStorageML::publishSpatialAnchorsAsyncML (
+OPENXR_HPP_INLINE Result SpatialAnchorsStorageML::publishSpatialAnchorsAsyncML(
     const SpatialAnchorsPublishInfoML& publishInfo, FutureEXT& future, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPublishSpatialAnchorsAsyncML(this->get(), publishInfo.get(), future.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrPublishSpatialAnchorsAsyncML(this->get(), publishInfo.get(), future.put()));
+
+  return result;
 }
 
 #endif  // XR_ML_spatial_anchors_storage
 
-
-#ifdef XR_ML_spatial_anchors_storage
-
-
+#ifdef dsaXR_ML_spatial_anchors_storage
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialAnchorsStorageML::publishSpatialAnchorsCompleteML (
+OPENXR_HPP_INLINE Result SpatialAnchorsStorageML::publishSpatialAnchorsCompleteML(
     FutureEXT future, SpatialAnchorsPublishCompletionML& completion, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPublishSpatialAnchorsCompleteML(this->get(), future.get(), completion.put(false)) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrPublishSpatialAnchorsCompleteML(this->get(), future.get(), completion.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_ML_spatial_anchors_storage
 
-
-#ifdef XR_ML_spatial_anchors_storage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_spatial_anchors_storage
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialAnchorsStorageML::deleteSpatialAnchorsAsyncML (
+OPENXR_HPP_INLINE Result SpatialAnchorsStorageML::deleteSpatialAnchorsAsyncML(
     const SpatialAnchorsDeleteInfoML& deleteInfo, FutureEXT& future, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrDeleteSpatialAnchorsAsyncML(this->get(), deleteInfo.get(), future.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrDeleteSpatialAnchorsAsyncML(this->get(), deleteInfo.get(), future.put()));
+
+  return result;
 }
 
 #endif  // XR_ML_spatial_anchors_storage
 
-
-#ifdef XR_ML_spatial_anchors_storage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_spatial_anchors_storage
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialAnchorsStorageML::deleteSpatialAnchorsCompleteML (
+OPENXR_HPP_INLINE Result SpatialAnchorsStorageML::deleteSpatialAnchorsCompleteML(
     FutureEXT future, SpatialAnchorsDeleteCompletionML& completion, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrDeleteSpatialAnchorsCompleteML(this->get(), future.get(), completion.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrDeleteSpatialAnchorsCompleteML(this->get(), future.get(), completion.put()));
+
+  return result;
 }
 
 #endif  // XR_ML_spatial_anchors_storage
 
-
-#ifdef XR_ML_spatial_anchors_storage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_spatial_anchors_storage
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialAnchorsStorageML::updateSpatialAnchorsExpirationAsyncML (
+OPENXR_HPP_INLINE Result SpatialAnchorsStorageML::updateSpatialAnchorsExpirationAsyncML(
     const SpatialAnchorsUpdateExpirationInfoML& updateInfo, FutureEXT& future, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrUpdateSpatialAnchorsExpirationAsyncML(this->get(), updateInfo.get(), future.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrUpdateSpatialAnchorsExpirationAsyncML(this->get(), updateInfo.get(), future.put()));
+
+  return result;
 }
 
 #endif  // XR_ML_spatial_anchors_storage
 
-
-#ifdef XR_ML_spatial_anchors_storage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_spatial_anchors_storage
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialAnchorsStorageML::updateSpatialAnchorsExpirationCompleteML (
+OPENXR_HPP_INLINE Result SpatialAnchorsStorageML::updateSpatialAnchorsExpirationCompleteML(
     FutureEXT future, SpatialAnchorsUpdateExpirationCompletionML& completion, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrUpdateSpatialAnchorsExpirationCompleteML(this->get(), future.get(), completion.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrUpdateSpatialAnchorsExpirationCompleteML(this->get(), future.get(), completion.put()));
+
+  return result;
 }
 
 #endif  // XR_ML_spatial_anchors_storage
 
-
 #ifdef XR_MSFT_spatial_anchor_persistence
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createSpatialAnchorStoreConnectionMSFT (
+OPENXR_HPP_INLINE Result Session::createSpatialAnchorStoreConnectionMSFT(
     SpatialAnchorStoreConnectionMSFT& spatialAnchorStore, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorStoreConnectionMSFT(this->get(), spatialAnchorStore.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialAnchorStoreConnectionMSFT(this->get(), spatialAnchorStore.put()));
+
+  return result;
 }
 
 #endif  // XR_MSFT_spatial_anchor_persistence
 
-
 #ifdef XR_MSFT_spatial_anchor_persistence
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialAnchorStoreConnectionMSFT::destroy (
-    Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrDestroySpatialAnchorStoreConnectionMSFT(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SpatialAnchorStoreConnectionMSFT::destroy(Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrDestroySpatialAnchorStoreConnectionMSFT(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_MSFT_spatial_anchor_persistence
 
-
 #ifdef XR_MSFT_spatial_anchor_persistence
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialAnchorStoreConnectionMSFT::persistSpatialAnchorMSFT (
+OPENXR_HPP_INLINE Result SpatialAnchorStoreConnectionMSFT::persistSpatialAnchorMSFT(
     const SpatialAnchorPersistenceInfoMSFT& spatialAnchorPersistenceInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPersistSpatialAnchorMSFT(this->get(), spatialAnchorPersistenceInfo.get()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrPersistSpatialAnchorMSFT(this->get(), spatialAnchorPersistenceInfo.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_MSFT_spatial_anchor_persistence
 
-
 #ifdef XR_MSFT_spatial_anchor_persistence
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialAnchorStoreConnectionMSFT::enumeratePersistedSpatialAnchorNamesMSFT (
-    uint32_t spatialAnchorNameCapacityInput, uint32_t& spatialAnchorNameCountOutput, SpatialAnchorPersistenceNameMSFT* spatialAnchorNames, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnumeratePersistedSpatialAnchorNamesMSFT(this->get(), spatialAnchorNameCapacityInput, &spatialAnchorNameCountOutput, spatialAnchorNames == nullptr ? nullptr : spatialAnchorNames->put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SpatialAnchorStoreConnectionMSFT::enumeratePersistedSpatialAnchorNamesMSFT(
+    uint32_t spatialAnchorNameCapacityInput, uint32_t& spatialAnchorNameCountOutput,
+    SpatialAnchorPersistenceNameMSFT* spatialAnchorNames, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrEnumeratePersistedSpatialAnchorNamesMSFT(
+      this->get(), spatialAnchorNameCapacityInput, &spatialAnchorNameCountOutput,
+      spatialAnchorNames == nullptr ? nullptr : spatialAnchorNames->put(false)));
+
+  return result;
 }
 
 #endif  // XR_MSFT_spatial_anchor_persistence
 
-
 #ifdef XR_MSFT_spatial_anchor_persistence
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createSpatialAnchorFromPersistedNameMSFT (
-    const SpatialAnchorFromPersistedAnchorCreateInfoMSFT& spatialAnchorCreateInfo, SpatialAnchorMSFT& spatialAnchor, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorFromPersistedNameMSFT(this->get(), spatialAnchorCreateInfo.get(), spatialAnchor.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::createSpatialAnchorFromPersistedNameMSFT(
+    const SpatialAnchorFromPersistedAnchorCreateInfoMSFT& spatialAnchorCreateInfo,
+    SpatialAnchorMSFT& spatialAnchor, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrCreateSpatialAnchorFromPersistedNameMSFT(
+      this->get(), spatialAnchorCreateInfo.get(), spatialAnchor.put()));
+
+  return result;
 }
 
 #endif  // XR_MSFT_spatial_anchor_persistence
 
-
 #ifdef XR_MSFT_spatial_anchor_persistence
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialAnchorStoreConnectionMSFT::unpersistSpatialAnchorMSFT (
+OPENXR_HPP_INLINE Result SpatialAnchorStoreConnectionMSFT::unpersistSpatialAnchorMSFT(
     const SpatialAnchorPersistenceNameMSFT& spatialAnchorPersistenceName, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrUnpersistSpatialAnchorMSFT(this->get(), spatialAnchorPersistenceName.get()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrUnpersistSpatialAnchorMSFT(this->get(), spatialAnchorPersistenceName.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_MSFT_spatial_anchor_persistence
-
 
 #ifdef XR_MSFT_spatial_anchor_persistence
 
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialAnchorStoreConnectionMSFT::clearSpatialAnchorStoreMSFT (
-    Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrClearSpatialAnchorStoreMSFT(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result
+SpatialAnchorStoreConnectionMSFT::clearSpatialAnchorStoreMSFT(Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrClearSpatialAnchorStoreMSFT(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_MSFT_spatial_anchor_persistence
 
-
 #ifdef XR_MSFT_scene_marker
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SceneMSFT::getSceneMarkerRawDataMSFT (
-    const UuidMSFT& markerId, uint32_t bufferCapacityInput, uint32_t& bufferCountOutput, uint8_t* buffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSceneMarkerRawDataMSFT(this->get(), markerId.get(), bufferCapacityInput, &bufferCountOutput, buffer) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SceneMSFT::getSceneMarkerRawDataMSFT(const UuidMSFT& markerId,
+                                                              uint32_t bufferCapacityInput,
+                                                              uint32_t& bufferCountOutput,
+                                                              uint8_t* buffer, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetSceneMarkerRawDataMSFT(
+      this->get(), markerId.get(), bufferCapacityInput, &bufferCountOutput, buffer));
+
+  return result;
 }
 
 #endif  // XR_MSFT_scene_marker
 
-
 #ifdef XR_MSFT_scene_marker
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SceneMSFT::getSceneMarkerDecodedStringMSFT (
-    const UuidMSFT& markerId, uint32_t bufferCapacityInput, uint32_t& bufferCountOutput, char* buffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSceneMarkerDecodedStringMSFT(this->get(), markerId.get(), bufferCapacityInput, &bufferCountOutput, buffer) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SceneMSFT::getSceneMarkerDecodedStringMSFT(const UuidMSFT& markerId,
+                                                                    uint32_t bufferCapacityInput,
+                                                                    uint32_t& bufferCountOutput,
+                                                                    char* buffer,
+                                                                    Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetSceneMarkerDecodedStringMSFT(
+      this->get(), markerId.get(), bufferCapacityInput, &bufferCountOutput, buffer));
+
+  return result;
 }
 
 #endif  // XR_MSFT_scene_marker
-
 
 #ifdef XR_FB_spatial_entity_query
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::querySpacesFB (
-    const SpaceQueryInfoBaseHeaderFB& info, AsyncRequestIdFB& requestId, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrQuerySpacesFB(this->get(), info.get(), requestId.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::querySpacesFB(const SpaceQueryInfoBaseHeaderFB& info,
+                                                AsyncRequestIdFB& requestId, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrQuerySpacesFB(this->get(), info.get(), requestId.put()));
+
+  return result;
 }
 
 #endif  // XR_FB_spatial_entity_query
 
-
 #ifdef XR_FB_spatial_entity_query
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::retrieveSpaceQueryResultsFB (
-    AsyncRequestIdFB requestId, SpaceQueryResultsFB& results, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrRetrieveSpaceQueryResultsFB(this->get(), requestId.get(), results.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::retrieveSpaceQueryResultsFB(AsyncRequestIdFB requestId,
+                                                              SpaceQueryResultsFB& results,
+                                                              Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrRetrieveSpaceQueryResultsFB(this->get(), requestId.get(), results.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_spatial_entity_query
 
-
 #ifdef XR_FB_spatial_entity_storage
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::saveSpaceFB (
-    const SpaceSaveInfoFB& info, AsyncRequestIdFB& requestId, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSaveSpaceFB(this->get(), info.get(), requestId.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::saveSpaceFB(const SpaceSaveInfoFB& info,
+                                              AsyncRequestIdFB& requestId, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrSaveSpaceFB(this->get(), info.get(), requestId.put()));
+
+  return result;
 }
 
 #endif  // XR_FB_spatial_entity_storage
 
-
 #ifdef XR_FB_spatial_entity_storage
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::eraseSpaceFB (
-    const SpaceEraseInfoFB& info, AsyncRequestIdFB& requestId, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEraseSpaceFB(this->get(), info.get(), requestId.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::eraseSpaceFB(const SpaceEraseInfoFB& info,
+                                               AsyncRequestIdFB& requestId, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrEraseSpaceFB(this->get(), info.get(), requestId.put()));
+
+  return result;
 }
 
 #endif  // XR_FB_spatial_entity_storage
 
+#ifdef XR_OCULUS_audio_device_guid
+#if defined(XR_USE_PLATFORM_WIN32)
+
+#ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
+
+template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
+OPENXR_HPP_INLINE Result Instance::getAudioOutputDeviceGuidOculus(
+    wchar_t buffer[XR_MAX_AUDIO_DEVICE_STR_SIZE_OCULUS], Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetAudioOutputDeviceGuidOculus(this->get(), buffer));
+
+  return result;
+}
+#endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
+
+#endif  // defined(XR_USE_PLATFORM_WIN32)
+#endif  // XR_OCULUS_audio_device_guid
 
 #ifdef XR_OCULUS_audio_device_guid
 #if defined(XR_USE_PLATFORM_WIN32)
 
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::getAudioOutputDeviceGuidOculus (
+OPENXR_HPP_INLINE Result Instance::getAudioInputDeviceGuidOculus(
     wchar_t buffer[XR_MAX_AUDIO_DEVICE_STR_SIZE_OCULUS], Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetAudioOutputDeviceGuidOculus(this->get(), buffer) );
-    
-    return result;
+  Result result = static_cast<Result>(d.xrGetAudioInputDeviceGuidOculus(this->get(), buffer));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-#endif // defined(XR_USE_PLATFORM_WIN32)
+#endif  // defined(XR_USE_PLATFORM_WIN32)
 #endif  // XR_OCULUS_audio_device_guid
-
-
-#ifdef XR_OCULUS_audio_device_guid
-#if defined(XR_USE_PLATFORM_WIN32)
-
-
-
-#ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::getAudioInputDeviceGuidOculus (
-    wchar_t buffer[XR_MAX_AUDIO_DEVICE_STR_SIZE_OCULUS], Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetAudioInputDeviceGuidOculus(this->get(), buffer) );
-    
-    return result;
-}
-#endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
-
-#endif // defined(XR_USE_PLATFORM_WIN32)
-#endif  // XR_OCULUS_audio_device_guid
-
 
 #ifdef XR_FB_spatial_entity_sharing
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::shareSpacesFB (
-    const SpaceShareInfoFB& info, AsyncRequestIdFB& requestId, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrShareSpacesFB(this->get(), info.get(), requestId.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::shareSpacesFB(const SpaceShareInfoFB& info,
+                                                AsyncRequestIdFB& requestId, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrShareSpacesFB(this->get(), info.get(), requestId.put()));
+
+  return result;
 }
 
 #endif  // XR_FB_spatial_entity_sharing
 
-
 #ifdef XR_FB_scene
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getSpaceBoundingBox2DFB (
-    Space space, Rect2Df& boundingBox2DOutput, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSpaceBoundingBox2DFB(this->get(), space.get(), boundingBox2DOutput.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::getSpaceBoundingBox2DFB(Space space, Rect2Df& boundingBox2DOutput,
+                                                          Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetSpaceBoundingBox2DFB(this->get(), space.get(), boundingBox2DOutput.put()));
+
+  return result;
 }
 
 #endif  // XR_FB_scene
 
-
 #ifdef XR_FB_scene
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getSpaceBoundingBox3DFB (
-    Space space, Rect3DfFB& boundingBox3DOutput, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSpaceBoundingBox3DFB(this->get(), space.get(), boundingBox3DOutput.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::getSpaceBoundingBox3DFB(Space space,
+                                                          Rect3DfFB& boundingBox3DOutput,
+                                                          Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetSpaceBoundingBox3DFB(this->get(), space.get(), boundingBox3DOutput.put()));
+
+  return result;
 }
 
 #endif  // XR_FB_scene
 
-
 #ifdef XR_FB_scene
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getSpaceSemanticLabelsFB (
-    Space space, SemanticLabelsFB& semanticLabelsOutput, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSpaceSemanticLabelsFB(this->get(), space.get(), semanticLabelsOutput.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::getSpaceSemanticLabelsFB(Space space,
+                                                           SemanticLabelsFB& semanticLabelsOutput,
+                                                           Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetSpaceSemanticLabelsFB(this->get(), space.get(), semanticLabelsOutput.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_scene
 
-
 #ifdef XR_FB_scene
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getSpaceBoundary2DFB (
-    Space space, Boundary2DFB& boundary2DOutput, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSpaceBoundary2DFB(this->get(), space.get(), boundary2DOutput.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::getSpaceBoundary2DFB(Space space, Boundary2DFB& boundary2DOutput,
+                                                       Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetSpaceBoundary2DFB(this->get(), space.get(), boundary2DOutput.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_scene
 
-
 #ifdef XR_FB_scene
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getSpaceRoomLayoutFB (
-    Space space, RoomLayoutFB& roomLayoutOutput, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSpaceRoomLayoutFB(this->get(), space.get(), roomLayoutOutput.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::getSpaceRoomLayoutFB(Space space, RoomLayoutFB& roomLayoutOutput,
+                                                       Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetSpaceRoomLayoutFB(this->get(), space.get(), roomLayoutOutput.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_scene
-
 
 #ifdef XR_ALMALENCE_digital_lens_control
 
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setDigitalLensControlALMALENCE (
+OPENXR_HPP_INLINE Result Session::setDigitalLensControlALMALENCE(
     const DigitalLensControlALMALENCE& digitalLensControl, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetDigitalLensControlALMALENCE(this->get(), digitalLensControl.get()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrSetDigitalLensControlALMALENCE(this->get(), digitalLensControl.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_ALMALENCE_digital_lens_control
 
-
 #ifdef XR_FB_scene_capture
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::requestSceneCaptureFB (
-    const SceneCaptureRequestInfoFB& info, AsyncRequestIdFB& requestId, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrRequestSceneCaptureFB(this->get(), info.get(), requestId.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::requestSceneCaptureFB(const SceneCaptureRequestInfoFB& info,
+                                                        AsyncRequestIdFB& requestId,
+                                                        Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrRequestSceneCaptureFB(this->get(), info.get(), requestId.put()));
+
+  return result;
 }
 
 #endif  // XR_FB_scene_capture
 
-
 #ifdef XR_FB_spatial_entity_container
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getSpaceContainerFB (
-    Space space, SpaceContainerFB& spaceContainerOutput, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSpaceContainerFB(this->get(), space.get(), spaceContainerOutput.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::getSpaceContainerFB(Space space,
+                                                      SpaceContainerFB& spaceContainerOutput,
+                                                      Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetSpaceContainerFB(this->get(), space.get(), spaceContainerOutput.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_spatial_entity_container
 
-
 #ifdef XR_META_foveation_eye_tracked
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getFoveationEyeTrackedStateMETA (
+OPENXR_HPP_INLINE Result Session::getFoveationEyeTrackedStateMETA(
     FoveationEyeTrackedStateMETA& foveationState, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetFoveationEyeTrackedStateMETA(this->get(), foveationState.put()) );
-    
-    return result;
+  Result result =
+      static_cast<Result>(d.xrGetFoveationEyeTrackedStateMETA(this->get(), foveationState.put()));
+
+  return result;
 }
 
 #endif  // XR_META_foveation_eye_tracked
 
-
 #ifdef XR_FB_face_tracking
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createFaceTrackerFB (
-    const FaceTrackerCreateInfoFB& createInfo, FaceTrackerFB& faceTracker, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateFaceTrackerFB(this->get(), createInfo.get(), faceTracker.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::createFaceTrackerFB(const FaceTrackerCreateInfoFB& createInfo,
+                                                      FaceTrackerFB& faceTracker,
+                                                      Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateFaceTrackerFB(this->get(), createInfo.get(), faceTracker.put()));
+
+  return result;
 }
 
 #endif  // XR_FB_face_tracking
 
-
 #ifdef XR_FB_face_tracking
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result FaceTrackerFB::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyFaceTrackerFB(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result FaceTrackerFB::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyFaceTrackerFB(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_face_tracking
 
-
 #ifdef XR_FB_face_tracking
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result FaceTrackerFB::getFaceExpressionWeightsFB (
-    const FaceExpressionInfoFB& expressionInfo, FaceExpressionWeightsFB& expressionWeights, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetFaceExpressionWeightsFB(this->get(), expressionInfo.get(), expressionWeights.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result FaceTrackerFB::getFaceExpressionWeightsFB(
+    const FaceExpressionInfoFB& expressionInfo, FaceExpressionWeightsFB& expressionWeights,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetFaceExpressionWeightsFB(
+      this->get(), expressionInfo.get(), expressionWeights.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_face_tracking
 
-
 #ifdef XR_FB_eye_tracking_social
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createEyeTrackerFB (
-    const EyeTrackerCreateInfoFB& createInfo, EyeTrackerFB& eyeTracker, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateEyeTrackerFB(this->get(), createInfo.get(), eyeTracker.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::createEyeTrackerFB(const EyeTrackerCreateInfoFB& createInfo,
+                                                     EyeTrackerFB& eyeTracker, Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrCreateEyeTrackerFB(this->get(), createInfo.get(), eyeTracker.put()));
+
+  return result;
 }
 
 #endif  // XR_FB_eye_tracking_social
 
-
 #ifdef XR_FB_eye_tracking_social
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result EyeTrackerFB::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyEyeTrackerFB(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result EyeTrackerFB::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyEyeTrackerFB(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_eye_tracking_social
 
-
 #ifdef XR_FB_eye_tracking_social
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result EyeTrackerFB::getEyeGazesFB (
-    const EyeGazesInfoFB& gazeInfo, EyeGazesFB& eyeGazes, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetEyeGazesFB(this->get(), gazeInfo.get(), eyeGazes.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result EyeTrackerFB::getEyeGazesFB(const EyeGazesInfoFB& gazeInfo,
+                                                     EyeGazesFB& eyeGazes, Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrGetEyeGazesFB(this->get(), gazeInfo.get(), eyeGazes.put()));
+
+  return result;
 }
 
 #endif  // XR_FB_eye_tracking_social
-
 
 #ifdef XR_FB_passthrough_keyboard_hands
 
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PassthroughLayerFB::passthroughLayerSetKeyboardHandsIntensityFB (
+OPENXR_HPP_INLINE Result PassthroughLayerFB::passthroughLayerSetKeyboardHandsIntensityFB(
     const PassthroughKeyboardHandsIntensityFB& intensity, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPassthroughLayerSetKeyboardHandsIntensityFB(this->get(), intensity.get()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrPassthroughLayerSetKeyboardHandsIntensityFB(this->get(), intensity.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_passthrough_keyboard_hands
 
-
 #ifdef XR_FB_haptic_pcm
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getDeviceSampleRateFB (
-    const HapticActionInfo& hapticActionInfo, XrDevicePcmSampleRateGetInfoFB* deviceSampleRate, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetDeviceSampleRateFB(this->get(), hapticActionInfo.get(), deviceSampleRate) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::getDeviceSampleRateFB(
+    const HapticActionInfo& hapticActionInfo, XrDevicePcmSampleRateGetInfoFB* deviceSampleRate,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetDeviceSampleRateFB(this->get(), hapticActionInfo.get(), deviceSampleRate));
+
+  return result;
 }
 
 #endif  // XR_FB_haptic_pcm
 
-
 #ifdef XR_META_passthrough_preferences
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getPassthroughPreferencesMETA (
+OPENXR_HPP_INLINE Result Session::getPassthroughPreferencesMETA(
     PassthroughPreferencesMETA& preferences, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetPassthroughPreferencesMETA(this->get(), preferences.put()) );
-    
-    return result;
+  Result result =
+      static_cast<Result>(d.xrGetPassthroughPreferencesMETA(this->get(), preferences.put()));
+
+  return result;
 }
 
 #endif  // XR_META_passthrough_preferences
 
-
 #ifdef XR_META_virtual_keyboard
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createVirtualKeyboardMETA (
-    const VirtualKeyboardCreateInfoMETA& createInfo, VirtualKeyboardMETA& keyboard, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateVirtualKeyboardMETA(this->get(), createInfo.get(), keyboard.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result
+Session::createVirtualKeyboardMETA(const VirtualKeyboardCreateInfoMETA& createInfo,
+                                   VirtualKeyboardMETA& keyboard, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateVirtualKeyboardMETA(this->get(), createInfo.get(), keyboard.put()));
+
+  return result;
 }
 
 #endif  // XR_META_virtual_keyboard
 
-
 #ifdef XR_META_virtual_keyboard
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result VirtualKeyboardMETA::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyVirtualKeyboardMETA(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result VirtualKeyboardMETA::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyVirtualKeyboardMETA(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_META_virtual_keyboard
 
-
 #ifdef XR_META_virtual_keyboard
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createVirtualKeyboardSpaceMETA (
-    VirtualKeyboardMETA keyboard, const VirtualKeyboardSpaceCreateInfoMETA& createInfo, Space& keyboardSpace, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateVirtualKeyboardSpaceMETA(this->get(), keyboard.get(), createInfo.get(), keyboardSpace.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::createVirtualKeyboardSpaceMETA(
+    VirtualKeyboardMETA keyboard, const VirtualKeyboardSpaceCreateInfoMETA& createInfo,
+    Space& keyboardSpace, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrCreateVirtualKeyboardSpaceMETA(
+      this->get(), keyboard.get(), createInfo.get(), keyboardSpace.put()));
+
+  return result;
 }
 
 #endif  // XR_META_virtual_keyboard
 
-
 #ifdef XR_META_virtual_keyboard
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result VirtualKeyboardMETA::suggestVirtualKeyboardLocationMETA (
+OPENXR_HPP_INLINE Result VirtualKeyboardMETA::suggestVirtualKeyboardLocationMETA(
     const VirtualKeyboardLocationInfoMETA& locationInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSuggestVirtualKeyboardLocationMETA(this->get(), locationInfo.get()) );
-    
-    return result;
+  Result result =
+      static_cast<Result>(d.xrSuggestVirtualKeyboardLocationMETA(this->get(), locationInfo.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_META_virtual_keyboard
 
-
 #ifdef XR_META_virtual_keyboard
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result VirtualKeyboardMETA::getVirtualKeyboardScaleMETA (
-    float& scale, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetVirtualKeyboardScaleMETA(this->get(), &scale) );
-    
-    return result;
+OPENXR_HPP_INLINE Result VirtualKeyboardMETA::getVirtualKeyboardScaleMETA(float& scale,
+                                                                          Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetVirtualKeyboardScaleMETA(this->get(), &scale));
+
+  return result;
 }
 
 #endif  // XR_META_virtual_keyboard
 
-
 #ifdef XR_META_virtual_keyboard
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result VirtualKeyboardMETA::setVirtualKeyboardModelVisibilityMETA (
+OPENXR_HPP_INLINE Result VirtualKeyboardMETA::setVirtualKeyboardModelVisibilityMETA(
     const VirtualKeyboardModelVisibilitySetInfoMETA& modelVisibility, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetVirtualKeyboardModelVisibilityMETA(this->get(), modelVisibility.get()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrSetVirtualKeyboardModelVisibilityMETA(this->get(), modelVisibility.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_META_virtual_keyboard
 
-
 #ifdef XR_META_virtual_keyboard
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result VirtualKeyboardMETA::getVirtualKeyboardModelAnimationStatesMETA (
+OPENXR_HPP_INLINE Result VirtualKeyboardMETA::getVirtualKeyboardModelAnimationStatesMETA(
     VirtualKeyboardModelAnimationStatesMETA& animationStates, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetVirtualKeyboardModelAnimationStatesMETA(this->get(), animationStates.put(false)) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrGetVirtualKeyboardModelAnimationStatesMETA(this->get(), animationStates.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_META_virtual_keyboard
 
-
 #ifdef XR_META_virtual_keyboard
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result VirtualKeyboardMETA::getVirtualKeyboardDirtyTexturesMETA (
-    uint32_t textureIdCapacityInput, uint32_t& textureIdCountOutput, uint64_t* textureIds, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetVirtualKeyboardDirtyTexturesMETA(this->get(), textureIdCapacityInput, &textureIdCountOutput, textureIds) );
-    
-    return result;
+OPENXR_HPP_INLINE Result VirtualKeyboardMETA::getVirtualKeyboardDirtyTexturesMETA(
+    uint32_t textureIdCapacityInput, uint32_t& textureIdCountOutput, uint64_t* textureIds,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetVirtualKeyboardDirtyTexturesMETA(
+      this->get(), textureIdCapacityInput, &textureIdCountOutput, textureIds));
+
+  return result;
 }
 
 #endif  // XR_META_virtual_keyboard
 
-
 #ifdef XR_META_virtual_keyboard
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result VirtualKeyboardMETA::getVirtualKeyboardTextureDataMETA (
+OPENXR_HPP_INLINE Result VirtualKeyboardMETA::getVirtualKeyboardTextureDataMETA(
     uint64_t textureId, VirtualKeyboardTextureDataMETA& textureData, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetVirtualKeyboardTextureDataMETA(this->get(), textureId, textureData.put(false)) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrGetVirtualKeyboardTextureDataMETA(this->get(), textureId, textureData.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_META_virtual_keyboard
 
-
 #ifdef XR_META_virtual_keyboard
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result VirtualKeyboardMETA::sendVirtualKeyboardInputMETA (
+OPENXR_HPP_INLINE Result VirtualKeyboardMETA::sendVirtualKeyboardInputMETA(
     const VirtualKeyboardInputInfoMETA& info, Posef& interactorRootPose, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSendVirtualKeyboardInputMETA(this->get(), info.get(), interactorRootPose.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrSendVirtualKeyboardInputMETA(this->get(), info.get(), interactorRootPose.put()));
+
+  return result;
 }
 
 #endif  // XR_META_virtual_keyboard
 
-
 #ifdef XR_META_virtual_keyboard
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result VirtualKeyboardMETA::changeVirtualKeyboardTextContextMETA (
+OPENXR_HPP_INLINE Result VirtualKeyboardMETA::changeVirtualKeyboardTextContextMETA(
     const VirtualKeyboardTextContextChangeInfoMETA& changeInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrChangeVirtualKeyboardTextContextMETA(this->get(), changeInfo.get()) );
-    
-    return result;
+  Result result =
+      static_cast<Result>(d.xrChangeVirtualKeyboardTextContextMETA(this->get(), changeInfo.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_META_virtual_keyboard
-
 
 #ifdef XR_OCULUS_external_camera
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::enumerateExternalCamerasOCULUS (
-    uint32_t cameraCapacityInput, uint32_t& cameraCountOutput, ExternalCameraOCULUS* cameras, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnumerateExternalCamerasOCULUS(this->get(), cameraCapacityInput, &cameraCountOutput, cameras == nullptr ? nullptr : cameras->put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::enumerateExternalCamerasOCULUS(uint32_t cameraCapacityInput,
+                                                                 uint32_t& cameraCountOutput,
+                                                                 ExternalCameraOCULUS* cameras,
+                                                                 Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrEnumerateExternalCamerasOCULUS(this->get(), cameraCapacityInput, &cameraCountOutput,
+                                         cameras == nullptr ? nullptr : cameras->put(false)));
+
+  return result;
 }
 
 #endif  // XR_OCULUS_external_camera
 
-
 #ifdef XR_META_performance_metrics
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::enumeratePerformanceMetricsCounterPathsMETA (
-    uint32_t counterPathCapacityInput, uint32_t& counterPathCountOutput, Path* counterPaths, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnumeratePerformanceMetricsCounterPathsMETA(this->get(), counterPathCapacityInput, &counterPathCountOutput, counterPaths == nullptr ? nullptr : counterPaths->put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::enumeratePerformanceMetricsCounterPathsMETA(
+    uint32_t counterPathCapacityInput, uint32_t& counterPathCountOutput, Path* counterPaths,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrEnumeratePerformanceMetricsCounterPathsMETA(
+      this->get(), counterPathCapacityInput, &counterPathCountOutput,
+      counterPaths == nullptr ? nullptr : counterPaths->put()));
+
+  return result;
 }
 
 #endif  // XR_META_performance_metrics
 
-
 #ifdef XR_META_performance_metrics
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setPerformanceMetricsStateMETA (
+OPENXR_HPP_INLINE Result Session::setPerformanceMetricsStateMETA(
     const PerformanceMetricsStateMETA& state, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetPerformanceMetricsStateMETA(this->get(), state.get()) );
-    
-    return result;
+  Result result = static_cast<Result>(d.xrSetPerformanceMetricsStateMETA(this->get(), state.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_META_performance_metrics
 
-
 #ifdef XR_META_performance_metrics
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getPerformanceMetricsStateMETA (
-    PerformanceMetricsStateMETA& state, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetPerformanceMetricsStateMETA(this->get(), state.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::getPerformanceMetricsStateMETA(PerformanceMetricsStateMETA& state,
+                                                                 Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetPerformanceMetricsStateMETA(this->get(), state.put()));
+
+  return result;
 }
 
 #endif  // XR_META_performance_metrics
 
-
 #ifdef XR_META_performance_metrics
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::queryPerformanceMetricsCounterMETA (
+OPENXR_HPP_INLINE Result Session::queryPerformanceMetricsCounterMETA(
     Path counterPath, PerformanceMetricsCounterMETA& counter, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrQueryPerformanceMetricsCounterMETA(this->get(), counterPath.get(), counter.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrQueryPerformanceMetricsCounterMETA(this->get(), counterPath.get(), counter.put()));
+
+  return result;
 }
 
 #endif  // XR_META_performance_metrics
-
 
 #ifdef XR_FB_spatial_entity_storage_batch
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::saveSpaceListFB (
-    const SpaceListSaveInfoFB& info, AsyncRequestIdFB& requestId, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSaveSpaceListFB(this->get(), info.get(), requestId.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::saveSpaceListFB(const SpaceListSaveInfoFB& info,
+                                                  AsyncRequestIdFB& requestId, Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrSaveSpaceListFB(this->get(), info.get(), requestId.put()));
+
+  return result;
 }
 
 #endif  // XR_FB_spatial_entity_storage_batch
 
-
 #ifdef XR_FB_spatial_entity_user
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createSpaceUserFB (
-    const SpaceUserCreateInfoFB& info, SpaceUserFB& user, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSpaceUserFB(this->get(), info.get(), user.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::createSpaceUserFB(const SpaceUserCreateInfoFB& info,
+                                                    SpaceUserFB& user, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrCreateSpaceUserFB(this->get(), info.get(), user.put()));
+
+  return result;
 }
 
 #endif  // XR_FB_spatial_entity_user
 
-
 #ifdef XR_FB_spatial_entity_user
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpaceUserFB::getSpaceUserIdFB (
-    SpaceUserIdFB& userId, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSpaceUserIdFB(this->get(), &userId) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SpaceUserFB::getSpaceUserIdFB(SpaceUserIdFB& userId, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetSpaceUserIdFB(this->get(), &userId));
+
+  return result;
 }
 
 #endif  // XR_FB_spatial_entity_user
 
-
 #ifdef XR_FB_spatial_entity_user
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpaceUserFB::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySpaceUserFB(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SpaceUserFB::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySpaceUserFB(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_spatial_entity_user
 
-
 #ifdef XR_META_recommended_layer_resolution
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getRecommendedLayerResolutionMETA (
-    const RecommendedLayerResolutionGetInfoMETA& info, RecommendedLayerResolutionMETA& resolution, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetRecommendedLayerResolutionMETA(this->get(), info.get(), resolution.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::getRecommendedLayerResolutionMETA(
+    const RecommendedLayerResolutionGetInfoMETA& info, RecommendedLayerResolutionMETA& resolution,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetRecommendedLayerResolutionMETA(this->get(), info.get(), resolution.put()));
+
+  return result;
 }
 
 #endif  // XR_META_recommended_layer_resolution
 
-
 #ifdef XR_META_passthrough_color_lut
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PassthroughFB::createPassthroughColorLutMETA (
-    const PassthroughColorLutCreateInfoMETA& createInfo, PassthroughColorLutMETA& colorLut, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreatePassthroughColorLutMETA(this->get(), createInfo.get(), colorLut.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result PassthroughFB::createPassthroughColorLutMETA(
+    const PassthroughColorLutCreateInfoMETA& createInfo, PassthroughColorLutMETA& colorLut,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreatePassthroughColorLutMETA(this->get(), createInfo.get(), colorLut.put()));
+
+  return result;
 }
 
 #endif  // XR_META_passthrough_color_lut
 
-
 #ifdef XR_META_passthrough_color_lut
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PassthroughColorLutMETA::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyPassthroughColorLutMETA(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result PassthroughColorLutMETA::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyPassthroughColorLutMETA(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_META_passthrough_color_lut
 
-
 #ifdef XR_META_passthrough_color_lut
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PassthroughColorLutMETA::updatePassthroughColorLutMETA (
+OPENXR_HPP_INLINE Result PassthroughColorLutMETA::updatePassthroughColorLutMETA(
     const PassthroughColorLutUpdateInfoMETA& updateInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrUpdatePassthroughColorLutMETA(this->get(), updateInfo.get()) );
-    
-    return result;
+  Result result =
+      static_cast<Result>(d.xrUpdatePassthroughColorLutMETA(this->get(), updateInfo.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_META_passthrough_color_lut
-
 
 #ifdef XR_META_spatial_entity_mesh
 
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Space::getSpaceTriangleMeshMETA (
-    const SpaceTriangleMeshGetInfoMETA& getInfo, SpaceTriangleMeshMETA& triangleMeshOutput, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSpaceTriangleMeshMETA(this->get(), getInfo.get(), triangleMeshOutput.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result
+Space::getSpaceTriangleMeshMETA(const SpaceTriangleMeshGetInfoMETA& getInfo,
+                                SpaceTriangleMeshMETA& triangleMeshOutput, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetSpaceTriangleMeshMETA(this->get(), getInfo.get(), triangleMeshOutput.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_META_spatial_entity_mesh
 
-
 #ifdef XR_FB_face_tracking2
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createFaceTracker2FB (
-    const FaceTrackerCreateInfo2FB& createInfo, FaceTracker2FB& faceTracker, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateFaceTracker2FB(this->get(), createInfo.get(), faceTracker.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::createFaceTracker2FB(const FaceTrackerCreateInfo2FB& createInfo,
+                                                       FaceTracker2FB& faceTracker,
+                                                       Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateFaceTracker2FB(this->get(), createInfo.get(), faceTracker.put()));
+
+  return result;
 }
 
 #endif  // XR_FB_face_tracking2
 
-
 #ifdef XR_FB_face_tracking2
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result FaceTracker2FB::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyFaceTracker2FB(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result FaceTracker2FB::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyFaceTracker2FB(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_face_tracking2
 
-
 #ifdef XR_FB_face_tracking2
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result FaceTracker2FB::getFaceExpressionWeights2FB (
-    const FaceExpressionInfo2FB& expressionInfo, FaceExpressionWeights2FB& expressionWeights, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetFaceExpressionWeights2FB(this->get(), expressionInfo.get(), expressionWeights.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result FaceTracker2FB::getFaceExpressionWeights2FB(
+    const FaceExpressionInfo2FB& expressionInfo, FaceExpressionWeights2FB& expressionWeights,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetFaceExpressionWeights2FB(
+      this->get(), expressionInfo.get(), expressionWeights.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_FB_face_tracking2
-
 
 #ifdef XR_META_spatial_entity_sharing
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::shareSpacesMETA (
-    const ShareSpacesInfoMETA& info, AsyncRequestIdFB& requestId, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrShareSpacesMETA(this->get(), info.get(), requestId.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::shareSpacesMETA(const ShareSpacesInfoMETA& info,
+                                                  AsyncRequestIdFB& requestId, Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrShareSpacesMETA(this->get(), info.get(), requestId.put()));
+
+  return result;
 }
 
 #endif  // XR_META_spatial_entity_sharing
 
-
 #ifdef XR_META_environment_depth
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createEnvironmentDepthProviderMETA (
-    const EnvironmentDepthProviderCreateInfoMETA& createInfo, EnvironmentDepthProviderMETA& environmentDepthProvider, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateEnvironmentDepthProviderMETA(this->get(), createInfo.get(), environmentDepthProvider.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::createEnvironmentDepthProviderMETA(
+    const EnvironmentDepthProviderCreateInfoMETA& createInfo,
+    EnvironmentDepthProviderMETA& environmentDepthProvider, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrCreateEnvironmentDepthProviderMETA(
+      this->get(), createInfo.get(), environmentDepthProvider.put()));
+
+  return result;
 }
 
 #endif  // XR_META_environment_depth
 
-
 #ifdef XR_META_environment_depth
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result EnvironmentDepthProviderMETA::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyEnvironmentDepthProviderMETA(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result EnvironmentDepthProviderMETA::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyEnvironmentDepthProviderMETA(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_META_environment_depth
 
-
 #ifdef XR_META_environment_depth
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
+template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
+OPENXR_HPP_INLINE Result
+EnvironmentDepthProviderMETA::startEnvironmentDepthProviderMETA(Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrStartEnvironmentDepthProviderMETA(this->get()));
 
+  return result;
+}
+#endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
+#endif  // XR_META_environment_depth
 
+#ifdef XR_META_environment_depth
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result EnvironmentDepthProviderMETA::startEnvironmentDepthProviderMETA (
+OPENXR_HPP_INLINE Result
+EnvironmentDepthProviderMETA::stopEnvironmentDepthProviderMETA(Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrStopEnvironmentDepthProviderMETA(this->get()));
+
+  return result;
+}
+#endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
+
+#endif  // XR_META_environment_depth
+
+#ifdef XR_META_environment_depth
+
+template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
+OPENXR_HPP_INLINE Result EnvironmentDepthProviderMETA::createEnvironmentDepthSwapchainMETA(
+    const EnvironmentDepthSwapchainCreateInfoMETA& createInfo,
+    EnvironmentDepthSwapchainMETA& swapchain, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateEnvironmentDepthSwapchainMETA(this->get(), createInfo.get(), swapchain.put()));
+
+  return result;
+}
+
+#endif  // XR_META_environment_depth
+
+#ifdef XR_META_environment_depth
+
+#ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
+
+template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
+OPENXR_HPP_INLINE Result EnvironmentDepthSwapchainMETA::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyEnvironmentDepthSwapchainMETA(this->get()));
+
+  return result;
+}
+#endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
+
+#endif  // XR_META_environment_depth
+
+#ifdef XR_META_environment_depth
+
+#ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
+
+template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
+OPENXR_HPP_INLINE Result
+EnvironmentDepthSwapchainMETA::enumerateEnvironmentDepthSwapchainImagesMETA(
+    uint32_t imageCapacityInput, uint32_t& imageCountOutput, SwapchainImageBaseHeader* images,
     Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrStartEnvironmentDepthProviderMETA(this->get()) );
-    
-    return result;
+  Result result = static_cast<Result>(d.xrEnumerateEnvironmentDepthSwapchainImagesMETA(
+      this->get(), imageCapacityInput, &imageCountOutput,
+      images == nullptr ? nullptr : images->put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_META_environment_depth
 
-
 #ifdef XR_META_environment_depth
 
-
-
-#ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result EnvironmentDepthProviderMETA::stopEnvironmentDepthProviderMETA (
-    Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrStopEnvironmentDepthProviderMETA(this->get()) );
-    
-    return result;
-}
-#endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
-
-#endif  // XR_META_environment_depth
-
-
-#ifdef XR_META_environment_depth
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result EnvironmentDepthProviderMETA::createEnvironmentDepthSwapchainMETA (
-    const EnvironmentDepthSwapchainCreateInfoMETA& createInfo, EnvironmentDepthSwapchainMETA& swapchain, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateEnvironmentDepthSwapchainMETA(this->get(), createInfo.get(), swapchain.put()) );
-    
-    return result;
-}
-
-#endif  // XR_META_environment_depth
-
-
-#ifdef XR_META_environment_depth
-
-
-
-#ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result EnvironmentDepthSwapchainMETA::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyEnvironmentDepthSwapchainMETA(this->get()) );
-    
-    return result;
-}
-#endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
-
-#endif  // XR_META_environment_depth
-
-
-#ifdef XR_META_environment_depth
-
-
-
-#ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result EnvironmentDepthSwapchainMETA::enumerateEnvironmentDepthSwapchainImagesMETA (
-    uint32_t imageCapacityInput, uint32_t& imageCountOutput, SwapchainImageBaseHeader* images, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnumerateEnvironmentDepthSwapchainImagesMETA(this->get(), imageCapacityInput, &imageCountOutput, images == nullptr ? nullptr : images->put(false)) );
-    
-    return result;
-}
-#endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
-
-#endif  // XR_META_environment_depth
-
-
-#ifdef XR_META_environment_depth
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result EnvironmentDepthSwapchainMETA::getEnvironmentDepthSwapchainStateMETA (
+OPENXR_HPP_INLINE Result EnvironmentDepthSwapchainMETA::getEnvironmentDepthSwapchainStateMETA(
     EnvironmentDepthSwapchainStateMETA& state, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetEnvironmentDepthSwapchainStateMETA(this->get(), state.put()) );
-    
-    return result;
+  Result result =
+      static_cast<Result>(d.xrGetEnvironmentDepthSwapchainStateMETA(this->get(), state.put()));
+
+  return result;
 }
 
 #endif  // XR_META_environment_depth
 
-
 #ifdef XR_META_environment_depth
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result EnvironmentDepthProviderMETA::acquireEnvironmentDepthImageMETA (
-    const EnvironmentDepthImageAcquireInfoMETA& acquireInfo, EnvironmentDepthImageMETA& environmentDepthImage, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrAcquireEnvironmentDepthImageMETA(this->get(), acquireInfo.get(), environmentDepthImage.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result EnvironmentDepthProviderMETA::acquireEnvironmentDepthImageMETA(
+    const EnvironmentDepthImageAcquireInfoMETA& acquireInfo,
+    EnvironmentDepthImageMETA& environmentDepthImage, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrAcquireEnvironmentDepthImageMETA(
+      this->get(), acquireInfo.get(), environmentDepthImage.put()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_META_environment_depth
 
-
 #ifdef XR_META_environment_depth
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result EnvironmentDepthProviderMETA::setEnvironmentDepthHandRemovalMETA (
+OPENXR_HPP_INLINE Result EnvironmentDepthProviderMETA::setEnvironmentDepthHandRemovalMETA(
     const EnvironmentDepthHandRemovalSetInfoMETA& setInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetEnvironmentDepthHandRemovalMETA(this->get(), setInfo.get()) );
-    
-    return result;
+  Result result =
+      static_cast<Result>(d.xrSetEnvironmentDepthHandRemovalMETA(this->get(), setInfo.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_META_environment_depth
 
-
 #ifdef XR_EXT_render_model
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createRenderModelEXT (
-    const RenderModelCreateInfoEXT& createInfo, RenderModelEXT& renderModel, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateRenderModelEXT(this->get(), createInfo.get(), renderModel.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::createRenderModelEXT(const RenderModelCreateInfoEXT& createInfo,
+                                                       RenderModelEXT& renderModel,
+                                                       Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateRenderModelEXT(this->get(), createInfo.get(), renderModel.put()));
+
+  return result;
 }
 
 #endif  // XR_EXT_render_model
 
-
 #ifdef XR_EXT_render_model
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result RenderModelEXT::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyRenderModelEXT(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result RenderModelEXT::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyRenderModelEXT(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_render_model
 
-
 #ifdef XR_EXT_render_model
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result RenderModelEXT::getRenderModelPropertiesEXT (
-    const RenderModelPropertiesGetInfoEXT& getInfo, RenderModelPropertiesEXT& properties, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetRenderModelPropertiesEXT(this->get(), getInfo.get(), properties.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result RenderModelEXT::getRenderModelPropertiesEXT(
+    const RenderModelPropertiesGetInfoEXT& getInfo, RenderModelPropertiesEXT& properties,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetRenderModelPropertiesEXT(this->get(), getInfo.get(), properties.put()));
+
+  return result;
 }
 
 #endif  // XR_EXT_render_model
 
-
 #ifdef XR_EXT_render_model
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createRenderModelSpaceEXT (
+OPENXR_HPP_INLINE Result Session::createRenderModelSpaceEXT(
     const RenderModelSpaceCreateInfoEXT& createInfo, Space& space, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateRenderModelSpaceEXT(this->get(), createInfo.get(), space.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrCreateRenderModelSpaceEXT(this->get(), createInfo.get(), space.put()));
+
+  return result;
 }
 
 #endif  // XR_EXT_render_model
 
-
 #ifdef XR_EXT_render_model
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createRenderModelAssetEXT (
-    const RenderModelAssetCreateInfoEXT& createInfo, RenderModelAssetEXT& asset, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateRenderModelAssetEXT(this->get(), createInfo.get(), asset.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result
+Session::createRenderModelAssetEXT(const RenderModelAssetCreateInfoEXT& createInfo,
+                                   RenderModelAssetEXT& asset, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateRenderModelAssetEXT(this->get(), createInfo.get(), asset.put()));
+
+  return result;
 }
 
 #endif  // XR_EXT_render_model
 
-
 #ifdef XR_EXT_render_model
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result RenderModelAssetEXT::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyRenderModelAssetEXT(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result RenderModelAssetEXT::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyRenderModelAssetEXT(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_render_model
 
-
 #ifdef XR_EXT_render_model
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result RenderModelAssetEXT::getRenderModelAssetDataEXT (
-    const RenderModelAssetDataGetInfoEXT& getInfo, RenderModelAssetDataEXT& buffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetRenderModelAssetDataEXT(this->get(), getInfo.get(), buffer.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result RenderModelAssetEXT::getRenderModelAssetDataEXT(
+    const RenderModelAssetDataGetInfoEXT& getInfo, RenderModelAssetDataEXT& buffer,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetRenderModelAssetDataEXT(this->get(), getInfo.get(), buffer.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_render_model
 
-
 #ifdef XR_EXT_render_model
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result RenderModelAssetEXT::getRenderModelAssetPropertiesEXT (
-    const RenderModelAssetPropertiesGetInfoEXT& getInfo, RenderModelAssetPropertiesEXT& properties, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetRenderModelAssetPropertiesEXT(this->get(), getInfo.get(), properties.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result RenderModelAssetEXT::getRenderModelAssetPropertiesEXT(
+    const RenderModelAssetPropertiesGetInfoEXT& getInfo, RenderModelAssetPropertiesEXT& properties,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetRenderModelAssetPropertiesEXT(this->get(), getInfo.get(), properties.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_render_model
 
-
 #ifdef XR_EXT_render_model
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result RenderModelEXT::getRenderModelStateEXT (
+OPENXR_HPP_INLINE Result RenderModelEXT::getRenderModelStateEXT(
     const RenderModelStateGetInfoEXT& getInfo, RenderModelStateEXT& state, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetRenderModelStateEXT(this->get(), getInfo.get(), state.put(false)) );
-    
-    return result;
+  Result result =
+      static_cast<Result>(d.xrGetRenderModelStateEXT(this->get(), getInfo.get(), state.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_render_model
 
-
 #ifdef XR_EXT_interaction_render_model
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::enumerateInteractionRenderModelIdsEXT (
-    const InteractionRenderModelIdsEnumerateInfoEXT& getInfo, uint32_t renderModelIdCapacityInput, uint32_t& renderModelIdCountOutput, RenderModelIdEXT* renderModelIds, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnumerateInteractionRenderModelIdsEXT(this->get(), getInfo.get(), renderModelIdCapacityInput, &renderModelIdCountOutput, renderModelIds == nullptr ? nullptr : renderModelIds->put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::enumerateInteractionRenderModelIdsEXT(
+    const InteractionRenderModelIdsEnumerateInfoEXT& getInfo, uint32_t renderModelIdCapacityInput,
+    uint32_t& renderModelIdCountOutput, RenderModelIdEXT* renderModelIds, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrEnumerateInteractionRenderModelIdsEXT(
+      this->get(), getInfo.get(), renderModelIdCapacityInput, &renderModelIdCountOutput,
+      renderModelIds == nullptr ? nullptr : renderModelIds->put()));
+
+  return result;
 }
 
 #endif  // XR_EXT_interaction_render_model
 
-
 #ifdef XR_EXT_interaction_render_model
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result RenderModelEXT::enumerateRenderModelSubactionPathsEXT (
-    const InteractionRenderModelSubactionPathInfoEXT& info, uint32_t pathCapacityInput, uint32_t& pathCountOutput, Path* paths, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnumerateRenderModelSubactionPathsEXT(this->get(), info.get(), pathCapacityInput, &pathCountOutput, paths == nullptr ? nullptr : paths->put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result RenderModelEXT::enumerateRenderModelSubactionPathsEXT(
+    const InteractionRenderModelSubactionPathInfoEXT& info, uint32_t pathCapacityInput,
+    uint32_t& pathCountOutput, Path* paths, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrEnumerateRenderModelSubactionPathsEXT(
+      this->get(), info.get(), pathCapacityInput, &pathCountOutput,
+      paths == nullptr ? nullptr : paths->put()));
+
+  return result;
 }
 
 #endif  // XR_EXT_interaction_render_model
 
-
 #ifdef XR_EXT_interaction_render_model
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result RenderModelEXT::getRenderModelPoseTopLevelUserPathEXT (
-    const InteractionRenderModelTopLevelUserPathGetInfoEXT& info, Path& topLevelUserPath, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetRenderModelPoseTopLevelUserPathEXT(this->get(), info.get(), topLevelUserPath.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result RenderModelEXT::getRenderModelPoseTopLevelUserPathEXT(
+    const InteractionRenderModelTopLevelUserPathGetInfoEXT& info, Path& topLevelUserPath,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetRenderModelPoseTopLevelUserPathEXT(this->get(), info.get(), topLevelUserPath.put()));
+
+  return result;
 }
 
 #endif  // XR_EXT_interaction_render_model
-
 
 #ifdef XR_QCOM_tracking_optimization_settings
 
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setTrackingOptimizationSettingsHintQCOM (
-    TrackingOptimizationSettingsDomainQCOM domain, TrackingOptimizationSettingsHintQCOM hint, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetTrackingOptimizationSettingsHintQCOM(this->get(), OPENXR_HPP_NAMESPACE::get(domain), OPENXR_HPP_NAMESPACE::get(hint)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::setTrackingOptimizationSettingsHintQCOM(
+    TrackingOptimizationSettingsDomainQCOM domain, TrackingOptimizationSettingsHintQCOM hint,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrSetTrackingOptimizationSettingsHintQCOM(
+      this->get(), OPENXR_HPP_NAMESPACE::get(domain), OPENXR_HPP_NAMESPACE::get(hint)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_QCOM_tracking_optimization_settings
 
-
 #ifdef XR_HTC_passthrough
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createPassthroughHTC (
-    const PassthroughCreateInfoHTC& createInfo, PassthroughHTC& passthrough, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreatePassthroughHTC(this->get(), createInfo.get(), passthrough.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::createPassthroughHTC(const PassthroughCreateInfoHTC& createInfo,
+                                                       PassthroughHTC& passthrough,
+                                                       Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreatePassthroughHTC(this->get(), createInfo.get(), passthrough.put()));
+
+  return result;
 }
 
 #endif  // XR_HTC_passthrough
 
-
 #ifdef XR_HTC_passthrough
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PassthroughHTC::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyPassthroughHTC(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result PassthroughHTC::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyPassthroughHTC(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_HTC_passthrough
 
-
 #ifdef XR_HTC_foveation
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::applyFoveationHTC (
-    const FoveationApplyInfoHTC& applyInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrApplyFoveationHTC(this->get(), applyInfo.get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::applyFoveationHTC(const FoveationApplyInfoHTC& applyInfo,
+                                                    Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrApplyFoveationHTC(this->get(), applyInfo.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_HTC_foveation
 
-
 #ifdef XR_HTC_anchor
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createSpatialAnchorHTC (
+OPENXR_HPP_INLINE Result Session::createSpatialAnchorHTC(
     const SpatialAnchorCreateInfoHTC& createInfo, Space& anchor, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorHTC(this->get(), createInfo.get(), anchor.put()) );
-    
-    return result;
+  Result result =
+      static_cast<Result>(d.xrCreateSpatialAnchorHTC(this->get(), createInfo.get(), anchor.put()));
+
+  return result;
 }
 
 #endif  // XR_HTC_anchor
-
 
 #ifdef XR_HTC_anchor
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Space::getSpatialAnchorNameHTC (
-    SpatialAnchorNameHTC& name, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSpatialAnchorNameHTC(this->get(), name.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Space::getSpatialAnchorNameHTC(SpatialAnchorNameHTC& name,
+                                                        Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetSpatialAnchorNameHTC(this->get(), name.put()));
+
+  return result;
 }
 
 #endif  // XR_HTC_anchor
 
-
 #ifdef XR_HTC_body_tracking
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createBodyTrackerHTC (
-    const BodyTrackerCreateInfoHTC& createInfo, BodyTrackerHTC& bodyTracker, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateBodyTrackerHTC(this->get(), createInfo.get(), bodyTracker.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::createBodyTrackerHTC(const BodyTrackerCreateInfoHTC& createInfo,
+                                                       BodyTrackerHTC& bodyTracker,
+                                                       Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateBodyTrackerHTC(this->get(), createInfo.get(), bodyTracker.put()));
+
+  return result;
 }
 
 #endif  // XR_HTC_body_tracking
 
-
 #ifdef XR_HTC_body_tracking
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result BodyTrackerHTC::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyBodyTrackerHTC(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result BodyTrackerHTC::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyBodyTrackerHTC(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_HTC_body_tracking
 
-
 #ifdef XR_HTC_body_tracking
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result BodyTrackerHTC::locateBodyJointsHTC (
-    const BodyJointsLocateInfoHTC& locateInfo, BodyJointLocationsHTC& locations, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrLocateBodyJointsHTC(this->get(), locateInfo.get(), locations.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result
+BodyTrackerHTC::locateBodyJointsHTC(const BodyJointsLocateInfoHTC& locateInfo,
+                                    BodyJointLocationsHTC& locations, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrLocateBodyJointsHTC(this->get(), locateInfo.get(), locations.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_HTC_body_tracking
 
-
 #ifdef XR_HTC_body_tracking
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result BodyTrackerHTC::getBodySkeletonHTC (
-    Space baseSpace, uint32_t skeletonGenerationId, BodySkeletonHTC& skeleton, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetBodySkeletonHTC(this->get(), baseSpace.get(), skeletonGenerationId, skeleton.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result BodyTrackerHTC::getBodySkeletonHTC(Space baseSpace,
+                                                            uint32_t skeletonGenerationId,
+                                                            BodySkeletonHTC& skeleton,
+                                                            Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetBodySkeletonHTC(
+      this->get(), baseSpace.get(), skeletonGenerationId, skeleton.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_HTC_body_tracking
-
 
 #ifdef XR_MNDX_force_feedback_curl
 
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result HandTrackerEXT::applyForceFeedbackCurlMNDX (
+OPENXR_HPP_INLINE Result HandTrackerEXT::applyForceFeedbackCurlMNDX(
     const ForceFeedbackCurlApplyLocationsMNDX& locations, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrApplyForceFeedbackCurlMNDX(this->get(), locations.get()) );
-    
-    return result;
+  Result result = static_cast<Result>(d.xrApplyForceFeedbackCurlMNDX(this->get(), locations.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_MNDX_force_feedback_curl
 
-
 #ifdef XR_BD_body_tracking
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createBodyTrackerBD (
-    const BodyTrackerCreateInfoBD& createInfo, BodyTrackerBD& bodyTracker, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateBodyTrackerBD(this->get(), createInfo.get(), bodyTracker.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::createBodyTrackerBD(const BodyTrackerCreateInfoBD& createInfo,
+                                                      BodyTrackerBD& bodyTracker,
+                                                      Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateBodyTrackerBD(this->get(), createInfo.get(), bodyTracker.put()));
+
+  return result;
 }
 
 #endif  // XR_BD_body_tracking
 
-
 #ifdef XR_BD_body_tracking
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result BodyTrackerBD::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyBodyTrackerBD(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result BodyTrackerBD::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyBodyTrackerBD(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_BD_body_tracking
 
-
 #ifdef XR_BD_body_tracking
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result BodyTrackerBD::locateBodyJointsBD (
-    const BodyJointsLocateInfoBD& locateInfo, BodyJointLocationsBD& locations, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrLocateBodyJointsBD(this->get(), locateInfo.get(), locations.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result BodyTrackerBD::locateBodyJointsBD(const BodyJointsLocateInfoBD& locateInfo,
+                                                           BodyJointLocationsBD& locations,
+                                                           Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrLocateBodyJointsBD(this->get(), locateInfo.get(), locations.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_BD_body_tracking
 
-
 #ifdef XR_BD_spatial_sensing
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataSnapshotBD::enumerateSpatialEntityComponentTypesBD (
-    SpatialEntityIdBD entityId, uint32_t componentTypeCapacityInput, uint32_t& componentTypeCountOutput, SpatialEntityComponentTypeBD* componentTypes, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnumerateSpatialEntityComponentTypesBD(this->get(), entityId.get(), componentTypeCapacityInput, &componentTypeCountOutput, componentTypes == nullptr ? nullptr : OPENXR_HPP_NAMESPACE::put(*componentTypes)) );
-    
-    return result;
-}
-
-#endif  // XR_BD_spatial_sensing
-
-
-#ifdef XR_BD_spatial_sensing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataSnapshotBD::getSpatialEntityUuidBD (
-    SpatialEntityIdBD entityId, XrUuidEXT* uuid, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSpatialEntityUuidBD(this->get(), entityId.get(), uuid) );
-    
-    return result;
-}
-
-#endif  // XR_BD_spatial_sensing
-
-
-#ifdef XR_BD_spatial_sensing
-
-
-
-#ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataSnapshotBD::getSpatialEntityComponentDataBD (
-    const SpatialEntityComponentGetInfoBD& getInfo, SpatialEntityComponentDataBaseHeaderBD& componentData, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSpatialEntityComponentDataBD(this->get(), getInfo.get(), componentData.put(false)) );
-    
-    return result;
-}
-#endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
-
-#endif  // XR_BD_spatial_sensing
-
-
-#ifdef XR_BD_spatial_sensing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createSenseDataProviderBD (
-    const SenseDataProviderCreateInfoBD& createInfo, SenseDataProviderBD& provider, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSenseDataProviderBD(this->get(), createInfo.get(), provider.put()) );
-    
-    return result;
-}
-
-#endif  // XR_BD_spatial_sensing
-
-
-#ifdef XR_BD_spatial_sensing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataProviderBD::startSenseDataProviderAsyncBD (
-    const SenseDataProviderStartInfoBD& startInfo, FutureEXT& future, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrStartSenseDataProviderAsyncBD(this->get(), startInfo.get(), future.put()) );
-    
-    return result;
-}
-
-#endif  // XR_BD_spatial_sensing
-
-
-#ifdef XR_BD_spatial_sensing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::startSenseDataProviderCompleteBD (
-    FutureEXT future, FutureCompletionEXT& completion, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrStartSenseDataProviderCompleteBD(this->get(), future.get(), completion.put()) );
-    
-    return result;
-}
-
-#endif  // XR_BD_spatial_sensing
-
-
-#ifdef XR_BD_spatial_sensing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataProviderBD::getSenseDataProviderStateBD (
-    SenseDataProviderStateBD& state, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSenseDataProviderStateBD(this->get(), OPENXR_HPP_NAMESPACE::put(state)) );
-    
-    return result;
-}
-
-#endif  // XR_BD_spatial_sensing
-
-
-#ifdef XR_BD_spatial_sensing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataProviderBD::querySenseDataAsyncBD (
-    const SenseDataQueryInfoBD& queryInfo, FutureEXT& future, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrQuerySenseDataAsyncBD(this->get(), queryInfo.get(), future.put()) );
-    
-    return result;
-}
-
-#endif  // XR_BD_spatial_sensing
-
-
-#ifdef XR_BD_spatial_sensing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataProviderBD::querySenseDataCompleteBD (
-    FutureEXT future, SenseDataQueryCompletionBD& completion, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrQuerySenseDataCompleteBD(this->get(), future.get(), completion.put()) );
-    
-    return result;
-}
-
-#endif  // XR_BD_spatial_sensing
-
-
-#ifdef XR_BD_spatial_sensing
-
-
-
-#ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataSnapshotBD::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySenseDataSnapshotBD(this->get()) );
-    
-    return result;
-}
-#endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
-
-#endif  // XR_BD_spatial_sensing
-
-
-#ifdef XR_BD_spatial_sensing
-
-
-
-#ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataSnapshotBD::getQueriedSenseDataBD (
-    QueriedSenseDataGetInfoBD& getInfo, QueriedSenseDataBD& queriedSenseData, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetQueriedSenseDataBD(this->get(), getInfo.put(), queriedSenseData.put(false)) );
-    
-    return result;
-}
-#endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
-
-#endif  // XR_BD_spatial_sensing
-
-
-#ifdef XR_BD_spatial_sensing
-
-
-
-#ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataProviderBD::stopSenseDataProviderBD (
+OPENXR_HPP_INLINE Result SenseDataSnapshotBD::enumerateSpatialEntityComponentTypesBD(
+    SpatialEntityIdBD entityId, uint32_t componentTypeCapacityInput,
+    uint32_t& componentTypeCountOutput, SpatialEntityComponentTypeBD* componentTypes,
     Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrStopSenseDataProviderBD(this->get()) );
-    
-    return result;
+  Result result = static_cast<Result>(d.xrEnumerateSpatialEntityComponentTypesBD(
+      this->get(), entityId.get(), componentTypeCapacityInput, &componentTypeCountOutput,
+      componentTypes == nullptr ? nullptr : OPENXR_HPP_NAMESPACE::put(*componentTypes)));
+
+  return result;
 }
-#endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_BD_spatial_sensing
 
-
 #ifdef XR_BD_spatial_sensing
 
+template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
+OPENXR_HPP_INLINE Result SenseDataSnapshotBD::getSpatialEntityUuidBD(SpatialEntityIdBD entityId,
+                                                                     XrUuidEXT* uuid,
+                                                                     Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrGetSpatialEntityUuidBD(this->get(), entityId.get(), uuid));
 
+  return result;
+}
+
+#endif  // XR_BD_spatial_sensing
+
+#ifdef XR_BD_spatial_sensing
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataProviderBD::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySenseDataProviderBD(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SenseDataSnapshotBD::getSpatialEntityComponentDataBD(
+    const SpatialEntityComponentGetInfoBD& getInfo,
+    SpatialEntityComponentDataBaseHeaderBD& componentData, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetSpatialEntityComponentDataBD(this->get(), getInfo.get(), componentData.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_BD_spatial_sensing
 
+#ifdef XR_BD_spatial_sensing
+
+template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
+OPENXR_HPP_INLINE Result
+Session::createSenseDataProviderBD(const SenseDataProviderCreateInfoBD& createInfo,
+                                   SenseDataProviderBD& provider, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateSenseDataProviderBD(this->get(), createInfo.get(), provider.put()));
+
+  return result;
+}
+
+#endif  // XR_BD_spatial_sensing
 
 #ifdef XR_BD_spatial_sensing
 
+template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
+OPENXR_HPP_INLINE Result SenseDataProviderBD::startSenseDataProviderAsyncBD(
+    const SenseDataProviderStartInfoBD& startInfo, FutureEXT& future, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrStartSenseDataProviderAsyncBD(this->get(), startInfo.get(), future.put()));
 
+  return result;
+}
 
+#endif  // XR_BD_spatial_sensing
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef XR_BD_spatial_sensing
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataProviderBD::createSpatialEntityAnchorBD (
+OPENXR_HPP_INLINE Result Session::startSenseDataProviderCompleteBD(FutureEXT future,
+                                                                   FutureCompletionEXT& completion,
+                                                                   Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrStartSenseDataProviderCompleteBD(this->get(), future.get(), completion.put()));
+
+  return result;
+}
+
+#endif  // XR_BD_spatial_sensing
+
+#ifdef XR_BD_spatial_sensing
+
+template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
+OPENXR_HPP_INLINE Result SenseDataProviderBD::getSenseDataProviderStateBD(
+    SenseDataProviderStateBD& state, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetSenseDataProviderStateBD(this->get(), OPENXR_HPP_NAMESPACE::put(state)));
+
+  return result;
+}
+
+#endif  // XR_BD_spatial_sensing
+
+#ifdef XR_BD_spatial_sensing
+
+template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
+OPENXR_HPP_INLINE Result SenseDataProviderBD::querySenseDataAsyncBD(
+    const SenseDataQueryInfoBD& queryInfo, FutureEXT& future, Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrQuerySenseDataAsyncBD(this->get(), queryInfo.get(), future.put()));
+
+  return result;
+}
+
+#endif  // XR_BD_spatial_sensing
+
+#ifdef XR_BD_spatial_sensing
+
+template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
+OPENXR_HPP_INLINE Result SenseDataProviderBD::querySenseDataCompleteBD(
+    FutureEXT future, SenseDataQueryCompletionBD& completion, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrQuerySenseDataCompleteBD(this->get(), future.get(), completion.put()));
+
+  return result;
+}
+
+#endif  // XR_BD_spatial_sensing
+
+#ifdef XR_BD_spatial_sensing
+
+#ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
+
+template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
+OPENXR_HPP_INLINE Result SenseDataSnapshotBD::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySenseDataSnapshotBD(this->get()));
+
+  return result;
+}
+#endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
+
+#endif  // XR_BD_spatial_sensing
+
+#ifdef XR_BD_spatial_sensing
+
+#ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
+
+template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
+OPENXR_HPP_INLINE Result SenseDataSnapshotBD::getQueriedSenseDataBD(
+    QueriedSenseDataGetInfoBD& getInfo, QueriedSenseDataBD& queriedSenseData, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetQueriedSenseDataBD(this->get(), getInfo.put(), queriedSenseData.put(false)));
+
+  return result;
+}
+#endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
+
+#endif  // XR_BD_spatial_sensing
+
+#ifdef XR_BD_spatial_sensing
+
+#ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
+
+template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
+OPENXR_HPP_INLINE Result SenseDataProviderBD::stopSenseDataProviderBD(Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrStopSenseDataProviderBD(this->get()));
+
+  return result;
+}
+#endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
+
+#endif  // XR_BD_spatial_sensing
+
+#ifdef XR_BD_spatial_sensing
+
+#ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
+
+template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
+OPENXR_HPP_INLINE Result SenseDataProviderBD::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySenseDataProviderBD(this->get()));
+
+  return result;
+}
+#endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
+
+#endif  // XR_BD_spatial_sensing
+
+#ifdef XR_BD_spatial_sensing
+
+template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
+OPENXR_HPP_INLINE Result SenseDataProviderBD::createSpatialEntityAnchorBD(
     const SpatialEntityAnchorCreateInfoBD& createInfo, AnchorBD& anchor, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSpatialEntityAnchorBD(this->get(), createInfo.get(), anchor.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialEntityAnchorBD(this->get(), createInfo.get(), anchor.put()));
+
+  return result;
 }
 
 #endif  // XR_BD_spatial_sensing
 
-
 #ifdef XR_BD_spatial_sensing
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result AnchorBD::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyAnchorBD(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result AnchorBD::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyAnchorBD(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_BD_spatial_sensing
 
-
 #ifdef XR_BD_spatial_sensing
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result AnchorBD::getAnchorUuidBD (
-    XrUuidEXT* uuid, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetAnchorUuidBD(this->get(), uuid) );
-    
-    return result;
+OPENXR_HPP_INLINE Result AnchorBD::getAnchorUuidBD(XrUuidEXT* uuid, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetAnchorUuidBD(this->get(), uuid));
+
+  return result;
 }
 
 #endif  // XR_BD_spatial_sensing
 
-
 #ifdef XR_BD_spatial_sensing
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createAnchorSpaceBD (
-    const AnchorSpaceCreateInfoBD& createInfo, Space& space, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateAnchorSpaceBD(this->get(), createInfo.get(), space.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::createAnchorSpaceBD(const AnchorSpaceCreateInfoBD& createInfo,
+                                                      Space& space, Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrCreateAnchorSpaceBD(this->get(), createInfo.get(), space.put()));
+
+  return result;
 }
 
 #endif  // XR_BD_spatial_sensing
-
 
 #ifdef XR_BD_spatial_anchor
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataProviderBD::createSpatialAnchorAsyncBD (
+OPENXR_HPP_INLINE Result SenseDataProviderBD::createSpatialAnchorAsyncBD(
     const SpatialAnchorCreateInfoBD& info, FutureEXT& future, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorAsyncBD(this->get(), info.get(), future.put()) );
-    
-    return result;
+  Result result =
+      static_cast<Result>(d.xrCreateSpatialAnchorAsyncBD(this->get(), info.get(), future.put()));
+
+  return result;
 }
 
 #endif  // XR_BD_spatial_anchor
 
-
 #ifdef XR_BD_spatial_anchor
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataProviderBD::createSpatialAnchorCompleteBD (
+OPENXR_HPP_INLINE Result SenseDataProviderBD::createSpatialAnchorCompleteBD(
     FutureEXT future, SpatialAnchorCreateCompletionBD& completion, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorCompleteBD(this->get(), future.get(), completion.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialAnchorCompleteBD(this->get(), future.get(), completion.put()));
+
+  return result;
 }
 
 #endif  // XR_BD_spatial_anchor
 
-
 #ifdef XR_BD_spatial_anchor
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataProviderBD::persistSpatialAnchorAsyncBD (
+OPENXR_HPP_INLINE Result SenseDataProviderBD::persistSpatialAnchorAsyncBD(
     const SpatialAnchorPersistInfoBD& info, FutureEXT& future, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPersistSpatialAnchorAsyncBD(this->get(), info.get(), future.put()) );
-    
-    return result;
+  Result result =
+      static_cast<Result>(d.xrPersistSpatialAnchorAsyncBD(this->get(), info.get(), future.put()));
+
+  return result;
 }
 
 #endif  // XR_BD_spatial_anchor
 
-
 #ifdef XR_BD_spatial_anchor
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataProviderBD::persistSpatialAnchorCompleteBD (
+OPENXR_HPP_INLINE Result SenseDataProviderBD::persistSpatialAnchorCompleteBD(
     FutureEXT future, FutureCompletionEXT& completion, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPersistSpatialAnchorCompleteBD(this->get(), future.get(), completion.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrPersistSpatialAnchorCompleteBD(this->get(), future.get(), completion.put()));
+
+  return result;
 }
 
 #endif  // XR_BD_spatial_anchor
 
-
 #ifdef XR_BD_spatial_anchor
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataProviderBD::unpersistSpatialAnchorAsyncBD (
+OPENXR_HPP_INLINE Result SenseDataProviderBD::unpersistSpatialAnchorAsyncBD(
     const SpatialAnchorUnpersistInfoBD& info, FutureEXT& future, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrUnpersistSpatialAnchorAsyncBD(this->get(), info.get(), future.put()) );
-    
-    return result;
+  Result result =
+      static_cast<Result>(d.xrUnpersistSpatialAnchorAsyncBD(this->get(), info.get(), future.put()));
+
+  return result;
 }
 
 #endif  // XR_BD_spatial_anchor
-
 
 #ifdef XR_BD_spatial_anchor
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataProviderBD::unpersistSpatialAnchorCompleteBD (
+OPENXR_HPP_INLINE Result SenseDataProviderBD::unpersistSpatialAnchorCompleteBD(
     FutureEXT future, FutureCompletionEXT& completion, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrUnpersistSpatialAnchorCompleteBD(this->get(), future.get(), completion.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrUnpersistSpatialAnchorCompleteBD(this->get(), future.get(), completion.put()));
+
+  return result;
 }
 
 #endif  // XR_BD_spatial_anchor
 
-
 #ifdef XR_BD_spatial_anchor_sharing
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataProviderBD::shareSpatialAnchorAsyncBD (
+OPENXR_HPP_INLINE Result SenseDataProviderBD::shareSpatialAnchorAsyncBD(
     const SpatialAnchorShareInfoBD& info, FutureEXT& future, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrShareSpatialAnchorAsyncBD(this->get(), info.get(), future.put()) );
-    
-    return result;
+  Result result =
+      static_cast<Result>(d.xrShareSpatialAnchorAsyncBD(this->get(), info.get(), future.put()));
+
+  return result;
 }
 
 #endif  // XR_BD_spatial_anchor_sharing
 
-
 #ifdef XR_BD_spatial_anchor_sharing
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataProviderBD::shareSpatialAnchorCompleteBD (
+OPENXR_HPP_INLINE Result SenseDataProviderBD::shareSpatialAnchorCompleteBD(
     FutureEXT future, FutureCompletionEXT& completion, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrShareSpatialAnchorCompleteBD(this->get(), future.get(), completion.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrShareSpatialAnchorCompleteBD(this->get(), future.get(), completion.put()));
+
+  return result;
 }
 
 #endif  // XR_BD_spatial_anchor_sharing
 
-
 #ifdef XR_BD_spatial_anchor_sharing
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataProviderBD::downloadSharedSpatialAnchorAsyncBD (
+OPENXR_HPP_INLINE Result SenseDataProviderBD::downloadSharedSpatialAnchorAsyncBD(
     const SharedSpatialAnchorDownloadInfoBD& info, FutureEXT& future, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrDownloadSharedSpatialAnchorAsyncBD(this->get(), info.get(), future.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrDownloadSharedSpatialAnchorAsyncBD(this->get(), info.get(), future.put()));
+
+  return result;
 }
 
 #endif  // XR_BD_spatial_anchor_sharing
-
 
 #ifdef XR_BD_spatial_anchor_sharing
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataProviderBD::downloadSharedSpatialAnchorCompleteBD (
+OPENXR_HPP_INLINE Result SenseDataProviderBD::downloadSharedSpatialAnchorCompleteBD(
     FutureEXT future, FutureCompletionEXT& completion, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrDownloadSharedSpatialAnchorCompleteBD(this->get(), future.get(), completion.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrDownloadSharedSpatialAnchorCompleteBD(this->get(), future.get(), completion.put()));
+
+  return result;
 }
 
 #endif  // XR_BD_spatial_anchor_sharing
 
-
 #ifdef XR_BD_spatial_scene
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataProviderBD::captureSceneAsyncBD (
-    const SceneCaptureInfoBD& info, FutureEXT& future, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCaptureSceneAsyncBD(this->get(), info.get(), future.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SenseDataProviderBD::captureSceneAsyncBD(const SceneCaptureInfoBD& info,
+                                                                  FutureEXT& future,
+                                                                  Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrCaptureSceneAsyncBD(this->get(), info.get(), future.put()));
+
+  return result;
 }
 
 #endif  // XR_BD_spatial_scene
 
-
 #ifdef XR_BD_spatial_scene
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataProviderBD::captureSceneCompleteBD (
+OPENXR_HPP_INLINE Result SenseDataProviderBD::captureSceneCompleteBD(
     FutureEXT future, FutureCompletionEXT& completion, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCaptureSceneCompleteBD(this->get(), future.get(), completion.put()) );
-    
-    return result;
+  Result result =
+      static_cast<Result>(d.xrCaptureSceneCompleteBD(this->get(), future.get(), completion.put()));
+
+  return result;
 }
 
 #endif  // XR_BD_spatial_scene
 
-
 #ifdef XR_EXT_plane_detection
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createPlaneDetectorEXT (
-    const PlaneDetectorCreateInfoEXT& createInfo, PlaneDetectorEXT& planeDetector, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreatePlaneDetectorEXT(this->get(), createInfo.get(), planeDetector.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result
+Session::createPlaneDetectorEXT(const PlaneDetectorCreateInfoEXT& createInfo,
+                                PlaneDetectorEXT& planeDetector, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreatePlaneDetectorEXT(this->get(), createInfo.get(), planeDetector.put()));
+
+  return result;
 }
 
 #endif  // XR_EXT_plane_detection
 
-
 #ifdef XR_EXT_plane_detection
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PlaneDetectorEXT::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyPlaneDetectorEXT(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result PlaneDetectorEXT::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyPlaneDetectorEXT(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_plane_detection
 
-
 #ifdef XR_EXT_plane_detection
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PlaneDetectorEXT::beginPlaneDetectionEXT (
+OPENXR_HPP_INLINE Result PlaneDetectorEXT::beginPlaneDetectionEXT(
     const PlaneDetectorBeginInfoEXT& beginInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrBeginPlaneDetectionEXT(this->get(), beginInfo.get()) );
-    
-    return result;
+  Result result = static_cast<Result>(d.xrBeginPlaneDetectionEXT(this->get(), beginInfo.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_plane_detection
 
-
 #ifdef XR_EXT_plane_detection
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PlaneDetectorEXT::getPlaneDetectionStateEXT (
-    PlaneDetectionStateEXT& state, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetPlaneDetectionStateEXT(this->get(), OPENXR_HPP_NAMESPACE::put(state)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result PlaneDetectorEXT::getPlaneDetectionStateEXT(PlaneDetectionStateEXT& state,
+                                                                     Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetPlaneDetectionStateEXT(this->get(), OPENXR_HPP_NAMESPACE::put(state)));
+
+  return result;
 }
 
 #endif  // XR_EXT_plane_detection
 
-
 #ifdef XR_EXT_plane_detection
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PlaneDetectorEXT::getPlaneDetectionsEXT (
+OPENXR_HPP_INLINE Result PlaneDetectorEXT::getPlaneDetectionsEXT(
     const PlaneDetectorGetInfoEXT& info, PlaneDetectorLocationsEXT& locations, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetPlaneDetectionsEXT(this->get(), info.get(), locations.put(false)) );
-    
-    return result;
+  Result result =
+      static_cast<Result>(d.xrGetPlaneDetectionsEXT(this->get(), info.get(), locations.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_plane_detection
-
 
 #ifdef XR_EXT_plane_detection
 
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PlaneDetectorEXT::getPlanePolygonBufferEXT (
-    uint64_t planeId, uint32_t polygonBufferIndex, PlaneDetectorPolygonBufferEXT& polygonBuffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetPlanePolygonBufferEXT(this->get(), planeId, polygonBufferIndex, polygonBuffer.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result PlaneDetectorEXT::getPlanePolygonBufferEXT(
+    uint64_t planeId, uint32_t polygonBufferIndex, PlaneDetectorPolygonBufferEXT& polygonBuffer,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetPlanePolygonBufferEXT(
+      this->get(), planeId, polygonBufferIndex, polygonBuffer.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_plane_detection
 
-
 #ifdef XR_EXT_future
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::pollFutureEXT (
-    const FuturePollInfoEXT& pollInfo, FuturePollResultEXT& pollResult, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPollFutureEXT(this->get(), pollInfo.get(), pollResult.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::pollFutureEXT(const FuturePollInfoEXT& pollInfo,
+                                                 FuturePollResultEXT& pollResult,
+                                                 Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrPollFutureEXT(this->get(), pollInfo.get(), pollResult.put()));
+
+  return result;
 }
 
 #endif  // XR_EXT_future
 
-
 #ifdef XR_EXT_future
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::cancelFutureEXT (
-    const FutureCancelInfoEXT& cancelInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCancelFutureEXT(this->get(), cancelInfo.get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::cancelFutureEXT(const FutureCancelInfoEXT& cancelInfo,
+                                                   Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrCancelFutureEXT(this->get(), cancelInfo.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_future
-
 
 #ifdef XR_ML_user_calibration
 
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::enableUserCalibrationEventsML (
+OPENXR_HPP_INLINE Result Instance::enableUserCalibrationEventsML(
     const UserCalibrationEnableEventsInfoML& enableInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnableUserCalibrationEventsML(this->get(), enableInfo.get()) );
-    
-    return result;
+  Result result =
+      static_cast<Result>(d.xrEnableUserCalibrationEventsML(this->get(), enableInfo.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_ML_user_calibration
 
-
 #ifdef XR_ML_system_notifications
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::setSystemNotificationsML (
-    const SystemNotificationsSetInfoML& info, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetSystemNotificationsML(this->get(), info.get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result
+Instance::setSystemNotificationsML(const SystemNotificationsSetInfoML& info, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrSetSystemNotificationsML(this->get(), info.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_ML_system_notifications
 
-
-#ifdef XR_ML_world_mesh_detection
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_world_mesh_detection
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createWorldMeshDetectorML (
-    const WorldMeshDetectorCreateInfoML& createInfo, WorldMeshDetectorML& detector, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateWorldMeshDetectorML(this->get(), createInfo.get(), detector.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result
+Session::createWorldMeshDetectorML(const WorldMeshDetectorCreateInfoML& createInfo,
+                                   WorldMeshDetectorML& detector, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateWorldMeshDetectorML(this->get(), createInfo.get(), detector.put()));
+
+  return result;
 }
 
 #endif  // XR_ML_world_mesh_detection
 
-
-#ifdef XR_ML_world_mesh_detection
-
-
+#ifdef dsaXR_ML_world_mesh_detection
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result WorldMeshDetectorML::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyWorldMeshDetectorML(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result WorldMeshDetectorML::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyWorldMeshDetectorML(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_ML_world_mesh_detection
 
-
-#ifdef XR_ML_world_mesh_detection
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_world_mesh_detection
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result WorldMeshDetectorML::requestWorldMeshStateAsyncML (
+OPENXR_HPP_INLINE Result WorldMeshDetectorML::requestWorldMeshStateAsyncML(
     const WorldMeshStateRequestInfoML& stateRequest, FutureEXT& future, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrRequestWorldMeshStateAsyncML(this->get(), stateRequest.get(), future.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrRequestWorldMeshStateAsyncML(this->get(), stateRequest.get(), future.put()));
+
+  return result;
 }
 
 #endif  // XR_ML_world_mesh_detection
 
-
-#ifdef XR_ML_world_mesh_detection
-
-
+#ifdef dsaXR_ML_world_mesh_detection
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result WorldMeshDetectorML::requestWorldMeshStateCompleteML (
+OPENXR_HPP_INLINE Result WorldMeshDetectorML::requestWorldMeshStateCompleteML(
     FutureEXT future, WorldMeshStateRequestCompletionML& completion, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrRequestWorldMeshStateCompleteML(this->get(), future.get(), completion.put(false)) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrRequestWorldMeshStateCompleteML(this->get(), future.get(), completion.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_ML_world_mesh_detection
 
-
-#ifdef XR_ML_world_mesh_detection
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_world_mesh_detection
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result WorldMeshDetectorML::getWorldMeshBufferRecommendSizeML (
-    const WorldMeshBufferRecommendedSizeInfoML& sizeInfo, WorldMeshBufferSizeML& size, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetWorldMeshBufferRecommendSizeML(this->get(), sizeInfo.get(), size.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result WorldMeshDetectorML::getWorldMeshBufferRecommendSizeML(
+    const WorldMeshBufferRecommendedSizeInfoML& sizeInfo, WorldMeshBufferSizeML& size,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetWorldMeshBufferRecommendSizeML(this->get(), sizeInfo.get(), size.put()));
+
+  return result;
 }
 
 #endif  // XR_ML_world_mesh_detection
 
-
-#ifdef XR_ML_world_mesh_detection
-
-
+#ifdef dsaXR_ML_world_mesh_detection
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result WorldMeshDetectorML::allocateWorldMeshBufferML (
+OPENXR_HPP_INLINE Result WorldMeshDetectorML::allocateWorldMeshBufferML(
     const WorldMeshBufferSizeML& size, WorldMeshBufferML& buffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrAllocateWorldMeshBufferML(this->get(), size.get(), buffer.put(false)) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrAllocateWorldMeshBufferML(this->get(), size.get(), buffer.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_ML_world_mesh_detection
 
-
-#ifdef XR_ML_world_mesh_detection
-
-
+#ifdef dsaXR_ML_world_mesh_detection
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result WorldMeshDetectorML::freeWorldMeshBufferML (
-    const WorldMeshBufferML& buffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrFreeWorldMeshBufferML(this->get(), buffer.get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result WorldMeshDetectorML::freeWorldMeshBufferML(const WorldMeshBufferML& buffer,
+                                                                    Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrFreeWorldMeshBufferML(this->get(), buffer.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_ML_world_mesh_detection
 
-
-#ifdef XR_ML_world_mesh_detection
-
-
+#ifdef dsaXR_ML_world_mesh_detection
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result WorldMeshDetectorML::requestWorldMeshAsyncML (
-    const WorldMeshGetInfoML& getInfo, WorldMeshBufferML& buffer, FutureEXT& future, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrRequestWorldMeshAsyncML(this->get(), getInfo.get(), buffer.put(false), future.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result WorldMeshDetectorML::requestWorldMeshAsyncML(
+    const WorldMeshGetInfoML& getInfo, WorldMeshBufferML& buffer, FutureEXT& future,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrRequestWorldMeshAsyncML(this->get(), getInfo.get(), buffer.put(false), future.put()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_ML_world_mesh_detection
 
-
-#ifdef XR_ML_world_mesh_detection
-
-
+#ifdef dsaXR_ML_world_mesh_detection
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result WorldMeshDetectorML::requestWorldMeshCompleteML (
-    const WorldMeshRequestCompletionInfoML& completionInfo, FutureEXT future, WorldMeshRequestCompletionML& completion, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrRequestWorldMeshCompleteML(this->get(), completionInfo.get(), future.get(), completion.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result WorldMeshDetectorML::requestWorldMeshCompleteML(
+    const WorldMeshRequestCompletionInfoML& completionInfo, FutureEXT future,
+    WorldMeshRequestCompletionML& completion, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrRequestWorldMeshCompleteML(
+      this->get(), completionInfo.get(), future.get(), completion.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_ML_world_mesh_detection
-
 
 #ifdef XR_ML_facial_expression
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createFacialExpressionClientML (
-    const FacialExpressionClientCreateInfoML& createInfo, FacialExpressionClientML& facialExpressionClient, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateFacialExpressionClientML(this->get(), createInfo.get(), facialExpressionClient.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::createFacialExpressionClientML(
+    const FacialExpressionClientCreateInfoML& createInfo,
+    FacialExpressionClientML& facialExpressionClient, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrCreateFacialExpressionClientML(
+      this->get(), createInfo.get(), facialExpressionClient.put()));
+
+  return result;
 }
 
 #endif  // XR_ML_facial_expression
 
-
 #ifdef XR_ML_facial_expression
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result FacialExpressionClientML::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyFacialExpressionClientML(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result FacialExpressionClientML::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyFacialExpressionClientML(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_ML_facial_expression
 
-
 #ifdef XR_ML_facial_expression
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result FacialExpressionClientML::getFacialExpressionBlendShapePropertiesML (
-    const FacialExpressionBlendShapeGetInfoML& blendShapeGetInfo, uint32_t blendShapeCount, FacialExpressionBlendShapePropertiesML* blendShapes, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetFacialExpressionBlendShapePropertiesML(this->get(), blendShapeGetInfo.get(), blendShapeCount, blendShapes == nullptr ? nullptr : blendShapes->put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result FacialExpressionClientML::getFacialExpressionBlendShapePropertiesML(
+    const FacialExpressionBlendShapeGetInfoML& blendShapeGetInfo, uint32_t blendShapeCount,
+    FacialExpressionBlendShapePropertiesML* blendShapes, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetFacialExpressionBlendShapePropertiesML(
+      this->get(), blendShapeGetInfo.get(), blendShapeCount,
+      blendShapes == nullptr ? nullptr : blendShapes->put(false)));
+
+  return result;
 }
 
 #endif  // XR_ML_facial_expression
-
 
 #ifdef XR_META_simultaneous_hands_and_controllers
 
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::resumeSimultaneousHandsAndControllersTrackingMETA (
+OPENXR_HPP_INLINE Result Session::resumeSimultaneousHandsAndControllersTrackingMETA(
     const SimultaneousHandsAndControllersTrackingResumeInfoMETA& resumeInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrResumeSimultaneousHandsAndControllersTrackingMETA(this->get(), resumeInfo.get()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrResumeSimultaneousHandsAndControllersTrackingMETA(this->get(), resumeInfo.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_META_simultaneous_hands_and_controllers
-
 
 #ifdef XR_META_simultaneous_hands_and_controllers
 
-
-
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::pauseSimultaneousHandsAndControllersTrackingMETA (
+OPENXR_HPP_INLINE Result Session::pauseSimultaneousHandsAndControllersTrackingMETA(
     const SimultaneousHandsAndControllersTrackingPauseInfoMETA& pauseInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPauseSimultaneousHandsAndControllersTrackingMETA(this->get(), pauseInfo.get()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrPauseSimultaneousHandsAndControllersTrackingMETA(this->get(), pauseInfo.get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_META_simultaneous_hands_and_controllers
 
-
 #ifdef XR_META_colocation_discovery
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::startColocationDiscoveryMETA (
-    const ColocationDiscoveryStartInfoMETA& info, AsyncRequestIdFB& discoveryRequestId, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrStartColocationDiscoveryMETA(this->get(), info.get(), discoveryRequestId.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result
+Session::startColocationDiscoveryMETA(const ColocationDiscoveryStartInfoMETA& info,
+                                      AsyncRequestIdFB& discoveryRequestId, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrStartColocationDiscoveryMETA(this->get(), info.get(), discoveryRequestId.put()));
+
+  return result;
 }
 
 #endif  // XR_META_colocation_discovery
 
-
 #ifdef XR_META_colocation_discovery
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::stopColocationDiscoveryMETA (
+OPENXR_HPP_INLINE Result Session::stopColocationDiscoveryMETA(
     const ColocationDiscoveryStopInfoMETA& info, AsyncRequestIdFB& requestId, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrStopColocationDiscoveryMETA(this->get(), info.get(), requestId.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrStopColocationDiscoveryMETA(this->get(), info.get(), requestId.put()));
+
+  return result;
 }
 
 #endif  // XR_META_colocation_discovery
-
 
 #ifdef XR_META_colocation_discovery
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::startColocationAdvertisementMETA (
-    const ColocationAdvertisementStartInfoMETA& info, AsyncRequestIdFB& advertisementRequestId, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrStartColocationAdvertisementMETA(this->get(), info.get(), advertisementRequestId.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::startColocationAdvertisementMETA(
+    const ColocationAdvertisementStartInfoMETA& info, AsyncRequestIdFB& advertisementRequestId,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrStartColocationAdvertisementMETA(this->get(), info.get(), advertisementRequestId.put()));
+
+  return result;
 }
 
 #endif  // XR_META_colocation_discovery
-
 
 #ifdef XR_META_colocation_discovery
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::stopColocationAdvertisementMETA (
-    const ColocationAdvertisementStopInfoMETA& info, AsyncRequestIdFB& requestId, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrStopColocationAdvertisementMETA(this->get(), info.get(), requestId.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result
+Session::stopColocationAdvertisementMETA(const ColocationAdvertisementStopInfoMETA& info,
+                                         AsyncRequestIdFB& requestId, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrStopColocationAdvertisementMETA(this->get(), info.get(), requestId.put()));
+
+  return result;
 }
 
 #endif  // XR_META_colocation_discovery
-
 
 #ifdef XR_EXT_spatial_entity
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::enumerateSpatialCapabilitiesEXT (
-    SystemId systemId, uint32_t capabilityCapacityInput, uint32_t& capabilityCountOutput, SpatialCapabilityEXT* capabilities, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnumerateSpatialCapabilitiesEXT(this->get(), systemId.get(), capabilityCapacityInput, &capabilityCountOutput, capabilities == nullptr ? nullptr : OPENXR_HPP_NAMESPACE::put(*capabilities)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::enumerateSpatialCapabilitiesEXT(
+    SystemId systemId, uint32_t capabilityCapacityInput, uint32_t& capabilityCountOutput,
+    SpatialCapabilityEXT* capabilities, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrEnumerateSpatialCapabilitiesEXT(
+      this->get(), systemId.get(), capabilityCapacityInput, &capabilityCountOutput,
+      capabilities == nullptr ? nullptr : OPENXR_HPP_NAMESPACE::put(*capabilities)));
+
+  return result;
 }
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::enumerateSpatialCapabilityComponentTypesEXT (
-    SystemId systemId, SpatialCapabilityEXT capability, SpatialCapabilityComponentTypesEXT& capabilityComponents, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnumerateSpatialCapabilityComponentTypesEXT(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(capability), capabilityComponents.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::enumerateSpatialCapabilityComponentTypesEXT(
+    SystemId systemId, SpatialCapabilityEXT capability,
+    SpatialCapabilityComponentTypesEXT& capabilityComponents, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrEnumerateSpatialCapabilityComponentTypesEXT(
+      this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(capability),
+      capabilityComponents.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::enumerateSpatialCapabilityFeaturesEXT (
-    SystemId systemId, SpatialCapabilityEXT capability, uint32_t capabilityFeatureCapacityInput, uint32_t& capabilityFeatureCountOutput, SpatialCapabilityFeatureEXT* capabilityFeatures, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnumerateSpatialCapabilityFeaturesEXT(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(capability), capabilityFeatureCapacityInput, &capabilityFeatureCountOutput, capabilityFeatures == nullptr ? nullptr : OPENXR_HPP_NAMESPACE::put(*capabilityFeatures)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::enumerateSpatialCapabilityFeaturesEXT(
+    SystemId systemId, SpatialCapabilityEXT capability, uint32_t capabilityFeatureCapacityInput,
+    uint32_t& capabilityFeatureCountOutput, SpatialCapabilityFeatureEXT* capabilityFeatures,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrEnumerateSpatialCapabilityFeaturesEXT(
+      this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(capability),
+      capabilityFeatureCapacityInput, &capabilityFeatureCountOutput,
+      capabilityFeatures == nullptr ? nullptr : OPENXR_HPP_NAMESPACE::put(*capabilityFeatures)));
+
+  return result;
 }
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createSpatialContextAsyncEXT (
+OPENXR_HPP_INLINE Result Session::createSpatialContextAsyncEXT(
     const SpatialContextCreateInfoEXT& createInfo, FutureEXT& future, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSpatialContextAsyncEXT(this->get(), createInfo.get(), future.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialContextAsyncEXT(this->get(), createInfo.get(), future.put()));
+
+  return result;
 }
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createSpatialContextCompleteEXT (
+OPENXR_HPP_INLINE Result Session::createSpatialContextCompleteEXT(
     FutureEXT future, CreateSpatialContextCompletionEXT& completion, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSpatialContextCompleteEXT(this->get(), future.get(), completion.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialContextCompleteEXT(this->get(), future.get(), completion.put()));
+
+  return result;
 }
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialContextEXT::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySpatialContextEXT(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SpatialContextEXT::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySpatialContextEXT(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialContextEXT::createSpatialDiscoverySnapshotAsyncEXT (
-    const SpatialDiscoverySnapshotCreateInfoEXT& createInfo, FutureEXT& future, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSpatialDiscoverySnapshotAsyncEXT(this->get(), createInfo.get(), future.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SpatialContextEXT::createSpatialDiscoverySnapshotAsyncEXT(
+    const SpatialDiscoverySnapshotCreateInfoEXT& createInfo, FutureEXT& future,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialDiscoverySnapshotAsyncEXT(this->get(), createInfo.get(), future.put()));
+
+  return result;
 }
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialContextEXT::createSpatialDiscoverySnapshotCompleteEXT (
-    const CreateSpatialDiscoverySnapshotCompletionInfoEXT& createSnapshotCompletionInfo, CreateSpatialDiscoverySnapshotCompletionEXT& completion, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSpatialDiscoverySnapshotCompleteEXT(this->get(), createSnapshotCompletionInfo.get(), completion.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SpatialContextEXT::createSpatialDiscoverySnapshotCompleteEXT(
+    const CreateSpatialDiscoverySnapshotCompletionInfoEXT& createSnapshotCompletionInfo,
+    CreateSpatialDiscoverySnapshotCompletionEXT& completion, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrCreateSpatialDiscoverySnapshotCompleteEXT(
+      this->get(), createSnapshotCompletionInfo.get(), completion.put()));
+
+  return result;
 }
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialSnapshotEXT::querySpatialComponentDataEXT (
-    const SpatialComponentDataQueryConditionEXT& queryCondition, SpatialComponentDataQueryResultEXT& queryResult, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrQuerySpatialComponentDataEXT(this->get(), queryCondition.get(), queryResult.put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SpatialSnapshotEXT::querySpatialComponentDataEXT(
+    const SpatialComponentDataQueryConditionEXT& queryCondition,
+    SpatialComponentDataQueryResultEXT& queryResult, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrQuerySpatialComponentDataEXT(this->get(), queryCondition.get(), queryResult.put(false)));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialSnapshotEXT::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySpatialSnapshotEXT(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SpatialSnapshotEXT::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySpatialSnapshotEXT(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialContextEXT::createSpatialEntityFromIdEXT (
-    const SpatialEntityFromIdCreateInfoEXT& createInfo, SpatialEntityEXT& spatialEntity, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSpatialEntityFromIdEXT(this->get(), createInfo.get(), spatialEntity.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SpatialContextEXT::createSpatialEntityFromIdEXT(
+    const SpatialEntityFromIdCreateInfoEXT& createInfo, SpatialEntityEXT& spatialEntity,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialEntityFromIdEXT(this->get(), createInfo.get(), spatialEntity.put()));
+
+  return result;
 }
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialEntityEXT::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySpatialEntityEXT(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SpatialEntityEXT::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySpatialEntityEXT(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialContextEXT::createSpatialUpdateSnapshotEXT (
-    const SpatialUpdateSnapshotCreateInfoEXT& createInfo, SpatialSnapshotEXT& snapshot, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSpatialUpdateSnapshotEXT(this->get(), createInfo.get(), snapshot.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SpatialContextEXT::createSpatialUpdateSnapshotEXT(
+    const SpatialUpdateSnapshotCreateInfoEXT& createInfo, SpatialSnapshotEXT& snapshot,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialUpdateSnapshotEXT(this->get(), createInfo.get(), snapshot.put()));
+
+  return result;
 }
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialSnapshotEXT::getSpatialBufferStringEXT (
-    const SpatialBufferGetInfoEXT& info, uint32_t bufferCapacityInput, uint32_t& bufferCountOutput, char* buffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSpatialBufferStringEXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, buffer) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SpatialSnapshotEXT::getSpatialBufferStringEXT(
+    const SpatialBufferGetInfoEXT& info, uint32_t bufferCapacityInput, uint32_t& bufferCountOutput,
+    char* buffer, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetSpatialBufferStringEXT(
+      this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, buffer));
+
+  return result;
 }
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialSnapshotEXT::getSpatialBufferUint8EXT (
-    const SpatialBufferGetInfoEXT& info, uint32_t bufferCapacityInput, uint32_t& bufferCountOutput, uint8_t* buffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSpatialBufferUint8EXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, buffer) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SpatialSnapshotEXT::getSpatialBufferUint8EXT(
+    const SpatialBufferGetInfoEXT& info, uint32_t bufferCapacityInput, uint32_t& bufferCountOutput,
+    uint8_t* buffer, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetSpatialBufferUint8EXT(
+      this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, buffer));
+
+  return result;
 }
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialSnapshotEXT::getSpatialBufferUint16EXT (
-    const SpatialBufferGetInfoEXT& info, uint32_t bufferCapacityInput, uint32_t& bufferCountOutput, uint16_t* buffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSpatialBufferUint16EXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, buffer) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SpatialSnapshotEXT::getSpatialBufferUint16EXT(
+    const SpatialBufferGetInfoEXT& info, uint32_t bufferCapacityInput, uint32_t& bufferCountOutput,
+    uint16_t* buffer, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetSpatialBufferUint16EXT(
+      this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, buffer));
+
+  return result;
 }
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialSnapshotEXT::getSpatialBufferUint32EXT (
-    const SpatialBufferGetInfoEXT& info, uint32_t bufferCapacityInput, uint32_t& bufferCountOutput, uint32_t* buffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSpatialBufferUint32EXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, buffer) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SpatialSnapshotEXT::getSpatialBufferUint32EXT(
+    const SpatialBufferGetInfoEXT& info, uint32_t bufferCapacityInput, uint32_t& bufferCountOutput,
+    uint32_t* buffer, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetSpatialBufferUint32EXT(
+      this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, buffer));
+
+  return result;
 }
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialSnapshotEXT::getSpatialBufferFloatEXT (
-    const SpatialBufferGetInfoEXT& info, uint32_t bufferCapacityInput, uint32_t& bufferCountOutput, float* buffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSpatialBufferFloatEXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, buffer) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SpatialSnapshotEXT::getSpatialBufferFloatEXT(
+    const SpatialBufferGetInfoEXT& info, uint32_t bufferCapacityInput, uint32_t& bufferCountOutput,
+    float* buffer, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetSpatialBufferFloatEXT(
+      this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, buffer));
+
+  return result;
 }
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialSnapshotEXT::getSpatialBufferVector2fEXT (
-    const SpatialBufferGetInfoEXT& info, uint32_t bufferCapacityInput, uint32_t& bufferCountOutput, Vector2f* buffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSpatialBufferVector2fEXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, buffer == nullptr ? nullptr : buffer->put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SpatialSnapshotEXT::getSpatialBufferVector2fEXT(
+    const SpatialBufferGetInfoEXT& info, uint32_t bufferCapacityInput, uint32_t& bufferCountOutput,
+    Vector2f* buffer, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetSpatialBufferVector2fEXT(
+      this->get(), info.get(), bufferCapacityInput, &bufferCountOutput,
+      buffer == nullptr ? nullptr : buffer->put(false)));
+
+  return result;
 }
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialSnapshotEXT::getSpatialBufferVector3fEXT (
-    const SpatialBufferGetInfoEXT& info, uint32_t bufferCapacityInput, uint32_t& bufferCountOutput, Vector3f* buffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSpatialBufferVector3fEXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, buffer == nullptr ? nullptr : buffer->put(false)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SpatialSnapshotEXT::getSpatialBufferVector3fEXT(
+    const SpatialBufferGetInfoEXT& info, uint32_t bufferCapacityInput, uint32_t& bufferCountOutput,
+    Vector3f* buffer, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetSpatialBufferVector3fEXT(
+      this->get(), info.get(), bufferCapacityInput, &bufferCountOutput,
+      buffer == nullptr ? nullptr : buffer->put(false)));
+
+  return result;
 }
 
 #endif  // XR_EXT_spatial_entity
-
 
 #ifdef XR_EXT_spatial_anchor
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialContextEXT::createSpatialAnchorEXT (
-    const SpatialAnchorCreateInfoEXT& createInfo, SpatialEntityIdEXT& anchorEntityId, SpatialEntityEXT& anchorEntity, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorEXT(this->get(), createInfo.get(), anchorEntityId.put(), anchorEntity.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SpatialContextEXT::createSpatialAnchorEXT(
+    const SpatialAnchorCreateInfoEXT& createInfo, SpatialEntityIdEXT& anchorEntityId,
+    SpatialEntityEXT& anchorEntity, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrCreateSpatialAnchorEXT(
+      this->get(), createInfo.get(), anchorEntityId.put(), anchorEntity.put()));
+
+  return result;
 }
 
 #endif  // XR_EXT_spatial_anchor
 
-
 #ifdef XR_EXT_spatial_persistence
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::enumerateSpatialPersistenceScopesEXT (
-    SystemId systemId, uint32_t persistenceScopeCapacityInput, uint32_t& persistenceScopeCountOutput, SpatialPersistenceScopeEXT* persistenceScopes, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnumerateSpatialPersistenceScopesEXT(this->get(), systemId.get(), persistenceScopeCapacityInput, &persistenceScopeCountOutput, persistenceScopes == nullptr ? nullptr : OPENXR_HPP_NAMESPACE::put(*persistenceScopes)) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Instance::enumerateSpatialPersistenceScopesEXT(
+    SystemId systemId, uint32_t persistenceScopeCapacityInput,
+    uint32_t& persistenceScopeCountOutput, SpatialPersistenceScopeEXT* persistenceScopes,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrEnumerateSpatialPersistenceScopesEXT(
+      this->get(), systemId.get(), persistenceScopeCapacityInput, &persistenceScopeCountOutput,
+      persistenceScopes == nullptr ? nullptr : OPENXR_HPP_NAMESPACE::put(*persistenceScopes)));
+
+  return result;
 }
 
 #endif  // XR_EXT_spatial_persistence
 
-
 #ifdef XR_EXT_spatial_persistence
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createSpatialPersistenceContextAsyncEXT (
-    const SpatialPersistenceContextCreateInfoEXT& createInfo, FutureEXT& future, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSpatialPersistenceContextAsyncEXT(this->get(), createInfo.get(), future.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::createSpatialPersistenceContextAsyncEXT(
+    const SpatialPersistenceContextCreateInfoEXT& createInfo, FutureEXT& future,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialPersistenceContextAsyncEXT(this->get(), createInfo.get(), future.put()));
+
+  return result;
 }
 
 #endif  // XR_EXT_spatial_persistence
 
-
 #ifdef XR_EXT_spatial_persistence
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createSpatialPersistenceContextCompleteEXT (
-    FutureEXT future, CreateSpatialPersistenceContextCompletionEXT& completion, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSpatialPersistenceContextCompleteEXT(this->get(), future.get(), completion.put()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result Session::createSpatialPersistenceContextCompleteEXT(
+    FutureEXT future, CreateSpatialPersistenceContextCompletionEXT& completion,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialPersistenceContextCompleteEXT(this->get(), future.get(), completion.put()));
+
+  return result;
 }
 
 #endif  // XR_EXT_spatial_persistence
 
-
 #ifdef XR_EXT_spatial_persistence
-
-
 
 #ifdef OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialPersistenceContextEXT::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySpatialPersistenceContextEXT(this->get()) );
-    
-    return result;
+OPENXR_HPP_INLINE Result SpatialPersistenceContextEXT::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySpatialPersistenceContextEXT(this->get()));
+
+  return result;
 }
 #endif  // OPENXR_HPP_DISABLE_ENHANCED_MODE
 
 #endif  // XR_EXT_spatial_persistence
 
-
 #ifdef XR_EXT_spatial_persistence_operations
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialPersistenceContextEXT::persistSpatialEntityAsyncEXT (
+OPENXR_HPP_INLINE Result SpatialPersistenceContextEXT::persistSpatialEntityAsyncEXT(
     const SpatialEntityPersistInfoEXT& persistInfo, FutureEXT& future, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPersistSpatialEntityAsyncEXT(this->get(), persistInfo.get(), future.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrPersistSpatialEntityAsyncEXT(this->get(), persistInfo.get(), future.put()));
+
+  return result;
 }
 
 #endif  // XR_EXT_spatial_persistence_operations
 
-
 #ifdef XR_EXT_spatial_persistence_operations
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialPersistenceContextEXT::persistSpatialEntityCompleteEXT (
+OPENXR_HPP_INLINE Result SpatialPersistenceContextEXT::persistSpatialEntityCompleteEXT(
     FutureEXT future, PersistSpatialEntityCompletionEXT& completion, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPersistSpatialEntityCompleteEXT(this->get(), future.get(), completion.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrPersistSpatialEntityCompleteEXT(this->get(), future.get(), completion.put()));
+
+  return result;
 }
 
 #endif  // XR_EXT_spatial_persistence_operations
 
-
 #ifdef XR_EXT_spatial_persistence_operations
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialPersistenceContextEXT::unpersistSpatialEntityAsyncEXT (
+OPENXR_HPP_INLINE Result SpatialPersistenceContextEXT::unpersistSpatialEntityAsyncEXT(
     const SpatialEntityUnpersistInfoEXT& unpersistInfo, FutureEXT& future, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrUnpersistSpatialEntityAsyncEXT(this->get(), unpersistInfo.get(), future.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrUnpersistSpatialEntityAsyncEXT(this->get(), unpersistInfo.get(), future.put()));
+
+  return result;
 }
 
 #endif  // XR_EXT_spatial_persistence_operations
 
-
 #ifdef XR_EXT_spatial_persistence_operations
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialPersistenceContextEXT::unpersistSpatialEntityCompleteEXT (
+OPENXR_HPP_INLINE Result SpatialPersistenceContextEXT::unpersistSpatialEntityCompleteEXT(
     FutureEXT future, UnpersistSpatialEntityCompletionEXT& completion, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrUnpersistSpatialEntityCompleteEXT(this->get(), future.get(), completion.put()) );
-    
-    return result;
+  Result result = static_cast<Result>(
+      d.xrUnpersistSpatialEntityCompleteEXT(this->get(), future.get(), completion.put()));
+
+  return result;
 }
 
 #endif  // XR_EXT_spatial_persistence_operations
 }  // namespace OPENXR_HPP_NAMESPACE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #endif  // ifndef OPENXR_METHOD_IMPLS_SIMPLE_INL_
-

@@ -2,37 +2,6 @@
 //     See cpp_generator.py for modifications
 // ************************************************************
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
 ** Copyright (c) 2017-2023 The Khronos Group Inc.
 ** Copyright (c) 2019-2023 Collabora, Ltd.
@@ -77,41 +46,11 @@
  * @file
  * @brief Inline implementations - include @ref openxr_method_impls.hpp instead!
  *
- * Contains inline implementations of "enhanced mode" method wrappers whose signature is the same whether or not exceptions are permitted.
+ * Contains inline implementations of "enhanced mode" method wrappers whose signature is the same
+ * whether or not exceptions are permitted.
  */
 
-
 #ifdef OPENXR_HPP_DOXYGEN
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #if !defined(OPENXR_HPP_NAMESPACE)
 #define OPENXR_HPP_NAMESPACE xr
@@ -127,3727 +66,1573 @@
 
 namespace OPENXR_HPP_NAMESPACE {
 
+#ifdef OPENXR_HPP_NO_EXCEPTIONS
+template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
+OPENXR_HPP_INLINE Result Instance::getInstanceProcAddr(const char* name,
+                                                       PFN_xrVoidFunction* function,
+                                                       Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetInstanceProcAddr(this->get(), name, function));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
+  return result;
+}
 
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
+#ifdef OPENXR_HPP_NO_EXCEPTIONS
+template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
+OPENXR_HPP_INLINE ResultValue<std::vector<ApiLayerProperties, Allocator>>
+enumerateApiLayerPropertiesToVector(Dispatch&& d) {
+  std::vector<ApiLayerProperties, Allocator> properties;
+  uint32_t propertyCountOutput = 0;
+  uint32_t propertyCapacityInput = 0;
 
+  Result result = static_cast<Result>(
+      d.xrEnumerateApiLayerProperties(propertyCapacityInput, &propertyCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || propertyCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(properties)};
+  }
+  do {
+    properties.resize(propertyCountOutput);
+    propertyCapacityInput = static_cast<uint32_t>(properties.size());
+    result = static_cast<Result>(d.xrEnumerateApiLayerProperties(
+        propertyCapacityInput, &propertyCountOutput,
+        reinterpret_cast<XrApiLayerProperties*>(properties.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(propertyCountOutput <= properties.size());
+    properties.resize(propertyCountOutput);
+  } else
+    properties.clear();
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
+  return {result, std::move(properties)};
+}
 
+template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
+OPENXR_HPP_INLINE ResultValue<std::vector<ApiLayerProperties, Allocator>>
+enumerateApiLayerPropertiesToVector(Allocator const& vectorAllocator, Dispatch&& d) {
+  std::vector<ApiLayerProperties, Allocator> properties{vectorAllocator};
+  uint32_t propertyCountOutput = 0;
+  uint32_t propertyCapacityInput = 0;
 
+  Result result = static_cast<Result>(
+      d.xrEnumerateApiLayerProperties(propertyCapacityInput, &propertyCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || propertyCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(properties)};
+  }
+  do {
+    properties.resize(propertyCountOutput);
+    propertyCapacityInput = static_cast<uint32_t>(properties.size());
+    result = static_cast<Result>(d.xrEnumerateApiLayerProperties(
+        propertyCapacityInput, &propertyCountOutput,
+        reinterpret_cast<XrApiLayerProperties*>(properties.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(propertyCountOutput <= properties.size());
+    properties.resize(propertyCountOutput);
+  } else
+    properties.clear();
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
+  return {result, std::move(properties)};
+}
 
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
+#ifdef OPENXR_HPP_NO_EXCEPTIONS
+template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
+OPENXR_HPP_INLINE ResultValue<std::vector<ExtensionProperties, Allocator>>
+enumerateInstanceExtensionPropertiesToVector(const char* layerName, Dispatch&& d) {
+  std::vector<ExtensionProperties, Allocator> properties;
+  uint32_t propertyCountOutput = 0;
+  uint32_t propertyCapacityInput = 0;
 
+  Result result = static_cast<Result>(d.xrEnumerateInstanceExtensionProperties(
+      layerName, propertyCapacityInput, &propertyCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || propertyCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(properties)};
+  }
+  do {
+    properties.resize(propertyCountOutput);
+    propertyCapacityInput = static_cast<uint32_t>(properties.size());
+    result = static_cast<Result>(d.xrEnumerateInstanceExtensionProperties(
+        layerName, propertyCapacityInput, &propertyCountOutput,
+        reinterpret_cast<XrExtensionProperties*>(properties.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(propertyCountOutput <= properties.size());
+    properties.resize(propertyCountOutput);
+  } else
+    properties.clear();
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
+  return {result, std::move(properties)};
+}
 
+template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
+OPENXR_HPP_INLINE ResultValue<std::vector<ExtensionProperties, Allocator>>
+enumerateInstanceExtensionPropertiesToVector(const char* layerName,
+                                             Allocator const& vectorAllocator, Dispatch&& d) {
+  std::vector<ExtensionProperties, Allocator> properties{vectorAllocator};
+  uint32_t propertyCountOutput = 0;
+  uint32_t propertyCapacityInput = 0;
 
+  Result result = static_cast<Result>(d.xrEnumerateInstanceExtensionProperties(
+      layerName, propertyCapacityInput, &propertyCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || propertyCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(properties)};
+  }
+  do {
+    properties.resize(propertyCountOutput);
+    propertyCapacityInput = static_cast<uint32_t>(properties.size());
+    result = static_cast<Result>(d.xrEnumerateInstanceExtensionProperties(
+        layerName, propertyCapacityInput, &propertyCountOutput,
+        reinterpret_cast<XrExtensionProperties*>(properties.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(propertyCountOutput <= properties.size());
+    properties.resize(propertyCountOutput);
+  } else
+    properties.clear();
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
+  return {result, std::move(properties)};
+}
 
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::getInstanceProcAddr (
-    const char* name, PFN_xrVoidFunction* function, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetInstanceProcAddr(this->get(), name, function) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<Instance> createInstance(const InstanceCreateInfo& createInfo,
+                                                       Dispatch&& d) {
+  Instance handle;
+  Result result = static_cast<Result>(d.xrCreateInstance(createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
-}
-
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#ifdef OPENXR_HPP_NO_EXCEPTIONS
-template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<ApiLayerProperties, Allocator>> enumerateApiLayerPropertiesToVector (
-    Dispatch&& d)  {
-    std::vector<ApiLayerProperties, Allocator> properties;
-        uint32_t propertyCountOutput = 0;
-    uint32_t propertyCapacityInput = 0;
-
-    
-    Result result = static_cast<Result>( d.xrEnumerateApiLayerProperties(propertyCapacityInput, &propertyCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || propertyCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
-
-
-        return { result, std::move(properties) };
-    }
-    do {
-        properties.resize(propertyCountOutput);
-        propertyCapacityInput = static_cast<uint32_t>(properties.size());
-        result = static_cast<Result>( d.xrEnumerateApiLayerProperties(propertyCapacityInput, &propertyCountOutput, reinterpret_cast<XrApiLayerProperties*>(properties.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(propertyCountOutput <= properties.size());
-        properties.resize(propertyCountOutput);
-    } else properties.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
-
-
-    return { result, std::move(properties) };
-
-}
-
-template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<ApiLayerProperties, Allocator>> enumerateApiLayerPropertiesToVector (
-    Allocator const& vectorAllocator, Dispatch&& d)  {
-    std::vector<ApiLayerProperties, Allocator> properties{vectorAllocator};
-        uint32_t propertyCountOutput = 0;
-    uint32_t propertyCapacityInput = 0;
-
-    
-    Result result = static_cast<Result>( d.xrEnumerateApiLayerProperties(propertyCapacityInput, &propertyCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || propertyCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
-
-
-        return { result, std::move(properties) };
-    }
-    do {
-        properties.resize(propertyCountOutput);
-        propertyCapacityInput = static_cast<uint32_t>(properties.size());
-        result = static_cast<Result>( d.xrEnumerateApiLayerProperties(propertyCapacityInput, &propertyCountOutput, reinterpret_cast<XrApiLayerProperties*>(properties.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(propertyCountOutput <= properties.size());
-        properties.resize(propertyCountOutput);
-    } else properties.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
-
-
-    return { result, std::move(properties) };
-
-}
-
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#ifdef OPENXR_HPP_NO_EXCEPTIONS
-template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<ExtensionProperties, Allocator>> enumerateInstanceExtensionPropertiesToVector (
-    const char* layerName, Dispatch&& d)  {
-    std::vector<ExtensionProperties, Allocator> properties;
-        uint32_t propertyCountOutput = 0;
-    uint32_t propertyCapacityInput = 0;
-
-    
-    Result result = static_cast<Result>( d.xrEnumerateInstanceExtensionProperties(layerName, propertyCapacityInput, &propertyCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || propertyCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
-
-
-        return { result, std::move(properties) };
-    }
-    do {
-        properties.resize(propertyCountOutput);
-        propertyCapacityInput = static_cast<uint32_t>(properties.size());
-        result = static_cast<Result>( d.xrEnumerateInstanceExtensionProperties(layerName, propertyCapacityInput, &propertyCountOutput, reinterpret_cast<XrExtensionProperties*>(properties.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(propertyCountOutput <= properties.size());
-        properties.resize(propertyCountOutput);
-    } else properties.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
-
-
-    return { result, std::move(properties) };
-
-}
-
-template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<ExtensionProperties, Allocator>> enumerateInstanceExtensionPropertiesToVector (
-    const char* layerName, Allocator const& vectorAllocator, Dispatch&& d)  {
-    std::vector<ExtensionProperties, Allocator> properties{vectorAllocator};
-        uint32_t propertyCountOutput = 0;
-    uint32_t propertyCapacityInput = 0;
-
-    
-    Result result = static_cast<Result>( d.xrEnumerateInstanceExtensionProperties(layerName, propertyCapacityInput, &propertyCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || propertyCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
-
-
-        return { result, std::move(properties) };
-    }
-    do {
-        properties.resize(propertyCountOutput);
-        propertyCapacityInput = static_cast<uint32_t>(properties.size());
-        result = static_cast<Result>( d.xrEnumerateInstanceExtensionProperties(layerName, propertyCapacityInput, &propertyCountOutput, reinterpret_cast<XrExtensionProperties*>(properties.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(propertyCountOutput <= properties.size());
-        properties.resize(propertyCountOutput);
-    } else properties.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
-
-
-    return { result, std::move(properties) };
-
-}
-
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#ifdef OPENXR_HPP_NO_EXCEPTIONS
-template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<Instance> createInstance (
-    const InstanceCreateInfo& createInfo, Dispatch&& d)  {
-    Instance handle;
-    Result result = static_cast<Result>( d.xrCreateInstance(createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
-
-
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<Instance, impl::RemoveRefConst<Dispatch>>> createInstanceUnique (
-    const InstanceCreateInfo& createInfo, Dispatch&& d)  {
-    Instance handle;
-    Result result = static_cast<Result>( d.xrCreateInstance(createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<Instance, impl::RemoveRefConst<Dispatch>>>
+createInstanceUnique(const InstanceCreateInfo& createInfo, Dispatch&& d) {
+  Instance handle;
+  Result result = static_cast<Result>(d.xrCreateInstance(createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<Instance, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<Instance, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
 #endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyInstance(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Instance::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyInstance(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<InstanceProperties> Instance::getInstanceProperties (
+OPENXR_HPP_INLINE ResultValue<InstanceProperties> Instance::getInstanceProperties(
     Dispatch&& d) const {
-    InstanceProperties instanceProperties;
-    Result result = static_cast<Result>( d.xrGetInstanceProperties(this->get(), OPENXR_HPP_NAMESPACE::put(instanceProperties)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  InstanceProperties instanceProperties;
+  Result result = static_cast<Result>(
+      d.xrGetInstanceProperties(this->get(), OPENXR_HPP_NAMESPACE::put(instanceProperties)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(instanceProperties) };
+  return {result, std::move(instanceProperties)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::pollEvent (
-    EventDataBuffer& eventData, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPollEvent(this->get(), eventData.put()) );
-    
-        #ifdef OPENXR_HPP_NO_EXCEPTIONS
-    OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Instance::pollEvent(EventDataBuffer& eventData, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrPollEvent(this->get(), eventData.put()));
+
+#ifdef OPENXR_HPP_NO_EXCEPTIONS
+  OPENXR_HPP_ASSERT(succeeded(result));
 #else
-    if (!(succeeded(result))) {
-        exceptions::throwResultException(result, OPENXR_HPP_NAMESPACE_STRING "::Instance::pollEvent");
-    }
+  if (!(succeeded(result))) {
+    exceptions::throwResultException(result, OPENXR_HPP_NAMESPACE_STRING "::Instance::pollEvent");
+  }
 #endif
 
-
-
-    return result;
+  return result;
 }
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_PROVIDE_DISCOURAGED_FUNCTIONS
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::resultToString (
-    Result value, char buffer[XR_MAX_RESULT_STRING_SIZE], Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrResultToString(this->get(), OPENXR_HPP_NAMESPACE::get(value), buffer) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Instance::resultToString(Result value,
+                                                  char buffer[XR_MAX_RESULT_STRING_SIZE],
+                                                  Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrResultToString(this->get(), OPENXR_HPP_NAMESPACE::get(value), buffer));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  //  OPENXR_HPP_PROVIDE_DISCOURAGED_FUNCTIONS
-
-
-
-
-
 
 #ifdef OPENXR_HPP_PROVIDE_DISCOURAGED_FUNCTIONS
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::structureTypeToString (
-    StructureType value, char buffer[XR_MAX_STRUCTURE_NAME_SIZE], Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrStructureTypeToString(this->get(), OPENXR_HPP_NAMESPACE::get(value), buffer) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Instance::structureTypeToString(StructureType value,
+                                                         char buffer[XR_MAX_STRUCTURE_NAME_SIZE],
+                                                         Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrStructureTypeToString(this->get(), OPENXR_HPP_NAMESPACE::get(value), buffer));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  //  OPENXR_HPP_PROVIDE_DISCOURAGED_FUNCTIONS
 
+#ifdef OPENXR_HPP_NO_EXCEPTIONS
+template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
+OPENXR_HPP_INLINE ResultValue<SystemId> Instance::getSystem(const SystemGetInfo& getInfo,
+                                                            Dispatch&& d) const {
+  SystemId systemId;
+  Result result = static_cast<Result>(
+      d.xrGetSystem(this->get(), getInfo.get(), OPENXR_HPP_NAMESPACE::put(systemId)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
+  return {result, std::move(systemId)};
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<SystemId> Instance::getSystem (
-    const SystemGetInfo& getInfo, Dispatch&& d) const {
-    SystemId systemId;
-    Result result = static_cast<Result>( d.xrGetSystem(this->get(), getInfo.get(), OPENXR_HPP_NAMESPACE::put(systemId)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<SystemProperties> Instance::getSystemProperties(SystemId systemId,
+                                                                              Dispatch&& d) const {
+  SystemProperties properties;
+  Result result = static_cast<Result>(
+      d.xrGetSystemProperties(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::put(properties)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(systemId) };
+  return {result, std::move(properties)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#ifdef OPENXR_HPP_NO_EXCEPTIONS
-template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<SystemProperties> Instance::getSystemProperties (
-    SystemId systemId, Dispatch&& d) const {
-    SystemProperties properties;
-    Result result = static_cast<Result>( d.xrGetSystemProperties(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::put(properties)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
-
-
-    return { result, std::move(properties) };
-}
-
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<EnvironmentBlendMode, Allocator>> Instance::enumerateEnvironmentBlendModesToVector (
-    SystemId systemId, ViewConfigurationType viewConfigurationType, Dispatch&& d) const {
-    std::vector<EnvironmentBlendMode, Allocator> environmentBlendModes;
-        uint32_t environmentBlendModeCountOutput = 0;
-    uint32_t environmentBlendModeCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<EnvironmentBlendMode, Allocator>>
+Instance::enumerateEnvironmentBlendModesToVector(SystemId systemId,
+                                                 ViewConfigurationType viewConfigurationType,
+                                                 Dispatch&& d) const {
+  std::vector<EnvironmentBlendMode, Allocator> environmentBlendModes;
+  uint32_t environmentBlendModeCountOutput = 0;
+  uint32_t environmentBlendModeCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateEnvironmentBlendModes(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType), environmentBlendModeCapacityInput, &environmentBlendModeCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || environmentBlendModeCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateEnvironmentBlendModes(
+      this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType),
+      environmentBlendModeCapacityInput, &environmentBlendModeCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || environmentBlendModeCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(environmentBlendModes)};
+  }
+  do {
+    environmentBlendModes.resize(environmentBlendModeCountOutput);
+    environmentBlendModeCapacityInput = static_cast<uint32_t>(environmentBlendModes.size());
+    result = static_cast<Result>(d.xrEnumerateEnvironmentBlendModes(
+        this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType),
+        environmentBlendModeCapacityInput, &environmentBlendModeCountOutput,
+        reinterpret_cast<XrEnvironmentBlendMode*>(environmentBlendModes.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(environmentBlendModeCountOutput <= environmentBlendModes.size());
+    environmentBlendModes.resize(environmentBlendModeCountOutput);
+  } else
+    environmentBlendModes.clear();
 
-        return { result, std::move(environmentBlendModes) };
-    }
-    do {
-        environmentBlendModes.resize(environmentBlendModeCountOutput);
-        environmentBlendModeCapacityInput = static_cast<uint32_t>(environmentBlendModes.size());
-        result = static_cast<Result>( d.xrEnumerateEnvironmentBlendModes(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType), environmentBlendModeCapacityInput, &environmentBlendModeCountOutput, reinterpret_cast<XrEnvironmentBlendMode*>(environmentBlendModes.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(environmentBlendModeCountOutput <= environmentBlendModes.size());
-        environmentBlendModes.resize(environmentBlendModeCountOutput);
-    } else environmentBlendModes.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(environmentBlendModes) };
-
+  return {result, std::move(environmentBlendModes)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<EnvironmentBlendMode, Allocator>> Instance::enumerateEnvironmentBlendModesToVector (
-    SystemId systemId, ViewConfigurationType viewConfigurationType, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<EnvironmentBlendMode, Allocator> environmentBlendModes{vectorAllocator};
-        uint32_t environmentBlendModeCountOutput = 0;
-    uint32_t environmentBlendModeCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<EnvironmentBlendMode, Allocator>>
+Instance::enumerateEnvironmentBlendModesToVector(SystemId systemId,
+                                                 ViewConfigurationType viewConfigurationType,
+                                                 Allocator const& vectorAllocator,
+                                                 Dispatch&& d) const {
+  std::vector<EnvironmentBlendMode, Allocator> environmentBlendModes{vectorAllocator};
+  uint32_t environmentBlendModeCountOutput = 0;
+  uint32_t environmentBlendModeCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateEnvironmentBlendModes(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType), environmentBlendModeCapacityInput, &environmentBlendModeCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || environmentBlendModeCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateEnvironmentBlendModes(
+      this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType),
+      environmentBlendModeCapacityInput, &environmentBlendModeCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || environmentBlendModeCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(environmentBlendModes)};
+  }
+  do {
+    environmentBlendModes.resize(environmentBlendModeCountOutput);
+    environmentBlendModeCapacityInput = static_cast<uint32_t>(environmentBlendModes.size());
+    result = static_cast<Result>(d.xrEnumerateEnvironmentBlendModes(
+        this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType),
+        environmentBlendModeCapacityInput, &environmentBlendModeCountOutput,
+        reinterpret_cast<XrEnvironmentBlendMode*>(environmentBlendModes.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(environmentBlendModeCountOutput <= environmentBlendModes.size());
+    environmentBlendModes.resize(environmentBlendModeCountOutput);
+  } else
+    environmentBlendModes.clear();
 
-        return { result, std::move(environmentBlendModes) };
-    }
-    do {
-        environmentBlendModes.resize(environmentBlendModeCountOutput);
-        environmentBlendModeCapacityInput = static_cast<uint32_t>(environmentBlendModes.size());
-        result = static_cast<Result>( d.xrEnumerateEnvironmentBlendModes(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType), environmentBlendModeCapacityInput, &environmentBlendModeCountOutput, reinterpret_cast<XrEnvironmentBlendMode*>(environmentBlendModes.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(environmentBlendModeCountOutput <= environmentBlendModes.size());
-        environmentBlendModes.resize(environmentBlendModeCountOutput);
-    } else environmentBlendModes.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(environmentBlendModes) };
-
+  return {result, std::move(environmentBlendModes)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<Session> Instance::createSession (
-    const SessionCreateInfo& createInfo, Dispatch&& d) const {
-    Session handle;
-    Result result = static_cast<Result>( d.xrCreateSession(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<Session> Instance::createSession(const SessionCreateInfo& createInfo,
+                                                               Dispatch&& d) const {
+  Session handle;
+  Result result =
+      static_cast<Result>(d.xrCreateSession(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<Session, impl::RemoveRefConst<Dispatch>>> Instance::createSessionUnique (
-    const SessionCreateInfo& createInfo, Dispatch&& d) const {
-    Session handle;
-    Result result = static_cast<Result>( d.xrCreateSession(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<Session, impl::RemoveRefConst<Dispatch>>>
+Instance::createSessionUnique(const SessionCreateInfo& createInfo, Dispatch&& d) const {
+  Session handle;
+  Result result =
+      static_cast<Result>(d.xrCreateSession(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<Session, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<Session, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
 #endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySession(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySession(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<ReferenceSpaceType, Allocator>> Session::enumerateReferenceSpacesToVector (
-    Dispatch&& d) const {
-    std::vector<ReferenceSpaceType, Allocator> spaces;
-        uint32_t spaceCountOutput = 0;
-    uint32_t spaceCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<ReferenceSpaceType, Allocator>>
+Session::enumerateReferenceSpacesToVector(Dispatch&& d) const {
+  std::vector<ReferenceSpaceType, Allocator> spaces;
+  uint32_t spaceCountOutput = 0;
+  uint32_t spaceCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateReferenceSpaces(this->get(), spaceCapacityInput, &spaceCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || spaceCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(
+      d.xrEnumerateReferenceSpaces(this->get(), spaceCapacityInput, &spaceCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || spaceCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(spaces)};
+  }
+  do {
+    spaces.resize(spaceCountOutput);
+    spaceCapacityInput = static_cast<uint32_t>(spaces.size());
+    result = static_cast<Result>(
+        d.xrEnumerateReferenceSpaces(this->get(), spaceCapacityInput, &spaceCountOutput,
+                                     reinterpret_cast<XrReferenceSpaceType*>(spaces.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(spaceCountOutput <= spaces.size());
+    spaces.resize(spaceCountOutput);
+  } else
+    spaces.clear();
 
-        return { result, std::move(spaces) };
-    }
-    do {
-        spaces.resize(spaceCountOutput);
-        spaceCapacityInput = static_cast<uint32_t>(spaces.size());
-        result = static_cast<Result>( d.xrEnumerateReferenceSpaces(this->get(), spaceCapacityInput, &spaceCountOutput, reinterpret_cast<XrReferenceSpaceType*>(spaces.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(spaceCountOutput <= spaces.size());
-        spaces.resize(spaceCountOutput);
-    } else spaces.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(spaces) };
-
+  return {result, std::move(spaces)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<ReferenceSpaceType, Allocator>> Session::enumerateReferenceSpacesToVector (
-    Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<ReferenceSpaceType, Allocator> spaces{vectorAllocator};
-        uint32_t spaceCountOutput = 0;
-    uint32_t spaceCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<ReferenceSpaceType, Allocator>>
+Session::enumerateReferenceSpacesToVector(Allocator const& vectorAllocator, Dispatch&& d) const {
+  std::vector<ReferenceSpaceType, Allocator> spaces{vectorAllocator};
+  uint32_t spaceCountOutput = 0;
+  uint32_t spaceCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateReferenceSpaces(this->get(), spaceCapacityInput, &spaceCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || spaceCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(
+      d.xrEnumerateReferenceSpaces(this->get(), spaceCapacityInput, &spaceCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || spaceCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(spaces)};
+  }
+  do {
+    spaces.resize(spaceCountOutput);
+    spaceCapacityInput = static_cast<uint32_t>(spaces.size());
+    result = static_cast<Result>(
+        d.xrEnumerateReferenceSpaces(this->get(), spaceCapacityInput, &spaceCountOutput,
+                                     reinterpret_cast<XrReferenceSpaceType*>(spaces.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(spaceCountOutput <= spaces.size());
+    spaces.resize(spaceCountOutput);
+  } else
+    spaces.clear();
 
-        return { result, std::move(spaces) };
-    }
-    do {
-        spaces.resize(spaceCountOutput);
-        spaceCapacityInput = static_cast<uint32_t>(spaces.size());
-        result = static_cast<Result>( d.xrEnumerateReferenceSpaces(this->get(), spaceCapacityInput, &spaceCountOutput, reinterpret_cast<XrReferenceSpaceType*>(spaces.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(spaceCountOutput <= spaces.size());
-        spaces.resize(spaceCountOutput);
-    } else spaces.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(spaces) };
-
+  return {result, std::move(spaces)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<Space> Session::createReferenceSpace (
+OPENXR_HPP_INLINE ResultValue<Space> Session::createReferenceSpace(
     const ReferenceSpaceCreateInfo& createInfo, Dispatch&& d) const {
-    Space handle;
-    Result result = static_cast<Result>( d.xrCreateReferenceSpace(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Space handle;
+  Result result =
+      static_cast<Result>(d.xrCreateReferenceSpace(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>> Session::createReferenceSpaceUnique (
-    const ReferenceSpaceCreateInfo& createInfo, Dispatch&& d) const {
-    Space handle;
-    Result result = static_cast<Result>( d.xrCreateReferenceSpace(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>>
+Session::createReferenceSpaceUnique(const ReferenceSpaceCreateInfo& createInfo,
+                                    Dispatch&& d) const {
+  Space handle;
+  Result result =
+      static_cast<Result>(d.xrCreateReferenceSpace(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
 #endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getReferenceSpaceBoundsRect (
-    ReferenceSpaceType referenceSpaceType, Extent2Df& bounds, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetReferenceSpaceBoundsRect(this->get(), OPENXR_HPP_NAMESPACE::get(referenceSpaceType), bounds.put()) );
-    
-        #ifdef OPENXR_HPP_NO_EXCEPTIONS
-    OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::getReferenceSpaceBoundsRect(ReferenceSpaceType referenceSpaceType,
+                                                              Extent2Df& bounds,
+                                                              Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetReferenceSpaceBoundsRect(
+      this->get(), OPENXR_HPP_NAMESPACE::get(referenceSpaceType), bounds.put()));
+
+#ifdef OPENXR_HPP_NO_EXCEPTIONS
+  OPENXR_HPP_ASSERT(succeeded(result));
 #else
-    if (!(succeeded(result))) {
-        exceptions::throwResultException(result, OPENXR_HPP_NAMESPACE_STRING "::Session::getReferenceSpaceBoundsRect");
-    }
+  if (!(succeeded(result))) {
+    exceptions::throwResultException(
+        result, OPENXR_HPP_NAMESPACE_STRING "::Session::getReferenceSpaceBoundsRect");
+  }
 #endif
 
-
-
-    return result;
+  return result;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<Space> Session::createActionSpace (
+OPENXR_HPP_INLINE ResultValue<Space> Session::createActionSpace(
     const ActionSpaceCreateInfo& createInfo, Dispatch&& d) const {
-    Space handle;
-    Result result = static_cast<Result>( d.xrCreateActionSpace(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Space handle;
+  Result result =
+      static_cast<Result>(d.xrCreateActionSpace(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>> Session::createActionSpaceUnique (
-    const ActionSpaceCreateInfo& createInfo, Dispatch&& d) const {
-    Space handle;
-    Result result = static_cast<Result>( d.xrCreateActionSpace(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>>
+Session::createActionSpaceUnique(const ActionSpaceCreateInfo& createInfo, Dispatch&& d) const {
+  Space handle;
+  Result result =
+      static_cast<Result>(d.xrCreateActionSpace(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
 #endif  // OPENXR_HPP_NO_EXCEPTIONS
 
+#ifdef OPENXR_HPP_NO_EXCEPTIONS
+template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
+OPENXR_HPP_INLINE ResultValue<SpaceLocation> Space::locateSpace(Space baseSpace, Time time,
+                                                                Dispatch&& d) const {
+  SpaceLocation location;
+  Result result = static_cast<Result>(d.xrLocateSpace(this->get(), baseSpace.get(), time.get(),
+                                                      OPENXR_HPP_NAMESPACE::put(location)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
+  return {result, std::move(location)};
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<SpaceLocation> Space::locateSpace (
-    Space baseSpace, Time time, Dispatch&& d) const {
-    SpaceLocation location;
-    Result result = static_cast<Result>( d.xrLocateSpace(this->get(), baseSpace.get(), time.get(), OPENXR_HPP_NAMESPACE::put(location)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Space::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySpace(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(location) };
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#ifdef OPENXR_HPP_NO_EXCEPTIONS
-template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Space::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySpace(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
-
-
-    return result;
-}
-
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<ViewConfigurationType, Allocator>> Instance::enumerateViewConfigurationsToVector (
-    SystemId systemId, Dispatch&& d) const {
-    std::vector<ViewConfigurationType, Allocator> viewConfigurationTypes;
-        uint32_t viewConfigurationTypeCountOutput = 0;
-    uint32_t viewConfigurationTypeCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<ViewConfigurationType, Allocator>>
+Instance::enumerateViewConfigurationsToVector(SystemId systemId, Dispatch&& d) const {
+  std::vector<ViewConfigurationType, Allocator> viewConfigurationTypes;
+  uint32_t viewConfigurationTypeCountOutput = 0;
+  uint32_t viewConfigurationTypeCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateViewConfigurations(this->get(), systemId.get(), viewConfigurationTypeCapacityInput, &viewConfigurationTypeCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || viewConfigurationTypeCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateViewConfigurations(
+      this->get(), systemId.get(), viewConfigurationTypeCapacityInput,
+      &viewConfigurationTypeCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || viewConfigurationTypeCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(viewConfigurationTypes)};
+  }
+  do {
+    viewConfigurationTypes.resize(viewConfigurationTypeCountOutput);
+    viewConfigurationTypeCapacityInput = static_cast<uint32_t>(viewConfigurationTypes.size());
+    result = static_cast<Result>(d.xrEnumerateViewConfigurations(
+        this->get(), systemId.get(), viewConfigurationTypeCapacityInput,
+        &viewConfigurationTypeCountOutput,
+        reinterpret_cast<XrViewConfigurationType*>(viewConfigurationTypes.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(viewConfigurationTypeCountOutput <= viewConfigurationTypes.size());
+    viewConfigurationTypes.resize(viewConfigurationTypeCountOutput);
+  } else
+    viewConfigurationTypes.clear();
 
-        return { result, std::move(viewConfigurationTypes) };
-    }
-    do {
-        viewConfigurationTypes.resize(viewConfigurationTypeCountOutput);
-        viewConfigurationTypeCapacityInput = static_cast<uint32_t>(viewConfigurationTypes.size());
-        result = static_cast<Result>( d.xrEnumerateViewConfigurations(this->get(), systemId.get(), viewConfigurationTypeCapacityInput, &viewConfigurationTypeCountOutput, reinterpret_cast<XrViewConfigurationType*>(viewConfigurationTypes.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(viewConfigurationTypeCountOutput <= viewConfigurationTypes.size());
-        viewConfigurationTypes.resize(viewConfigurationTypeCountOutput);
-    } else viewConfigurationTypes.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(viewConfigurationTypes) };
-
+  return {result, std::move(viewConfigurationTypes)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<ViewConfigurationType, Allocator>> Instance::enumerateViewConfigurationsToVector (
-    SystemId systemId, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<ViewConfigurationType, Allocator> viewConfigurationTypes{vectorAllocator};
-        uint32_t viewConfigurationTypeCountOutput = 0;
-    uint32_t viewConfigurationTypeCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<ViewConfigurationType, Allocator>>
+Instance::enumerateViewConfigurationsToVector(SystemId systemId, Allocator const& vectorAllocator,
+                                              Dispatch&& d) const {
+  std::vector<ViewConfigurationType, Allocator> viewConfigurationTypes{vectorAllocator};
+  uint32_t viewConfigurationTypeCountOutput = 0;
+  uint32_t viewConfigurationTypeCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateViewConfigurations(this->get(), systemId.get(), viewConfigurationTypeCapacityInput, &viewConfigurationTypeCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || viewConfigurationTypeCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateViewConfigurations(
+      this->get(), systemId.get(), viewConfigurationTypeCapacityInput,
+      &viewConfigurationTypeCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || viewConfigurationTypeCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(viewConfigurationTypes)};
+  }
+  do {
+    viewConfigurationTypes.resize(viewConfigurationTypeCountOutput);
+    viewConfigurationTypeCapacityInput = static_cast<uint32_t>(viewConfigurationTypes.size());
+    result = static_cast<Result>(d.xrEnumerateViewConfigurations(
+        this->get(), systemId.get(), viewConfigurationTypeCapacityInput,
+        &viewConfigurationTypeCountOutput,
+        reinterpret_cast<XrViewConfigurationType*>(viewConfigurationTypes.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(viewConfigurationTypeCountOutput <= viewConfigurationTypes.size());
+    viewConfigurationTypes.resize(viewConfigurationTypeCountOutput);
+  } else
+    viewConfigurationTypes.clear();
 
-        return { result, std::move(viewConfigurationTypes) };
-    }
-    do {
-        viewConfigurationTypes.resize(viewConfigurationTypeCountOutput);
-        viewConfigurationTypeCapacityInput = static_cast<uint32_t>(viewConfigurationTypes.size());
-        result = static_cast<Result>( d.xrEnumerateViewConfigurations(this->get(), systemId.get(), viewConfigurationTypeCapacityInput, &viewConfigurationTypeCountOutput, reinterpret_cast<XrViewConfigurationType*>(viewConfigurationTypes.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(viewConfigurationTypeCountOutput <= viewConfigurationTypes.size());
-        viewConfigurationTypes.resize(viewConfigurationTypeCountOutput);
-    } else viewConfigurationTypes.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(viewConfigurationTypes) };
-
+  return {result, std::move(viewConfigurationTypes)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<ViewConfigurationProperties> Instance::getViewConfigurationProperties (
+OPENXR_HPP_INLINE ResultValue<ViewConfigurationProperties> Instance::getViewConfigurationProperties(
     SystemId systemId, ViewConfigurationType viewConfigurationType, Dispatch&& d) const {
-    ViewConfigurationProperties configurationProperties;
-    Result result = static_cast<Result>( d.xrGetViewConfigurationProperties(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType), OPENXR_HPP_NAMESPACE::put(configurationProperties)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  ViewConfigurationProperties configurationProperties;
+  Result result = static_cast<Result>(d.xrGetViewConfigurationProperties(
+      this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType),
+      OPENXR_HPP_NAMESPACE::put(configurationProperties)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(configurationProperties) };
+  return {result, std::move(configurationProperties)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<ViewConfigurationView, Allocator>> Instance::enumerateViewConfigurationViewsToVector (
-    SystemId systemId, ViewConfigurationType viewConfigurationType, Dispatch&& d) const {
-    std::vector<ViewConfigurationView, Allocator> views;
-        uint32_t viewCountOutput = 0;
-    uint32_t viewCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<ViewConfigurationView, Allocator>>
+Instance::enumerateViewConfigurationViewsToVector(SystemId systemId,
+                                                  ViewConfigurationType viewConfigurationType,
+                                                  Dispatch&& d) const {
+  std::vector<ViewConfigurationView, Allocator> views;
+  uint32_t viewCountOutput = 0;
+  uint32_t viewCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateViewConfigurationViews(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType), viewCapacityInput, &viewCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || viewCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateViewConfigurationViews(
+      this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType),
+      viewCapacityInput, &viewCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || viewCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(views)};
+  }
+  do {
+    views.resize(viewCountOutput);
+    viewCapacityInput = static_cast<uint32_t>(views.size());
+    result = static_cast<Result>(d.xrEnumerateViewConfigurationViews(
+        this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType),
+        viewCapacityInput, &viewCountOutput,
+        reinterpret_cast<XrViewConfigurationView*>(views.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(viewCountOutput <= views.size());
+    views.resize(viewCountOutput);
+  } else
+    views.clear();
 
-        return { result, std::move(views) };
-    }
-    do {
-        views.resize(viewCountOutput);
-        viewCapacityInput = static_cast<uint32_t>(views.size());
-        result = static_cast<Result>( d.xrEnumerateViewConfigurationViews(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType), viewCapacityInput, &viewCountOutput, reinterpret_cast<XrViewConfigurationView*>(views.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(viewCountOutput <= views.size());
-        views.resize(viewCountOutput);
-    } else views.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(views) };
-
+  return {result, std::move(views)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<ViewConfigurationView, Allocator>> Instance::enumerateViewConfigurationViewsToVector (
-    SystemId systemId, ViewConfigurationType viewConfigurationType, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<ViewConfigurationView, Allocator> views{vectorAllocator};
-        uint32_t viewCountOutput = 0;
-    uint32_t viewCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<ViewConfigurationView, Allocator>>
+Instance::enumerateViewConfigurationViewsToVector(SystemId systemId,
+                                                  ViewConfigurationType viewConfigurationType,
+                                                  Allocator const& vectorAllocator,
+                                                  Dispatch&& d) const {
+  std::vector<ViewConfigurationView, Allocator> views{vectorAllocator};
+  uint32_t viewCountOutput = 0;
+  uint32_t viewCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateViewConfigurationViews(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType), viewCapacityInput, &viewCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || viewCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateViewConfigurationViews(
+      this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType),
+      viewCapacityInput, &viewCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || viewCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(views)};
+  }
+  do {
+    views.resize(viewCountOutput);
+    viewCapacityInput = static_cast<uint32_t>(views.size());
+    result = static_cast<Result>(d.xrEnumerateViewConfigurationViews(
+        this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType),
+        viewCapacityInput, &viewCountOutput,
+        reinterpret_cast<XrViewConfigurationView*>(views.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(viewCountOutput <= views.size());
+    views.resize(viewCountOutput);
+  } else
+    views.clear();
 
-        return { result, std::move(views) };
-    }
-    do {
-        views.resize(viewCountOutput);
-        viewCapacityInput = static_cast<uint32_t>(views.size());
-        result = static_cast<Result>( d.xrEnumerateViewConfigurationViews(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType), viewCapacityInput, &viewCountOutput, reinterpret_cast<XrViewConfigurationView*>(views.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(viewCountOutput <= views.size());
-        views.resize(viewCountOutput);
-    } else views.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(views) };
-
+  return {result, std::move(views)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<int64_t, Allocator>> Session::enumerateSwapchainFormatsToVector (
-    Dispatch&& d) const {
-    std::vector<int64_t, Allocator> formats;
-        uint32_t formatCountOutput = 0;
-    uint32_t formatCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<int64_t, Allocator>>
+Session::enumerateSwapchainFormatsToVector(Dispatch&& d) const {
+  std::vector<int64_t, Allocator> formats;
+  uint32_t formatCountOutput = 0;
+  uint32_t formatCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateSwapchainFormats(this->get(), formatCapacityInput, &formatCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || formatCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(
+      d.xrEnumerateSwapchainFormats(this->get(), formatCapacityInput, &formatCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || formatCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(formats)};
+  }
+  do {
+    formats.resize(formatCountOutput);
+    formatCapacityInput = static_cast<uint32_t>(formats.size());
+    result = static_cast<Result>(
+        d.xrEnumerateSwapchainFormats(this->get(), formatCapacityInput, &formatCountOutput,
+                                      reinterpret_cast<int64_t*>(formats.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(formatCountOutput <= formats.size());
+    formats.resize(formatCountOutput);
+  } else
+    formats.clear();
 
-        return { result, std::move(formats) };
-    }
-    do {
-        formats.resize(formatCountOutput);
-        formatCapacityInput = static_cast<uint32_t>(formats.size());
-        result = static_cast<Result>( d.xrEnumerateSwapchainFormats(this->get(), formatCapacityInput, &formatCountOutput, reinterpret_cast<int64_t*>(formats.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(formatCountOutput <= formats.size());
-        formats.resize(formatCountOutput);
-    } else formats.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(formats) };
-
+  return {result, std::move(formats)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<int64_t, Allocator>> Session::enumerateSwapchainFormatsToVector (
-    Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<int64_t, Allocator> formats{vectorAllocator};
-        uint32_t formatCountOutput = 0;
-    uint32_t formatCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<int64_t, Allocator>>
+Session::enumerateSwapchainFormatsToVector(Allocator const& vectorAllocator, Dispatch&& d) const {
+  std::vector<int64_t, Allocator> formats{vectorAllocator};
+  uint32_t formatCountOutput = 0;
+  uint32_t formatCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateSwapchainFormats(this->get(), formatCapacityInput, &formatCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || formatCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(
+      d.xrEnumerateSwapchainFormats(this->get(), formatCapacityInput, &formatCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || formatCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(formats)};
+  }
+  do {
+    formats.resize(formatCountOutput);
+    formatCapacityInput = static_cast<uint32_t>(formats.size());
+    result = static_cast<Result>(
+        d.xrEnumerateSwapchainFormats(this->get(), formatCapacityInput, &formatCountOutput,
+                                      reinterpret_cast<int64_t*>(formats.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(formatCountOutput <= formats.size());
+    formats.resize(formatCountOutput);
+  } else
+    formats.clear();
 
-        return { result, std::move(formats) };
-    }
-    do {
-        formats.resize(formatCountOutput);
-        formatCapacityInput = static_cast<uint32_t>(formats.size());
-        result = static_cast<Result>( d.xrEnumerateSwapchainFormats(this->get(), formatCapacityInput, &formatCountOutput, reinterpret_cast<int64_t*>(formats.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(formatCountOutput <= formats.size());
-        formats.resize(formatCountOutput);
-    } else formats.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(formats) };
-
+  return {result, std::move(formats)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<Swapchain> Session::createSwapchain (
+OPENXR_HPP_INLINE ResultValue<Swapchain> Session::createSwapchain(
     const SwapchainCreateInfo& createInfo, Dispatch&& d) const {
-    Swapchain handle;
-    Result result = static_cast<Result>( d.xrCreateSwapchain(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Swapchain handle;
+  Result result =
+      static_cast<Result>(d.xrCreateSwapchain(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<Swapchain, impl::RemoveRefConst<Dispatch>>> Session::createSwapchainUnique (
-    const SwapchainCreateInfo& createInfo, Dispatch&& d) const {
-    Swapchain handle;
-    Result result = static_cast<Result>( d.xrCreateSwapchain(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<Swapchain, impl::RemoveRefConst<Dispatch>>>
+Session::createSwapchainUnique(const SwapchainCreateInfo& createInfo, Dispatch&& d) const {
+  Swapchain handle;
+  Result result =
+      static_cast<Result>(d.xrCreateSwapchain(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<Swapchain, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<Swapchain, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
 #endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Swapchain::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySwapchain(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Swapchain::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySwapchain(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Swapchain::enumerateSwapchainImages (
-    uint32_t imageCapacityInput, uint32_t& imageCountOutput, SwapchainImageBaseHeader* images, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnumerateSwapchainImages(this->get(), imageCapacityInput, &imageCountOutput, images == nullptr ? nullptr : images->put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Swapchain::enumerateSwapchainImages(uint32_t imageCapacityInput,
+                                                             uint32_t& imageCountOutput,
+                                                             SwapchainImageBaseHeader* images,
+                                                             Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrEnumerateSwapchainImages(this->get(), imageCapacityInput, &imageCountOutput,
+                                   images == nullptr ? nullptr : images->put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<uint32_t> Swapchain::acquireSwapchainImage (
+OPENXR_HPP_INLINE ResultValue<uint32_t> Swapchain::acquireSwapchainImage(
     const SwapchainImageAcquireInfo& acquireInfo, Dispatch&& d) const {
-    uint32_t index;
-    Result result = static_cast<Result>( d.xrAcquireSwapchainImage(this->get(), acquireInfo.get(), &index) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  uint32_t index;
+  Result result =
+      static_cast<Result>(d.xrAcquireSwapchainImage(this->get(), acquireInfo.get(), &index));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(index) };
+  return {result, std::move(index)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Swapchain::waitSwapchainImage (
-    const SwapchainImageWaitInfo& waitInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrWaitSwapchainImage(this->get(), waitInfo.get()) );
-    
-        #ifdef OPENXR_HPP_NO_EXCEPTIONS
-    OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Swapchain::waitSwapchainImage(const SwapchainImageWaitInfo& waitInfo,
+                                                       Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrWaitSwapchainImage(this->get(), waitInfo.get()));
+
+#ifdef OPENXR_HPP_NO_EXCEPTIONS
+  OPENXR_HPP_ASSERT(succeeded(result));
 #else
-    if (!(succeeded(result))) {
-        exceptions::throwResultException(result, OPENXR_HPP_NAMESPACE_STRING "::Swapchain::waitSwapchainImage");
-    }
+  if (!(succeeded(result))) {
+    exceptions::throwResultException(result,
+                                     OPENXR_HPP_NAMESPACE_STRING "::Swapchain::waitSwapchainImage");
+  }
 #endif
 
-
-
-    return result;
+  return result;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Swapchain::releaseSwapchainImage (
-    const SwapchainImageReleaseInfo& releaseInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrReleaseSwapchainImage(this->get(), releaseInfo.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result
+Swapchain::releaseSwapchainImage(const SwapchainImageReleaseInfo& releaseInfo, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrReleaseSwapchainImage(this->get(), releaseInfo.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::beginSession (
-    const SessionBeginInfo& beginInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrBeginSession(this->get(), beginInfo.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::beginSession(const SessionBeginInfo& beginInfo,
+                                               Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrBeginSession(this->get(), beginInfo.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::endSession (
-    Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEndSession(this->get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::endSession(Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrEndSession(this->get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::requestExitSession (
-    Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrRequestExitSession(this->get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::requestExitSession(Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrRequestExitSession(this->get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FrameState> Session::waitFrame (
-    const FrameWaitInfo& frameWaitInfo, Dispatch&& d) const {
-    FrameState frameState;
-    Result result = static_cast<Result>( d.xrWaitFrame(this->get(), frameWaitInfo.get(), OPENXR_HPP_NAMESPACE::put(frameState)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<FrameState> Session::waitFrame(const FrameWaitInfo& frameWaitInfo,
+                                                             Dispatch&& d) const {
+  FrameState frameState;
+  Result result = static_cast<Result>(
+      d.xrWaitFrame(this->get(), frameWaitInfo.get(), OPENXR_HPP_NAMESPACE::put(frameState)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(frameState) };
+  return {result, std::move(frameState)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::beginFrame (
-    const FrameBeginInfo& frameBeginInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrBeginFrame(this->get(), frameBeginInfo.get()) );
-    
-        #ifdef OPENXR_HPP_NO_EXCEPTIONS
-    OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::beginFrame(const FrameBeginInfo& frameBeginInfo,
+                                             Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrBeginFrame(this->get(), frameBeginInfo.get()));
+
+#ifdef OPENXR_HPP_NO_EXCEPTIONS
+  OPENXR_HPP_ASSERT(succeeded(result));
 #else
-    if (!(succeeded(result))) {
-        exceptions::throwResultException(result, OPENXR_HPP_NAMESPACE_STRING "::Session::beginFrame");
-    }
+  if (!(succeeded(result))) {
+    exceptions::throwResultException(result, OPENXR_HPP_NAMESPACE_STRING "::Session::beginFrame");
+  }
 #endif
 
-
-
-    return result;
+  return result;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::endFrame (
-    const FrameEndInfo& frameEndInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEndFrame(this->get(), frameEndInfo.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::endFrame(const FrameEndInfo& frameEndInfo, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrEndFrame(this->get(), frameEndInfo.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<View, Allocator>> Session::locateViewsToVector (
+OPENXR_HPP_INLINE ResultValue<std::vector<View, Allocator>> Session::locateViewsToVector(
     const ViewLocateInfo& viewLocateInfo, ViewState& viewState, Dispatch&& d) const {
-    std::vector<View, Allocator> views;
-        uint32_t viewCountOutput = 0;
-    uint32_t viewCapacityInput = 0;
+  std::vector<View, Allocator> views;
+  uint32_t viewCountOutput = 0;
+  uint32_t viewCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrLocateViews(this->get(), viewLocateInfo.get(), viewState.put(), viewCapacityInput, &viewCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || viewCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result =
+      static_cast<Result>(d.xrLocateViews(this->get(), viewLocateInfo.get(), viewState.put(),
+                                          viewCapacityInput, &viewCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || viewCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(views)};
+  }
+  do {
+    views.resize(viewCountOutput);
+    viewCapacityInput = static_cast<uint32_t>(views.size());
+    result = static_cast<Result>(d.xrLocateViews(this->get(), viewLocateInfo.get(), viewState.put(),
+                                                 viewCapacityInput, &viewCountOutput,
+                                                 reinterpret_cast<XrView*>(views.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(viewCountOutput <= views.size());
+    views.resize(viewCountOutput);
+  } else
+    views.clear();
 
-        return { result, std::move(views) };
-    }
-    do {
-        views.resize(viewCountOutput);
-        viewCapacityInput = static_cast<uint32_t>(views.size());
-        result = static_cast<Result>( d.xrLocateViews(this->get(), viewLocateInfo.get(), viewState.put(), viewCapacityInput, &viewCountOutput, reinterpret_cast<XrView*>(views.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(viewCountOutput <= views.size());
-        views.resize(viewCountOutput);
-    } else views.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(views) };
-
+  return {result, std::move(views)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<View, Allocator>> Session::locateViewsToVector (
-    const ViewLocateInfo& viewLocateInfo, ViewState& viewState, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<View, Allocator> views{vectorAllocator};
-        uint32_t viewCountOutput = 0;
-    uint32_t viewCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<View, Allocator>> Session::locateViewsToVector(
+    const ViewLocateInfo& viewLocateInfo, ViewState& viewState, Allocator const& vectorAllocator,
+    Dispatch&& d) const {
+  std::vector<View, Allocator> views{vectorAllocator};
+  uint32_t viewCountOutput = 0;
+  uint32_t viewCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrLocateViews(this->get(), viewLocateInfo.get(), viewState.put(), viewCapacityInput, &viewCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || viewCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result =
+      static_cast<Result>(d.xrLocateViews(this->get(), viewLocateInfo.get(), viewState.put(),
+                                          viewCapacityInput, &viewCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || viewCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(views)};
+  }
+  do {
+    views.resize(viewCountOutput);
+    viewCapacityInput = static_cast<uint32_t>(views.size());
+    result = static_cast<Result>(d.xrLocateViews(this->get(), viewLocateInfo.get(), viewState.put(),
+                                                 viewCapacityInput, &viewCountOutput,
+                                                 reinterpret_cast<XrView*>(views.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(viewCountOutput <= views.size());
+    views.resize(viewCountOutput);
+  } else
+    views.clear();
 
-        return { result, std::move(views) };
-    }
-    do {
-        views.resize(viewCountOutput);
-        viewCapacityInput = static_cast<uint32_t>(views.size());
-        result = static_cast<Result>( d.xrLocateViews(this->get(), viewLocateInfo.get(), viewState.put(), viewCapacityInput, &viewCountOutput, reinterpret_cast<XrView*>(views.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(viewCountOutput <= views.size());
-        views.resize(viewCountOutput);
-    } else views.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(views) };
-
+  return {result, std::move(views)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<Path> Instance::stringToPath (
-    const char* pathString, Dispatch&& d) const {
-    Path path;
-    Result result = static_cast<Result>( d.xrStringToPath(this->get(), pathString, OPENXR_HPP_NAMESPACE::put(path)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<Path> Instance::stringToPath(const char* pathString,
+                                                           Dispatch&& d) const {
+  Path path;
+  Result result = static_cast<Result>(
+      d.xrStringToPath(this->get(), pathString, OPENXR_HPP_NAMESPACE::put(path)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(path) };
+  return {result, std::move(path)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>> Instance::pathToString (
+OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>> Instance::pathToString(
     Path path, Dispatch&& d) const {
-    std::vector<char, Allocator> buffer;
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+  std::vector<char, Allocator> buffer;
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    std::basic_string<char, std::char_traits<char>, Allocator> str{{}};
-    Result result = static_cast<Result>( d.xrPathToString(this->get(), path.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  std::basic_string<char, std::char_traits<char>, Allocator> str{{}};
+  Result result = static_cast<Result>(
+      d.xrPathToString(this->get(), path.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(str)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(d.xrPathToString(this->get(), path.get(), bufferCapacityInput,
+                                                  &bufferCountOutput,
+                                                  reinterpret_cast<char*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(str) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrPathToString(this->get(), path.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<char*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-    str.assign(buffer.begin(), buffer.end());
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  str.assign(buffer.begin(), buffer.end());
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(str) };
-
+  return {result, std::move(str)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>> Instance::pathToString (
+OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>> Instance::pathToString(
     Path path, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<char, Allocator> buffer{vectorAllocator};
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+  std::vector<char, Allocator> buffer{vectorAllocator};
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    std::basic_string<char, std::char_traits<char>, Allocator> str{vectorAllocator};
-    Result result = static_cast<Result>( d.xrPathToString(this->get(), path.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  std::basic_string<char, std::char_traits<char>, Allocator> str{vectorAllocator};
+  Result result = static_cast<Result>(
+      d.xrPathToString(this->get(), path.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(str)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(d.xrPathToString(this->get(), path.get(), bufferCapacityInput,
+                                                  &bufferCountOutput,
+                                                  reinterpret_cast<char*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(str) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrPathToString(this->get(), path.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<char*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-    str.assign(buffer.begin(), buffer.end());
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  str.assign(buffer.begin(), buffer.end());
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(str) };
-
+  return {result, std::move(str)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<ActionSet> Instance::createActionSet (
+OPENXR_HPP_INLINE ResultValue<ActionSet> Instance::createActionSet(
     const ActionSetCreateInfo& createInfo, Dispatch&& d) const {
-    ActionSet handle;
-    Result result = static_cast<Result>( d.xrCreateActionSet(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  ActionSet handle;
+  Result result =
+      static_cast<Result>(d.xrCreateActionSet(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<ActionSet, impl::RemoveRefConst<Dispatch>>> Instance::createActionSetUnique (
-    const ActionSetCreateInfo& createInfo, Dispatch&& d) const {
-    ActionSet handle;
-    Result result = static_cast<Result>( d.xrCreateActionSet(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<ActionSet, impl::RemoveRefConst<Dispatch>>>
+Instance::createActionSetUnique(const ActionSetCreateInfo& createInfo, Dispatch&& d) const {
+  ActionSet handle;
+  Result result =
+      static_cast<Result>(d.xrCreateActionSet(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<ActionSet, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<ActionSet, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
 #endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result ActionSet::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyActionSet(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result ActionSet::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyActionSet(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<Action> ActionSet::createAction (
-    const ActionCreateInfo& createInfo, Dispatch&& d) const {
-    Action handle;
-    Result result = static_cast<Result>( d.xrCreateAction(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<Action> ActionSet::createAction(const ActionCreateInfo& createInfo,
+                                                              Dispatch&& d) const {
+  Action handle;
+  Result result =
+      static_cast<Result>(d.xrCreateAction(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<Action, impl::RemoveRefConst<Dispatch>>> ActionSet::createActionUnique (
-    const ActionCreateInfo& createInfo, Dispatch&& d) const {
-    Action handle;
-    Result result = static_cast<Result>( d.xrCreateAction(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<Action, impl::RemoveRefConst<Dispatch>>>
+ActionSet::createActionUnique(const ActionCreateInfo& createInfo, Dispatch&& d) const {
+  Action handle;
+  Result result =
+      static_cast<Result>(d.xrCreateAction(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<Action, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<Action, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
 #endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Action::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyAction(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Action::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyAction(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::suggestInteractionProfileBindings (
+OPENXR_HPP_INLINE Result Instance::suggestInteractionProfileBindings(
     const InteractionProfileSuggestedBinding& suggestedBindings, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSuggestInteractionProfileBindings(this->get(), suggestedBindings.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(
+      d.xrSuggestInteractionProfileBindings(this->get(), suggestedBindings.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::attachSessionActionSets (
+OPENXR_HPP_INLINE Result Session::attachSessionActionSets(
     const SessionActionSetsAttachInfo& attachInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrAttachSessionActionSets(this->get(), attachInfo.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrAttachSessionActionSets(this->get(), attachInfo.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<InteractionProfileState> Session::getCurrentInteractionProfile (
+OPENXR_HPP_INLINE ResultValue<InteractionProfileState> Session::getCurrentInteractionProfile(
     Path topLevelUserPath, Dispatch&& d) const {
-    InteractionProfileState interactionProfile;
-    Result result = static_cast<Result>( d.xrGetCurrentInteractionProfile(this->get(), topLevelUserPath.get(), OPENXR_HPP_NAMESPACE::put(interactionProfile)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  InteractionProfileState interactionProfile;
+  Result result = static_cast<Result>(d.xrGetCurrentInteractionProfile(
+      this->get(), topLevelUserPath.get(), OPENXR_HPP_NAMESPACE::put(interactionProfile)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(interactionProfile) };
+  return {result, std::move(interactionProfile)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<ActionStateBoolean> Session::getActionStateBoolean (
+OPENXR_HPP_INLINE ResultValue<ActionStateBoolean> Session::getActionStateBoolean(
     const ActionStateGetInfo& getInfo, Dispatch&& d) const {
-    ActionStateBoolean state;
-    Result result = static_cast<Result>( d.xrGetActionStateBoolean(this->get(), getInfo.get(), OPENXR_HPP_NAMESPACE::put(state)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  ActionStateBoolean state;
+  Result result = static_cast<Result>(
+      d.xrGetActionStateBoolean(this->get(), getInfo.get(), OPENXR_HPP_NAMESPACE::put(state)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(state) };
+  return {result, std::move(state)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<ActionStateFloat> Session::getActionStateFloat (
+OPENXR_HPP_INLINE ResultValue<ActionStateFloat> Session::getActionStateFloat(
     const ActionStateGetInfo& getInfo, Dispatch&& d) const {
-    ActionStateFloat state;
-    Result result = static_cast<Result>( d.xrGetActionStateFloat(this->get(), getInfo.get(), OPENXR_HPP_NAMESPACE::put(state)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  ActionStateFloat state;
+  Result result = static_cast<Result>(
+      d.xrGetActionStateFloat(this->get(), getInfo.get(), OPENXR_HPP_NAMESPACE::put(state)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(state) };
+  return {result, std::move(state)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<ActionStateVector2f> Session::getActionStateVector2f (
+OPENXR_HPP_INLINE ResultValue<ActionStateVector2f> Session::getActionStateVector2f(
     const ActionStateGetInfo& getInfo, Dispatch&& d) const {
-    ActionStateVector2f state;
-    Result result = static_cast<Result>( d.xrGetActionStateVector2f(this->get(), getInfo.get(), OPENXR_HPP_NAMESPACE::put(state)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  ActionStateVector2f state;
+  Result result = static_cast<Result>(
+      d.xrGetActionStateVector2f(this->get(), getInfo.get(), OPENXR_HPP_NAMESPACE::put(state)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(state) };
+  return {result, std::move(state)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<ActionStatePose> Session::getActionStatePose (
+OPENXR_HPP_INLINE ResultValue<ActionStatePose> Session::getActionStatePose(
     const ActionStateGetInfo& getInfo, Dispatch&& d) const {
-    ActionStatePose state;
-    Result result = static_cast<Result>( d.xrGetActionStatePose(this->get(), getInfo.get(), OPENXR_HPP_NAMESPACE::put(state)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  ActionStatePose state;
+  Result result = static_cast<Result>(
+      d.xrGetActionStatePose(this->get(), getInfo.get(), OPENXR_HPP_NAMESPACE::put(state)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(state) };
+  return {result, std::move(state)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::syncActions (
-    const ActionsSyncInfo& syncInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSyncActions(this->get(), syncInfo.get()) );
-    
-        #ifdef OPENXR_HPP_NO_EXCEPTIONS
-    OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::syncActions(const ActionsSyncInfo& syncInfo, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrSyncActions(this->get(), syncInfo.get()));
+
+#ifdef OPENXR_HPP_NO_EXCEPTIONS
+  OPENXR_HPP_ASSERT(succeeded(result));
 #else
-    if (!(succeeded(result))) {
-        exceptions::throwResultException(result, OPENXR_HPP_NAMESPACE_STRING "::Session::syncActions");
-    }
+  if (!(succeeded(result))) {
+    exceptions::throwResultException(result, OPENXR_HPP_NAMESPACE_STRING "::Session::syncActions");
+  }
 #endif
 
-
-
-    return result;
+  return result;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<Path, Allocator>> Session::enumerateBoundSourcesForActionToVector (
+OPENXR_HPP_INLINE ResultValue<std::vector<Path, Allocator>>
+Session::enumerateBoundSourcesForActionToVector(
     const BoundSourcesForActionEnumerateInfo& enumerateInfo, Dispatch&& d) const {
-    std::vector<Path, Allocator> sources;
-        uint32_t sourceCountOutput = 0;
-    uint32_t sourceCapacityInput = 0;
+  std::vector<Path, Allocator> sources;
+  uint32_t sourceCountOutput = 0;
+  uint32_t sourceCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateBoundSourcesForAction(this->get(), enumerateInfo.get(), sourceCapacityInput, &sourceCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || sourceCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateBoundSourcesForAction(
+      this->get(), enumerateInfo.get(), sourceCapacityInput, &sourceCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || sourceCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(sources)};
+  }
+  do {
+    sources.resize(sourceCountOutput);
+    sourceCapacityInput = static_cast<uint32_t>(sources.size());
+    result = static_cast<Result>(d.xrEnumerateBoundSourcesForAction(
+        this->get(), enumerateInfo.get(), sourceCapacityInput, &sourceCountOutput,
+        reinterpret_cast<XrPath*>(sources.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(sourceCountOutput <= sources.size());
+    sources.resize(sourceCountOutput);
+  } else
+    sources.clear();
 
-        return { result, std::move(sources) };
-    }
-    do {
-        sources.resize(sourceCountOutput);
-        sourceCapacityInput = static_cast<uint32_t>(sources.size());
-        result = static_cast<Result>( d.xrEnumerateBoundSourcesForAction(this->get(), enumerateInfo.get(), sourceCapacityInput, &sourceCountOutput, reinterpret_cast<XrPath*>(sources.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(sourceCountOutput <= sources.size());
-        sources.resize(sourceCountOutput);
-    } else sources.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(sources) };
-
+  return {result, std::move(sources)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<Path, Allocator>> Session::enumerateBoundSourcesForActionToVector (
-    const BoundSourcesForActionEnumerateInfo& enumerateInfo, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<Path, Allocator> sources{vectorAllocator};
-        uint32_t sourceCountOutput = 0;
-    uint32_t sourceCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<Path, Allocator>>
+Session::enumerateBoundSourcesForActionToVector(
+    const BoundSourcesForActionEnumerateInfo& enumerateInfo, Allocator const& vectorAllocator,
+    Dispatch&& d) const {
+  std::vector<Path, Allocator> sources{vectorAllocator};
+  uint32_t sourceCountOutput = 0;
+  uint32_t sourceCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateBoundSourcesForAction(this->get(), enumerateInfo.get(), sourceCapacityInput, &sourceCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || sourceCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateBoundSourcesForAction(
+      this->get(), enumerateInfo.get(), sourceCapacityInput, &sourceCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || sourceCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(sources)};
+  }
+  do {
+    sources.resize(sourceCountOutput);
+    sourceCapacityInput = static_cast<uint32_t>(sources.size());
+    result = static_cast<Result>(d.xrEnumerateBoundSourcesForAction(
+        this->get(), enumerateInfo.get(), sourceCapacityInput, &sourceCountOutput,
+        reinterpret_cast<XrPath*>(sources.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(sourceCountOutput <= sources.size());
+    sources.resize(sourceCountOutput);
+  } else
+    sources.clear();
 
-        return { result, std::move(sources) };
-    }
-    do {
-        sources.resize(sourceCountOutput);
-        sourceCapacityInput = static_cast<uint32_t>(sources.size());
-        result = static_cast<Result>( d.xrEnumerateBoundSourcesForAction(this->get(), enumerateInfo.get(), sourceCapacityInput, &sourceCountOutput, reinterpret_cast<XrPath*>(sources.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(sourceCountOutput <= sources.size());
-        sources.resize(sourceCountOutput);
-    } else sources.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(sources) };
-
+  return {result, std::move(sources)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>> Session::getInputSourceLocalizedName (
-    const InputSourceLocalizedNameGetInfo& getInfo, Dispatch&& d) const {
-    std::vector<char, Allocator> buffer;
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>>
+Session::getInputSourceLocalizedName(const InputSourceLocalizedNameGetInfo& getInfo,
+                                     Dispatch&& d) const {
+  std::vector<char, Allocator> buffer;
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    std::basic_string<char, std::char_traits<char>, Allocator> str{{}};
-    Result result = static_cast<Result>( d.xrGetInputSourceLocalizedName(this->get(), getInfo.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  std::basic_string<char, std::char_traits<char>, Allocator> str{{}};
+  Result result = static_cast<Result>(d.xrGetInputSourceLocalizedName(
+      this->get(), getInfo.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(str)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(d.xrGetInputSourceLocalizedName(
+        this->get(), getInfo.get(), bufferCapacityInput, &bufferCountOutput,
+        reinterpret_cast<char*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(str) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrGetInputSourceLocalizedName(this->get(), getInfo.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<char*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-    str.assign(buffer.begin(), buffer.end());
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  str.assign(buffer.begin(), buffer.end());
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(str) };
-
+  return {result, std::move(str)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>> Session::getInputSourceLocalizedName (
-    const InputSourceLocalizedNameGetInfo& getInfo, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<char, Allocator> buffer{vectorAllocator};
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>>
+Session::getInputSourceLocalizedName(const InputSourceLocalizedNameGetInfo& getInfo,
+                                     Allocator const& vectorAllocator, Dispatch&& d) const {
+  std::vector<char, Allocator> buffer{vectorAllocator};
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    std::basic_string<char, std::char_traits<char>, Allocator> str{vectorAllocator};
-    Result result = static_cast<Result>( d.xrGetInputSourceLocalizedName(this->get(), getInfo.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  std::basic_string<char, std::char_traits<char>, Allocator> str{vectorAllocator};
+  Result result = static_cast<Result>(d.xrGetInputSourceLocalizedName(
+      this->get(), getInfo.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(str)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(d.xrGetInputSourceLocalizedName(
+        this->get(), getInfo.get(), bufferCapacityInput, &bufferCountOutput,
+        reinterpret_cast<char*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(str) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrGetInputSourceLocalizedName(this->get(), getInfo.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<char*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-    str.assign(buffer.begin(), buffer.end());
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  str.assign(buffer.begin(), buffer.end());
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(str) };
-
+  return {result, std::move(str)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::applyHapticFeedback (
-    const HapticActionInfo& hapticActionInfo, const HapticBaseHeader& hapticFeedback, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrApplyHapticFeedback(this->get(), hapticActionInfo.get(), hapticFeedback.get()) );
-    
-        #ifdef OPENXR_HPP_NO_EXCEPTIONS
-    OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::applyHapticFeedback(const HapticActionInfo& hapticActionInfo,
+                                                      const HapticBaseHeader& hapticFeedback,
+                                                      Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrApplyHapticFeedback(this->get(), hapticActionInfo.get(), hapticFeedback.get()));
+
+#ifdef OPENXR_HPP_NO_EXCEPTIONS
+  OPENXR_HPP_ASSERT(succeeded(result));
 #else
-    if (!(succeeded(result))) {
-        exceptions::throwResultException(result, OPENXR_HPP_NAMESPACE_STRING "::Session::applyHapticFeedback");
-    }
+  if (!(succeeded(result))) {
+    exceptions::throwResultException(result,
+                                     OPENXR_HPP_NAMESPACE_STRING "::Session::applyHapticFeedback");
+  }
 #endif
 
-
-
-    return result;
+  return result;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::stopHapticFeedback (
-    const HapticActionInfo& hapticActionInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrStopHapticFeedback(this->get(), hapticActionInfo.get()) );
-    
-        #ifdef OPENXR_HPP_NO_EXCEPTIONS
-    OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::stopHapticFeedback(const HapticActionInfo& hapticActionInfo,
+                                                     Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrStopHapticFeedback(this->get(), hapticActionInfo.get()));
+
+#ifdef OPENXR_HPP_NO_EXCEPTIONS
+  OPENXR_HPP_ASSERT(succeeded(result));
 #else
-    if (!(succeeded(result))) {
-        exceptions::throwResultException(result, OPENXR_HPP_NAMESPACE_STRING "::Session::stopHapticFeedback");
-    }
+  if (!(succeeded(result))) {
+    exceptions::throwResultException(result,
+                                     OPENXR_HPP_NAMESPACE_STRING "::Session::stopHapticFeedback");
+  }
 #endif
 
-
-
-    return result;
+  return result;
 }
-
-
-
-
 
 #ifdef XR_LOADER_VERSION_1_0
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<Instance> createApiLayerInstance (
-    const InstanceCreateInfo& info, const ApiLayerCreateInfo& layerInfo, Dispatch&& d)  {
-    Instance handle;
-    Result result = static_cast<Result>( d.xrCreateApiLayerInstance(info.get(), layerInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<Instance> createApiLayerInstance(const InstanceCreateInfo& info,
+                                                               const ApiLayerCreateInfo& layerInfo,
+                                                               Dispatch&& d) {
+  Instance handle;
+  Result result =
+      static_cast<Result>(d.xrCreateApiLayerInstance(info.get(), layerInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<Instance, impl::RemoveRefConst<Dispatch>>> createApiLayerInstanceUnique (
-    const InstanceCreateInfo& info, const ApiLayerCreateInfo& layerInfo, Dispatch&& d)  {
-    Instance handle;
-    Result result = static_cast<Result>( d.xrCreateApiLayerInstance(info.get(), layerInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<Instance, impl::RemoveRefConst<Dispatch>>>
+createApiLayerInstanceUnique(const InstanceCreateInfo& info, const ApiLayerCreateInfo& layerInfo,
+                             Dispatch&& d) {
+  Instance handle;
+  Result result =
+      static_cast<Result>(d.xrCreateApiLayerInstance(info.get(), layerInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<Instance, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<Instance, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -3855,1757 +1640,750 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<Instance, impl::RemoveRefConst<Dispat
 
 #endif  // XR_LOADER_VERSION_1_0
 
-
 #ifdef XR_LOADER_VERSION_1_0
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result negotiateLoaderRuntimeInterface (
-    const NegotiateLoaderInfo& loaderInfo, NegotiateRuntimeRequest& runtimeRequest, Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrNegotiateLoaderRuntimeInterface(loaderInfo.get(), runtimeRequest.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result negotiateLoaderRuntimeInterface(const NegotiateLoaderInfo& loaderInfo,
+                                                         NegotiateRuntimeRequest& runtimeRequest,
+                                                         Dispatch&& d) {
+  Result result = static_cast<Result>(
+      d.xrNegotiateLoaderRuntimeInterface(loaderInfo.get(), runtimeRequest.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_LOADER_VERSION_1_0
 
-
 #ifdef XR_LOADER_VERSION_1_0
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result negotiateLoaderApiLayerInterface (
-    const NegotiateLoaderInfo& loaderInfo, const char* layerName, NegotiateApiLayerRequest& apiLayerRequest, Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrNegotiateLoaderApiLayerInterface(loaderInfo.get(), layerName, apiLayerRequest.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result negotiateLoaderApiLayerInterface(const NegotiateLoaderInfo& loaderInfo,
+                                                          const char* layerName,
+                                                          NegotiateApiLayerRequest& apiLayerRequest,
+                                                          Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrNegotiateLoaderApiLayerInterface(
+      loaderInfo.get(), layerName, apiLayerRequest.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_LOADER_VERSION_1_0
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::locateSpaces (
-    const SpacesLocateInfo& locateInfo, SpaceLocations& spaceLocations, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrLocateSpaces(this->get(), locateInfo.get(), spaceLocations.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::locateSpaces(const SpacesLocateInfo& locateInfo,
+                                               SpaceLocations& spaceLocations, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrLocateSpaces(this->get(), locateInfo.get(), spaceLocations.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-
-
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #ifdef XR_KHR_android_thread_settings
 #if defined(XR_USE_PLATFORM_ANDROID)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setAndroidApplicationThreadKHR (
-    AndroidThreadTypeKHR threadType, uint32_t threadId, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetAndroidApplicationThreadKHR(this->get(), OPENXR_HPP_NAMESPACE::get(threadType), threadId) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::setAndroidApplicationThreadKHR(AndroidThreadTypeKHR threadType,
+                                                                 uint32_t threadId,
+                                                                 Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrSetAndroidApplicationThreadKHR(
+      this->get(), OPENXR_HPP_NAMESPACE::get(threadType), threadId));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-#endif // defined(XR_USE_PLATFORM_ANDROID)
+#endif  // defined(XR_USE_PLATFORM_ANDROID)
 #endif  // XR_KHR_android_thread_settings
-
 
 #ifdef XR_KHR_android_surface_swapchain
 #if defined(XR_USE_PLATFORM_ANDROID)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<Swapchain> Session::createSwapchainAndroidSurfaceKHR (
+OPENXR_HPP_INLINE ResultValue<Swapchain> Session::createSwapchainAndroidSurfaceKHR(
     const SwapchainCreateInfo& info, jobject* surface, Dispatch&& d) const {
-    Swapchain handle;
-    Result result = static_cast<Result>( d.xrCreateSwapchainAndroidSurfaceKHR(this->get(), info.get(), handle.put(), surface) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Swapchain handle;
+  Result result = static_cast<Result>(
+      d.xrCreateSwapchainAndroidSurfaceKHR(this->get(), info.get(), handle.put(), surface));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<Swapchain, impl::RemoveRefConst<Dispatch>>> Session::createSwapchainAndroidSurfaceUniqueKHR (
-    const SwapchainCreateInfo& info, jobject* surface, Dispatch&& d) const {
-    Swapchain handle;
-    Result result = static_cast<Result>( d.xrCreateSwapchainAndroidSurfaceKHR(this->get(), info.get(), handle.put(), surface) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<Swapchain, impl::RemoveRefConst<Dispatch>>>
+Session::createSwapchainAndroidSurfaceUniqueKHR(const SwapchainCreateInfo& info, jobject* surface,
+                                                Dispatch&& d) const {
+  Swapchain handle;
+  Result result = static_cast<Result>(
+      d.xrCreateSwapchainAndroidSurfaceKHR(this->get(), info.get(), handle.put(), surface));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<Swapchain, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<Swapchain, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
 #endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-#endif // defined(XR_USE_PLATFORM_ANDROID)
+#endif  // defined(XR_USE_PLATFORM_ANDROID)
 #endif  // XR_KHR_android_surface_swapchain
-
 
 #ifdef XR_KHR_opengl_enable
 #if defined(XR_USE_GRAPHICS_API_OPENGL)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<GraphicsRequirementsOpenGLKHR> Instance::getOpenGLGraphicsRequirementsKHR (
-    SystemId systemId, Dispatch&& d) const {
-    GraphicsRequirementsOpenGLKHR graphicsRequirements;
-    Result result = static_cast<Result>( d.xrGetOpenGLGraphicsRequirementsKHR(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::put(graphicsRequirements)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<GraphicsRequirementsOpenGLKHR>
+Instance::getOpenGLGraphicsRequirementsKHR(SystemId systemId, Dispatch&& d) const {
+  GraphicsRequirementsOpenGLKHR graphicsRequirements;
+  Result result = static_cast<Result>(d.xrGetOpenGLGraphicsRequirementsKHR(
+      this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::put(graphicsRequirements)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(graphicsRequirements) };
+  return {result, std::move(graphicsRequirements)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-#endif // defined(XR_USE_GRAPHICS_API_OPENGL)
+#endif  // defined(XR_USE_GRAPHICS_API_OPENGL)
 #endif  // XR_KHR_opengl_enable
-
 
 #ifdef XR_KHR_opengl_es_enable
 #if defined(XR_USE_GRAPHICS_API_OPENGL_ES)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<GraphicsRequirementsOpenGLESKHR> Instance::getOpenGLESGraphicsRequirementsKHR (
-    SystemId systemId, Dispatch&& d) const {
-    GraphicsRequirementsOpenGLESKHR graphicsRequirements;
-    Result result = static_cast<Result>( d.xrGetOpenGLESGraphicsRequirementsKHR(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::put(graphicsRequirements)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<GraphicsRequirementsOpenGLESKHR>
+Instance::getOpenGLESGraphicsRequirementsKHR(SystemId systemId, Dispatch&& d) const {
+  GraphicsRequirementsOpenGLESKHR graphicsRequirements;
+  Result result = static_cast<Result>(d.xrGetOpenGLESGraphicsRequirementsKHR(
+      this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::put(graphicsRequirements)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(graphicsRequirements) };
+  return {result, std::move(graphicsRequirements)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-#endif // defined(XR_USE_GRAPHICS_API_OPENGL_ES)
+#endif  // defined(XR_USE_GRAPHICS_API_OPENGL_ES)
 #endif  // XR_KHR_opengl_es_enable
 
-
 #ifdef XR_KHR_vulkan_enable
 #if defined(XR_USE_GRAPHICS_API_VULKAN)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>> Instance::getVulkanInstanceExtensionsKHR (
-    SystemId systemId, Dispatch&& d) const {
-    std::vector<char, Allocator> buffer;
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>>
+Instance::getVulkanInstanceExtensionsKHR(SystemId systemId, Dispatch&& d) const {
+  std::vector<char, Allocator> buffer;
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    std::basic_string<char, std::char_traits<char>, Allocator> str{{}};
-    Result result = static_cast<Result>( d.xrGetVulkanInstanceExtensionsKHR(this->get(), systemId.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  std::basic_string<char, std::char_traits<char>, Allocator> str{{}};
+  Result result = static_cast<Result>(d.xrGetVulkanInstanceExtensionsKHR(
+      this->get(), systemId.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(str)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(d.xrGetVulkanInstanceExtensionsKHR(
+        this->get(), systemId.get(), bufferCapacityInput, &bufferCountOutput,
+        reinterpret_cast<char*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(str) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrGetVulkanInstanceExtensionsKHR(this->get(), systemId.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<char*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-    str.assign(buffer.begin(), buffer.end());
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  str.assign(buffer.begin(), buffer.end());
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(str) };
-
+  return {result, std::move(str)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>> Instance::getVulkanInstanceExtensionsKHR (
-    SystemId systemId, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<char, Allocator> buffer{vectorAllocator};
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>>
+Instance::getVulkanInstanceExtensionsKHR(SystemId systemId, Allocator const& vectorAllocator,
+                                         Dispatch&& d) const {
+  std::vector<char, Allocator> buffer{vectorAllocator};
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    std::basic_string<char, std::char_traits<char>, Allocator> str{vectorAllocator};
-    Result result = static_cast<Result>( d.xrGetVulkanInstanceExtensionsKHR(this->get(), systemId.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  std::basic_string<char, std::char_traits<char>, Allocator> str{vectorAllocator};
+  Result result = static_cast<Result>(d.xrGetVulkanInstanceExtensionsKHR(
+      this->get(), systemId.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(str)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(d.xrGetVulkanInstanceExtensionsKHR(
+        this->get(), systemId.get(), bufferCapacityInput, &bufferCountOutput,
+        reinterpret_cast<char*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(str) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrGetVulkanInstanceExtensionsKHR(this->get(), systemId.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<char*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-    str.assign(buffer.begin(), buffer.end());
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  str.assign(buffer.begin(), buffer.end());
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(str) };
-
+  return {result, std::move(str)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-#endif // defined(XR_USE_GRAPHICS_API_VULKAN)
+#endif  // defined(XR_USE_GRAPHICS_API_VULKAN)
 #endif  // XR_KHR_vulkan_enable
-
 
 #ifdef XR_KHR_vulkan_enable
 #if defined(XR_USE_GRAPHICS_API_VULKAN)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>> Instance::getVulkanDeviceExtensionsKHR (
-    SystemId systemId, Dispatch&& d) const {
-    std::vector<char, Allocator> buffer;
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>>
+Instance::getVulkanDeviceExtensionsKHR(SystemId systemId, Dispatch&& d) const {
+  std::vector<char, Allocator> buffer;
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    std::basic_string<char, std::char_traits<char>, Allocator> str{{}};
-    Result result = static_cast<Result>( d.xrGetVulkanDeviceExtensionsKHR(this->get(), systemId.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  std::basic_string<char, std::char_traits<char>, Allocator> str{{}};
+  Result result = static_cast<Result>(d.xrGetVulkanDeviceExtensionsKHR(
+      this->get(), systemId.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(str)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(d.xrGetVulkanDeviceExtensionsKHR(
+        this->get(), systemId.get(), bufferCapacityInput, &bufferCountOutput,
+        reinterpret_cast<char*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(str) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrGetVulkanDeviceExtensionsKHR(this->get(), systemId.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<char*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-    str.assign(buffer.begin(), buffer.end());
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  str.assign(buffer.begin(), buffer.end());
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(str) };
-
+  return {result, std::move(str)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>> Instance::getVulkanDeviceExtensionsKHR (
-    SystemId systemId, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<char, Allocator> buffer{vectorAllocator};
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>>
+Instance::getVulkanDeviceExtensionsKHR(SystemId systemId, Allocator const& vectorAllocator,
+                                       Dispatch&& d) const {
+  std::vector<char, Allocator> buffer{vectorAllocator};
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    std::basic_string<char, std::char_traits<char>, Allocator> str{vectorAllocator};
-    Result result = static_cast<Result>( d.xrGetVulkanDeviceExtensionsKHR(this->get(), systemId.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  std::basic_string<char, std::char_traits<char>, Allocator> str{vectorAllocator};
+  Result result = static_cast<Result>(d.xrGetVulkanDeviceExtensionsKHR(
+      this->get(), systemId.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(str)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(d.xrGetVulkanDeviceExtensionsKHR(
+        this->get(), systemId.get(), bufferCapacityInput, &bufferCountOutput,
+        reinterpret_cast<char*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(str) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrGetVulkanDeviceExtensionsKHR(this->get(), systemId.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<char*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-    str.assign(buffer.begin(), buffer.end());
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  str.assign(buffer.begin(), buffer.end());
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(str) };
-
+  return {result, std::move(str)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-#endif // defined(XR_USE_GRAPHICS_API_VULKAN)
+#endif  // defined(XR_USE_GRAPHICS_API_VULKAN)
 #endif  // XR_KHR_vulkan_enable
-
 
 #ifdef XR_KHR_vulkan_enable
 #if defined(XR_USE_GRAPHICS_API_VULKAN)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<VkPhysicalDevice> Instance::getVulkanGraphicsDeviceKHR (
+OPENXR_HPP_INLINE ResultValue<VkPhysicalDevice> Instance::getVulkanGraphicsDeviceKHR(
     SystemId systemId, VkInstance vkInstance, Dispatch&& d) const {
-    VkPhysicalDevice vkPhysicalDevice;
-    Result result = static_cast<Result>( d.xrGetVulkanGraphicsDeviceKHR(this->get(), systemId.get(), vkInstance, &vkPhysicalDevice) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  VkPhysicalDevice vkPhysicalDevice;
+  Result result = static_cast<Result>(
+      d.xrGetVulkanGraphicsDeviceKHR(this->get(), systemId.get(), vkInstance, &vkPhysicalDevice));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(vkPhysicalDevice) };
+  return {result, std::move(vkPhysicalDevice)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-#endif // defined(XR_USE_GRAPHICS_API_VULKAN)
+#endif  // defined(XR_USE_GRAPHICS_API_VULKAN)
 #endif  // XR_KHR_vulkan_enable
-
 
 #ifdef XR_KHR_vulkan_enable
 #if defined(XR_USE_GRAPHICS_API_VULKAN)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<GraphicsRequirementsVulkanKHR> Instance::getVulkanGraphicsRequirementsKHR (
-    SystemId systemId, Dispatch&& d) const {
-    GraphicsRequirementsVulkanKHR graphicsRequirements;
-    Result result = static_cast<Result>( d.xrGetVulkanGraphicsRequirementsKHR(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::put(graphicsRequirements)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<GraphicsRequirementsVulkanKHR>
+Instance::getVulkanGraphicsRequirementsKHR(SystemId systemId, Dispatch&& d) const {
+  GraphicsRequirementsVulkanKHR graphicsRequirements;
+  Result result = static_cast<Result>(d.xrGetVulkanGraphicsRequirementsKHR(
+      this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::put(graphicsRequirements)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(graphicsRequirements) };
+  return {result, std::move(graphicsRequirements)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-#endif // defined(XR_USE_GRAPHICS_API_VULKAN)
+#endif  // defined(XR_USE_GRAPHICS_API_VULKAN)
 #endif  // XR_KHR_vulkan_enable
-
 
 #ifdef XR_KHR_D3D11_enable
 #if defined(XR_USE_GRAPHICS_API_D3D11)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<GraphicsRequirementsD3D11KHR> Instance::getD3D11GraphicsRequirementsKHR (
-    SystemId systemId, Dispatch&& d) const {
-    GraphicsRequirementsD3D11KHR graphicsRequirements;
-    Result result = static_cast<Result>( d.xrGetD3D11GraphicsRequirementsKHR(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::put(graphicsRequirements)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<GraphicsRequirementsD3D11KHR>
+Instance::getD3D11GraphicsRequirementsKHR(SystemId systemId, Dispatch&& d) const {
+  GraphicsRequirementsD3D11KHR graphicsRequirements;
+  Result result = static_cast<Result>(d.xrGetD3D11GraphicsRequirementsKHR(
+      this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::put(graphicsRequirements)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(graphicsRequirements) };
+  return {result, std::move(graphicsRequirements)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-#endif // defined(XR_USE_GRAPHICS_API_D3D11)
+#endif  // defined(XR_USE_GRAPHICS_API_D3D11)
 #endif  // XR_KHR_D3D11_enable
-
 
 #ifdef XR_KHR_D3D12_enable
 #if defined(XR_USE_GRAPHICS_API_D3D12)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<GraphicsRequirementsD3D12KHR> Instance::getD3D12GraphicsRequirementsKHR (
-    SystemId systemId, Dispatch&& d) const {
-    GraphicsRequirementsD3D12KHR graphicsRequirements;
-    Result result = static_cast<Result>( d.xrGetD3D12GraphicsRequirementsKHR(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::put(graphicsRequirements)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<GraphicsRequirementsD3D12KHR>
+Instance::getD3D12GraphicsRequirementsKHR(SystemId systemId, Dispatch&& d) const {
+  GraphicsRequirementsD3D12KHR graphicsRequirements;
+  Result result = static_cast<Result>(d.xrGetD3D12GraphicsRequirementsKHR(
+      this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::put(graphicsRequirements)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(graphicsRequirements) };
+  return {result, std::move(graphicsRequirements)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-#endif // defined(XR_USE_GRAPHICS_API_D3D12)
+#endif  // defined(XR_USE_GRAPHICS_API_D3D12)
 #endif  // XR_KHR_D3D12_enable
-
 
 #ifdef XR_KHR_metal_enable
 #if defined(XR_USE_GRAPHICS_API_METAL)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::getMetalGraphicsRequirementsKHR (
+OPENXR_HPP_INLINE Result Instance::getMetalGraphicsRequirementsKHR(
     SystemId systemId, GraphicsRequirementsMetalKHR& graphicsRequirements, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetMetalGraphicsRequirementsKHR(this->get(), systemId.get(), graphicsRequirements.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrGetMetalGraphicsRequirementsKHR(
+      this->get(), systemId.get(), graphicsRequirements.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-#endif // defined(XR_USE_GRAPHICS_API_METAL)
+#endif  // defined(XR_USE_GRAPHICS_API_METAL)
 #endif  // XR_KHR_metal_enable
-
 
 #ifdef XR_KHR_visibility_mask
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getVisibilityMaskKHR (
-    ViewConfigurationType viewConfigurationType, uint32_t viewIndex, VisibilityMaskTypeKHR visibilityMaskType, VisibilityMaskKHR& visibilityMask, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetVisibilityMaskKHR(this->get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType), viewIndex, OPENXR_HPP_NAMESPACE::get(visibilityMaskType), visibilityMask.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::getVisibilityMaskKHR(ViewConfigurationType viewConfigurationType,
+                                                       uint32_t viewIndex,
+                                                       VisibilityMaskTypeKHR visibilityMaskType,
+                                                       VisibilityMaskKHR& visibilityMask,
+                                                       Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetVisibilityMaskKHR(
+      this->get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType), viewIndex,
+      OPENXR_HPP_NAMESPACE::get(visibilityMaskType), visibilityMask.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_KHR_visibility_mask
 
-
 #ifdef XR_KHR_win32_convert_performance_counter_time
 #if defined(XR_USE_PLATFORM_WIN32)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<Time> Instance::convertWin32PerformanceCounterToTimeKHR (
+OPENXR_HPP_INLINE ResultValue<Time> Instance::convertWin32PerformanceCounterToTimeKHR(
     const LARGE_INTEGER* performanceCounter, Dispatch&& d) const {
-    Time time;
-    Result result = static_cast<Result>( d.xrConvertWin32PerformanceCounterToTimeKHR(this->get(), performanceCounter, OPENXR_HPP_NAMESPACE::put(time)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Time time;
+  Result result = static_cast<Result>(d.xrConvertWin32PerformanceCounterToTimeKHR(
+      this->get(), performanceCounter, OPENXR_HPP_NAMESPACE::put(time)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(time) };
+  return {result, std::move(time)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-#endif // defined(XR_USE_PLATFORM_WIN32)
+#endif  // defined(XR_USE_PLATFORM_WIN32)
 #endif  // XR_KHR_win32_convert_performance_counter_time
-
 
 #ifdef XR_KHR_win32_convert_performance_counter_time
 #if defined(XR_USE_PLATFORM_WIN32)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<LARGE_INTEGER> Instance::convertTimeToWin32PerformanceCounterKHR (
+OPENXR_HPP_INLINE ResultValue<LARGE_INTEGER> Instance::convertTimeToWin32PerformanceCounterKHR(
     Time time, Dispatch&& d) const {
-    LARGE_INTEGER performanceCounter;
-    Result result = static_cast<Result>( d.xrConvertTimeToWin32PerformanceCounterKHR(this->get(), time.get(), &performanceCounter) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  LARGE_INTEGER performanceCounter;
+  Result result = static_cast<Result>(
+      d.xrConvertTimeToWin32PerformanceCounterKHR(this->get(), time.get(), &performanceCounter));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(performanceCounter) };
+  return {result, std::move(performanceCounter)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-#endif // defined(XR_USE_PLATFORM_WIN32)
+#endif  // defined(XR_USE_PLATFORM_WIN32)
 #endif  // XR_KHR_win32_convert_performance_counter_time
 
-
 #ifdef XR_KHR_convert_timespec_time
 #if defined(XR_USE_TIMESPEC)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<Time> Instance::convertTimespecTimeToTimeKHR (
+OPENXR_HPP_INLINE ResultValue<Time> Instance::convertTimespecTimeToTimeKHR(
     const struct timespec* timespecTime, Dispatch&& d) const {
-    Time time;
-    Result result = static_cast<Result>( d.xrConvertTimespecTimeToTimeKHR(this->get(), timespecTime, OPENXR_HPP_NAMESPACE::put(time)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Time time;
+  Result result = static_cast<Result>(
+      d.xrConvertTimespecTimeToTimeKHR(this->get(), timespecTime, OPENXR_HPP_NAMESPACE::put(time)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(time) };
+  return {result, std::move(time)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-#endif // defined(XR_USE_TIMESPEC)
+#endif  // defined(XR_USE_TIMESPEC)
 #endif  // XR_KHR_convert_timespec_time
-
 
 #ifdef XR_KHR_convert_timespec_time
 #if defined(XR_USE_TIMESPEC)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<timespec> Instance::convertTimeToTimespecTimeKHR (
-    Time time, Dispatch&& d) const {
-    timespec timespecTime;
-    Result result = static_cast<Result>( d.xrConvertTimeToTimespecTimeKHR(this->get(), time.get(), &timespecTime) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<timespec> Instance::convertTimeToTimespecTimeKHR(Time time,
+                                                                               Dispatch&& d) const {
+  timespec timespecTime;
+  Result result =
+      static_cast<Result>(d.xrConvertTimeToTimespecTimeKHR(this->get(), time.get(), &timespecTime));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(timespecTime) };
+  return {result, std::move(timespecTime)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-#endif // defined(XR_USE_TIMESPEC)
+#endif  // defined(XR_USE_TIMESPEC)
 #endif  // XR_KHR_convert_timespec_time
-
 
 #ifdef XR_KHR_loader_init
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result initializeLoaderKHR (
-    const LoaderInitInfoBaseHeaderKHR& loaderInitInfo, Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrInitializeLoaderKHR(loaderInitInfo.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result initializeLoaderKHR(const LoaderInitInfoBaseHeaderKHR& loaderInitInfo,
+                                             Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrInitializeLoaderKHR(loaderInitInfo.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_KHR_loader_init
 
-
 #ifdef XR_KHR_vulkan_enable2
 #if defined(XR_USE_GRAPHICS_API_VULKAN)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::createVulkanInstanceKHR (
-    const VulkanInstanceCreateInfoKHR& createInfo, VkInstance* vulkanInstance, VkResult* vulkanResult, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateVulkanInstanceKHR(this->get(), createInfo.get(), vulkanInstance, vulkanResult) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Instance::createVulkanInstanceKHR(
+    const VulkanInstanceCreateInfoKHR& createInfo, VkInstance* vulkanInstance,
+    VkResult* vulkanResult, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateVulkanInstanceKHR(this->get(), createInfo.get(), vulkanInstance, vulkanResult));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-#endif // defined(XR_USE_GRAPHICS_API_VULKAN)
+#endif  // defined(XR_USE_GRAPHICS_API_VULKAN)
 #endif  // XR_KHR_vulkan_enable2
-
 
 #ifdef XR_KHR_vulkan_enable2
 #if defined(XR_USE_GRAPHICS_API_VULKAN)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::createVulkanDeviceKHR (
-    const VulkanDeviceCreateInfoKHR& createInfo, VkDevice* vulkanDevice, VkResult* vulkanResult, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateVulkanDeviceKHR(this->get(), createInfo.get(), vulkanDevice, vulkanResult) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result
+Instance::createVulkanDeviceKHR(const VulkanDeviceCreateInfoKHR& createInfo, VkDevice* vulkanDevice,
+                                VkResult* vulkanResult, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrCreateVulkanDeviceKHR(this->get(), createInfo.get(), vulkanDevice, vulkanResult));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-#endif // defined(XR_USE_GRAPHICS_API_VULKAN)
+#endif  // defined(XR_USE_GRAPHICS_API_VULKAN)
 #endif  // XR_KHR_vulkan_enable2
-
 
 #ifdef XR_KHR_vulkan_enable2
 #if defined(XR_USE_GRAPHICS_API_VULKAN)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<VkPhysicalDevice> Instance::getVulkanGraphicsDevice2KHR (
+OPENXR_HPP_INLINE ResultValue<VkPhysicalDevice> Instance::getVulkanGraphicsDevice2KHR(
     const VulkanGraphicsDeviceGetInfoKHR& getInfo, Dispatch&& d) const {
-    VkPhysicalDevice vulkanPhysicalDevice;
-    Result result = static_cast<Result>( d.xrGetVulkanGraphicsDevice2KHR(this->get(), getInfo.get(), &vulkanPhysicalDevice) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  VkPhysicalDevice vulkanPhysicalDevice;
+  Result result = static_cast<Result>(
+      d.xrGetVulkanGraphicsDevice2KHR(this->get(), getInfo.get(), &vulkanPhysicalDevice));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(vulkanPhysicalDevice) };
+  return {result, std::move(vulkanPhysicalDevice)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-#endif // defined(XR_USE_GRAPHICS_API_VULKAN)
+#endif  // defined(XR_USE_GRAPHICS_API_VULKAN)
 #endif  // XR_KHR_vulkan_enable2
-
 
 #ifdef XR_KHR_vulkan_enable2
 #if defined(XR_USE_GRAPHICS_API_VULKAN)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<GraphicsRequirementsVulkanKHR> Instance::getVulkanGraphicsRequirements2KHR (
-    SystemId systemId, Dispatch&& d) const {
-    GraphicsRequirementsVulkanKHR graphicsRequirements;
-    Result result = static_cast<Result>( d.xrGetVulkanGraphicsRequirements2KHR(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::put(graphicsRequirements)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<GraphicsRequirementsVulkanKHR>
+Instance::getVulkanGraphicsRequirements2KHR(SystemId systemId, Dispatch&& d) const {
+  GraphicsRequirementsVulkanKHR graphicsRequirements;
+  Result result = static_cast<Result>(d.xrGetVulkanGraphicsRequirements2KHR(
+      this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::put(graphicsRequirements)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(graphicsRequirements) };
+  return {result, std::move(graphicsRequirements)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-#endif // defined(XR_USE_GRAPHICS_API_VULKAN)
+#endif  // defined(XR_USE_GRAPHICS_API_VULKAN)
 #endif  // XR_KHR_vulkan_enable2
-
 
 #ifdef XR_KHR_extended_struct_name_lengths
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::structureTypeToString2KHR (
+OPENXR_HPP_INLINE Result Instance::structureTypeToString2KHR(
     StructureType value, char buffer[XR_MAX_STRUCTURE_NAME_SIZE_EXTENDED_KHR], Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrStructureTypeToString2KHR(this->get(), OPENXR_HPP_NAMESPACE::get(value), buffer) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(
+      d.xrStructureTypeToString2KHR(this->get(), OPENXR_HPP_NAMESPACE::get(value), buffer));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_KHR_extended_struct_name_lengths
 
-
 #ifdef XR_KHR_locate_spaces
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::locateSpacesKHR (
-    const SpacesLocateInfo& locateInfo, SpaceLocations& spaceLocations, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrLocateSpacesKHR(this->get(), locateInfo.get(), spaceLocations.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::locateSpacesKHR(const SpacesLocateInfo& locateInfo,
+                                                  SpaceLocations& spaceLocations,
+                                                  Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrLocateSpacesKHR(this->get(), locateInfo.get(), spaceLocations.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_KHR_locate_spaces
 
-
 #ifdef XR_EXT_performance_settings
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::perfSettingsSetPerformanceLevelEXT (
-    PerfSettingsDomainEXT domain, PerfSettingsLevelEXT level, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPerfSettingsSetPerformanceLevelEXT(this->get(), OPENXR_HPP_NAMESPACE::get(domain), OPENXR_HPP_NAMESPACE::get(level)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::perfSettingsSetPerformanceLevelEXT(PerfSettingsDomainEXT domain,
+                                                                     PerfSettingsLevelEXT level,
+                                                                     Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrPerfSettingsSetPerformanceLevelEXT(
+      this->get(), OPENXR_HPP_NAMESPACE::get(domain), OPENXR_HPP_NAMESPACE::get(level)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_performance_settings
 
-
 #ifdef XR_EXT_thermal_query
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::thermalGetTemperatureTrendEXT (
-    PerfSettingsDomainEXT domain, PerfSettingsNotificationLevelEXT& notificationLevel, float& tempHeadroom, float& tempSlope, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrThermalGetTemperatureTrendEXT(this->get(), OPENXR_HPP_NAMESPACE::get(domain), OPENXR_HPP_NAMESPACE::put(notificationLevel), &tempHeadroom, &tempSlope) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::thermalGetTemperatureTrendEXT(
+    PerfSettingsDomainEXT domain, PerfSettingsNotificationLevelEXT& notificationLevel,
+    float& tempHeadroom, float& tempSlope, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrThermalGetTemperatureTrendEXT(
+      this->get(), OPENXR_HPP_NAMESPACE::get(domain), OPENXR_HPP_NAMESPACE::put(notificationLevel),
+      &tempHeadroom, &tempSlope));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_thermal_query
 
-
 #ifdef XR_EXT_debug_utils
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::setDebugUtilsObjectNameEXT (
+OPENXR_HPP_INLINE Result Instance::setDebugUtilsObjectNameEXT(
     const DebugUtilsObjectNameInfoEXT& nameInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetDebugUtilsObjectNameEXT(this->get(), nameInfo.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrSetDebugUtilsObjectNameEXT(this->get(), nameInfo.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_debug_utils
 
-
 #ifdef XR_EXT_debug_utils
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<DebugUtilsMessengerEXT> Instance::createDebugUtilsMessengerEXT (
+OPENXR_HPP_INLINE ResultValue<DebugUtilsMessengerEXT> Instance::createDebugUtilsMessengerEXT(
     const DebugUtilsMessengerCreateInfoEXT& createInfo, Dispatch&& d) const {
-    DebugUtilsMessengerEXT handle;
-    Result result = static_cast<Result>( d.xrCreateDebugUtilsMessengerEXT(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  DebugUtilsMessengerEXT handle;
+  Result result = static_cast<Result>(
+      d.xrCreateDebugUtilsMessengerEXT(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<DebugUtilsMessengerEXT, impl::RemoveRefConst<Dispatch>>> Instance::createDebugUtilsMessengerUniqueEXT (
-    const DebugUtilsMessengerCreateInfoEXT& createInfo, Dispatch&& d) const {
-    DebugUtilsMessengerEXT handle;
-    Result result = static_cast<Result>( d.xrCreateDebugUtilsMessengerEXT(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<DebugUtilsMessengerEXT, impl::RemoveRefConst<Dispatch>>>
+Instance::createDebugUtilsMessengerUniqueEXT(const DebugUtilsMessengerCreateInfoEXT& createInfo,
+                                             Dispatch&& d) const {
+  DebugUtilsMessengerEXT handle;
+  Result result = static_cast<Result>(
+      d.xrCreateDebugUtilsMessengerEXT(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<DebugUtilsMessengerEXT, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result,
+          UniqueHandle<DebugUtilsMessengerEXT, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -5613,799 +2391,307 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<DebugUtilsMessengerEXT, impl::RemoveR
 
 #endif  // XR_EXT_debug_utils
 
-
 #ifdef XR_EXT_debug_utils
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result DebugUtilsMessengerEXT::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyDebugUtilsMessengerEXT(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result DebugUtilsMessengerEXT::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyDebugUtilsMessengerEXT(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_debug_utils
 
-
 #ifdef XR_EXT_debug_utils
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::submitDebugUtilsMessageEXT (
-    XrDebugUtilsMessageSeverityFlagsEXT messageSeverity, XrDebugUtilsMessageTypeFlagsEXT messageTypes, const DebugUtilsMessengerCallbackDataEXT& callbackData, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSubmitDebugUtilsMessageEXT(this->get(), messageSeverity, messageTypes, callbackData.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Instance::submitDebugUtilsMessageEXT(
+    XrDebugUtilsMessageSeverityFlagsEXT messageSeverity,
+    XrDebugUtilsMessageTypeFlagsEXT messageTypes,
+    const DebugUtilsMessengerCallbackDataEXT& callbackData, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrSubmitDebugUtilsMessageEXT(
+      this->get(), messageSeverity, messageTypes, callbackData.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_debug_utils
 
-
 #ifdef XR_EXT_debug_utils
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::sessionBeginDebugUtilsLabelRegionEXT (
+OPENXR_HPP_INLINE Result Session::sessionBeginDebugUtilsLabelRegionEXT(
     const DebugUtilsLabelEXT& labelInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSessionBeginDebugUtilsLabelRegionEXT(this->get(), labelInfo.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result =
+      static_cast<Result>(d.xrSessionBeginDebugUtilsLabelRegionEXT(this->get(), labelInfo.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_debug_utils
-
 
 #ifdef XR_EXT_debug_utils
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::sessionEndDebugUtilsLabelRegionEXT (
-    Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSessionEndDebugUtilsLabelRegionEXT(this->get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::sessionEndDebugUtilsLabelRegionEXT(Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrSessionEndDebugUtilsLabelRegionEXT(this->get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_debug_utils
-
 
 #ifdef XR_EXT_debug_utils
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::sessionInsertDebugUtilsLabelEXT (
-    const DebugUtilsLabelEXT& labelInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSessionInsertDebugUtilsLabelEXT(this->get(), labelInfo.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result
+Session::sessionInsertDebugUtilsLabelEXT(const DebugUtilsLabelEXT& labelInfo, Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrSessionInsertDebugUtilsLabelEXT(this->get(), labelInfo.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_debug_utils
 
-
 #ifdef XR_MSFT_spatial_anchor
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<SpatialAnchorMSFT> Session::createSpatialAnchorMSFT (
+OPENXR_HPP_INLINE ResultValue<SpatialAnchorMSFT> Session::createSpatialAnchorMSFT(
     const SpatialAnchorCreateInfoMSFT& createInfo, Dispatch&& d) const {
-    SpatialAnchorMSFT handle;
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorMSFT(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  SpatialAnchorMSFT handle;
+  Result result =
+      static_cast<Result>(d.xrCreateSpatialAnchorMSFT(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<SpatialAnchorMSFT, impl::RemoveRefConst<Dispatch>>> Session::createSpatialAnchorUniqueMSFT (
-    const SpatialAnchorCreateInfoMSFT& createInfo, Dispatch&& d) const {
-    SpatialAnchorMSFT handle;
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorMSFT(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<SpatialAnchorMSFT, impl::RemoveRefConst<Dispatch>>>
+Session::createSpatialAnchorUniqueMSFT(const SpatialAnchorCreateInfoMSFT& createInfo,
+                                       Dispatch&& d) const {
+  SpatialAnchorMSFT handle;
+  Result result =
+      static_cast<Result>(d.xrCreateSpatialAnchorMSFT(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<SpatialAnchorMSFT, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<SpatialAnchorMSFT, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
 #endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_MSFT_spatial_anchor
-
 
 #ifdef XR_MSFT_spatial_anchor
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<Space> Session::createSpatialAnchorSpaceMSFT (
+OPENXR_HPP_INLINE ResultValue<Space> Session::createSpatialAnchorSpaceMSFT(
     const SpatialAnchorSpaceCreateInfoMSFT& createInfo, Dispatch&& d) const {
-    Space handle;
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorSpaceMSFT(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Space handle;
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialAnchorSpaceMSFT(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>> Session::createSpatialAnchorSpaceUniqueMSFT (
-    const SpatialAnchorSpaceCreateInfoMSFT& createInfo, Dispatch&& d) const {
-    Space handle;
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorSpaceMSFT(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>>
+Session::createSpatialAnchorSpaceUniqueMSFT(const SpatialAnchorSpaceCreateInfoMSFT& createInfo,
+                                            Dispatch&& d) const {
+  Space handle;
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialAnchorSpaceMSFT(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
 #endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_MSFT_spatial_anchor
-
 
 #ifdef XR_MSFT_spatial_anchor
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialAnchorMSFT::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySpatialAnchorMSFT(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result SpatialAnchorMSFT::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySpatialAnchorMSFT(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_MSFT_spatial_anchor
 
-
 #ifdef XR_EXT_conformance_automation
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setInputDeviceActiveEXT (
-    Path interactionProfile, Path topLevelPath, Bool32 isActive, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetInputDeviceActiveEXT(this->get(), interactionProfile.get(), topLevelPath.get(), isActive.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::setInputDeviceActiveEXT(Path interactionProfile,
+                                                          Path topLevelPath, Bool32 isActive,
+                                                          Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrSetInputDeviceActiveEXT(
+      this->get(), interactionProfile.get(), topLevelPath.get(), isActive.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_conformance_automation
-
 
 #ifdef XR_EXT_conformance_automation
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setInputDeviceStateBoolEXT (
-    Path topLevelPath, Path inputSourcePath, Bool32 state, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetInputDeviceStateBoolEXT(this->get(), topLevelPath.get(), inputSourcePath.get(), state.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::setInputDeviceStateBoolEXT(Path topLevelPath,
+                                                             Path inputSourcePath, Bool32 state,
+                                                             Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrSetInputDeviceStateBoolEXT(
+      this->get(), topLevelPath.get(), inputSourcePath.get(), state.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_conformance_automation
-
 
 #ifdef XR_EXT_conformance_automation
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setInputDeviceStateFloatEXT (
-    Path topLevelPath, Path inputSourcePath, float state, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetInputDeviceStateFloatEXT(this->get(), topLevelPath.get(), inputSourcePath.get(), state) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::setInputDeviceStateFloatEXT(Path topLevelPath,
+                                                              Path inputSourcePath, float state,
+                                                              Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrSetInputDeviceStateFloatEXT(
+      this->get(), topLevelPath.get(), inputSourcePath.get(), state));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_conformance_automation
-
 
 #ifdef XR_EXT_conformance_automation
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setInputDeviceStateVector2fEXT (
-    Path topLevelPath, Path inputSourcePath, Vector2f state, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetInputDeviceStateVector2fEXT(this->get(), topLevelPath.get(), inputSourcePath.get(), state) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::setInputDeviceStateVector2fEXT(Path topLevelPath,
+                                                                 Path inputSourcePath,
+                                                                 Vector2f state,
+                                                                 Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrSetInputDeviceStateVector2fEXT(
+      this->get(), topLevelPath.get(), inputSourcePath.get(), state));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_conformance_automation
-
 
 #ifdef XR_EXT_conformance_automation
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setInputDeviceLocationEXT (
-    Path topLevelPath, Path inputSourcePath, Space space, Posef pose, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetInputDeviceLocationEXT(this->get(), topLevelPath.get(), inputSourcePath.get(), space.get(), pose) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::setInputDeviceLocationEXT(Path topLevelPath, Path inputSourcePath,
+                                                            Space space, Posef pose,
+                                                            Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrSetInputDeviceLocationEXT(
+      this->get(), topLevelPath.get(), inputSourcePath.get(), space.get(), pose));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_conformance_automation
-
 
 #ifdef XR_MSFT_spatial_graph_bridge
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<Space> Session::createSpatialGraphNodeSpaceMSFT (
+OPENXR_HPP_INLINE ResultValue<Space> Session::createSpatialGraphNodeSpaceMSFT(
     const SpatialGraphNodeSpaceCreateInfoMSFT& createInfo, Dispatch&& d) const {
-    Space handle;
-    Result result = static_cast<Result>( d.xrCreateSpatialGraphNodeSpaceMSFT(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Space handle;
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialGraphNodeSpaceMSFT(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>> Session::createSpatialGraphNodeSpaceUniqueMSFT (
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>>
+Session::createSpatialGraphNodeSpaceUniqueMSFT(
     const SpatialGraphNodeSpaceCreateInfoMSFT& createInfo, Dispatch&& d) const {
-    Space handle;
-    Result result = static_cast<Result>( d.xrCreateSpatialGraphNodeSpaceMSFT(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Space handle;
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialGraphNodeSpaceMSFT(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -6413,75 +2699,38 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>
 
 #endif  // XR_MSFT_spatial_graph_bridge
 
-
 #ifdef XR_MSFT_spatial_graph_bridge
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<SpatialGraphNodeBindingMSFT> Session::tryCreateSpatialGraphStaticNodeBindingMSFT (
+OPENXR_HPP_INLINE ResultValue<SpatialGraphNodeBindingMSFT>
+Session::tryCreateSpatialGraphStaticNodeBindingMSFT(
     const SpatialGraphStaticNodeBindingCreateInfoMSFT& createInfo, Dispatch&& d) const {
-    SpatialGraphNodeBindingMSFT handle;
-    Result result = static_cast<Result>( d.xrTryCreateSpatialGraphStaticNodeBindingMSFT(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  SpatialGraphNodeBindingMSFT handle;
+  Result result = static_cast<Result>(
+      d.xrTryCreateSpatialGraphStaticNodeBindingMSFT(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<SpatialGraphNodeBindingMSFT, impl::RemoveRefConst<Dispatch>>> Session::tryCreateSpatialGraphStaticNodeBindingUniqueMSFT (
-    const SpatialGraphStaticNodeBindingCreateInfoMSFT& createInfo, Dispatch&& d) const {
-    SpatialGraphNodeBindingMSFT handle;
-    Result result = static_cast<Result>( d.xrTryCreateSpatialGraphStaticNodeBindingMSFT(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE
+    ResultValue<UniqueHandle<SpatialGraphNodeBindingMSFT, impl::RemoveRefConst<Dispatch>>>
+    Session::tryCreateSpatialGraphStaticNodeBindingUniqueMSFT(
+        const SpatialGraphStaticNodeBindingCreateInfoMSFT& createInfo, Dispatch&& d) const {
+  SpatialGraphNodeBindingMSFT handle;
+  Result result = static_cast<Result>(
+      d.xrTryCreateSpatialGraphStaticNodeBindingMSFT(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<SpatialGraphNodeBindingMSFT, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<SpatialGraphNodeBindingMSFT, impl::RemoveRefConst<Dispatch>>(
+                      handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -6489,179 +2738,71 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<SpatialGraphNodeBindingMSFT, impl::Re
 
 #endif  // XR_MSFT_spatial_graph_bridge
 
-
 #ifdef XR_MSFT_spatial_graph_bridge
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialGraphNodeBindingMSFT::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySpatialGraphNodeBindingMSFT(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result SpatialGraphNodeBindingMSFT::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySpatialGraphNodeBindingMSFT(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_MSFT_spatial_graph_bridge
 
-
 #ifdef XR_MSFT_spatial_graph_bridge
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<SpatialGraphNodeBindingPropertiesMSFT> SpatialGraphNodeBindingMSFT::getSpatialGraphNodeBindingPropertiesMSFT (
+OPENXR_HPP_INLINE ResultValue<SpatialGraphNodeBindingPropertiesMSFT>
+SpatialGraphNodeBindingMSFT::getSpatialGraphNodeBindingPropertiesMSFT(
     const SpatialGraphNodeBindingPropertiesGetInfoMSFT& getInfo, Dispatch&& d) const {
-    SpatialGraphNodeBindingPropertiesMSFT properties;
-    Result result = static_cast<Result>( d.xrGetSpatialGraphNodeBindingPropertiesMSFT(this->get(), getInfo.get(), OPENXR_HPP_NAMESPACE::put(properties)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  SpatialGraphNodeBindingPropertiesMSFT properties;
+  Result result = static_cast<Result>(d.xrGetSpatialGraphNodeBindingPropertiesMSFT(
+      this->get(), getInfo.get(), OPENXR_HPP_NAMESPACE::put(properties)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(properties) };
+  return {result, std::move(properties)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_MSFT_spatial_graph_bridge
 
-
 #ifdef XR_EXT_hand_tracking
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<HandTrackerEXT> Session::createHandTrackerEXT (
+OPENXR_HPP_INLINE ResultValue<HandTrackerEXT> Session::createHandTrackerEXT(
     const HandTrackerCreateInfoEXT& createInfo, Dispatch&& d) const {
-    HandTrackerEXT handle;
-    Result result = static_cast<Result>( d.xrCreateHandTrackerEXT(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  HandTrackerEXT handle;
+  Result result =
+      static_cast<Result>(d.xrCreateHandTrackerEXT(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<HandTrackerEXT, impl::RemoveRefConst<Dispatch>>> Session::createHandTrackerUniqueEXT (
-    const HandTrackerCreateInfoEXT& createInfo, Dispatch&& d) const {
-    HandTrackerEXT handle;
-    Result result = static_cast<Result>( d.xrCreateHandTrackerEXT(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<HandTrackerEXT, impl::RemoveRefConst<Dispatch>>>
+Session::createHandTrackerUniqueEXT(const HandTrackerCreateInfoEXT& createInfo,
+                                    Dispatch&& d) const {
+  HandTrackerEXT handle;
+  Result result =
+      static_cast<Result>(d.xrCreateHandTrackerEXT(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<HandTrackerEXT, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<HandTrackerEXT, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -6669,179 +2810,70 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<HandTrackerEXT, impl::RemoveRefConst<
 
 #endif  // XR_EXT_hand_tracking
 
-
 #ifdef XR_EXT_hand_tracking
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result HandTrackerEXT::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyHandTrackerEXT(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result HandTrackerEXT::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyHandTrackerEXT(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_hand_tracking
-
 
 #ifdef XR_EXT_hand_tracking
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result HandTrackerEXT::locateHandJointsEXT (
-    const HandJointsLocateInfoEXT& locateInfo, HandJointLocationsEXT& locations, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrLocateHandJointsEXT(this->get(), locateInfo.get(), locations.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result
+HandTrackerEXT::locateHandJointsEXT(const HandJointsLocateInfoEXT& locateInfo,
+                                    HandJointLocationsEXT& locations, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrLocateHandJointsEXT(this->get(), locateInfo.get(), locations.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_hand_tracking
-
 
 #ifdef XR_MSFT_hand_tracking_mesh
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<Space> HandTrackerEXT::createHandMeshSpaceMSFT (
+OPENXR_HPP_INLINE ResultValue<Space> HandTrackerEXT::createHandMeshSpaceMSFT(
     const HandMeshSpaceCreateInfoMSFT& createInfo, Dispatch&& d) const {
-    Space handle;
-    Result result = static_cast<Result>( d.xrCreateHandMeshSpaceMSFT(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Space handle;
+  Result result =
+      static_cast<Result>(d.xrCreateHandMeshSpaceMSFT(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>> HandTrackerEXT::createHandMeshSpaceUniqueMSFT (
-    const HandMeshSpaceCreateInfoMSFT& createInfo, Dispatch&& d) const {
-    Space handle;
-    Result result = static_cast<Result>( d.xrCreateHandMeshSpaceMSFT(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>>
+HandTrackerEXT::createHandMeshSpaceUniqueMSFT(const HandMeshSpaceCreateInfoMSFT& createInfo,
+                                              Dispatch&& d) const {
+  Space handle;
+  Result result =
+      static_cast<Result>(d.xrCreateHandMeshSpaceMSFT(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -6849,727 +2881,355 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>
 
 #endif  // XR_MSFT_hand_tracking_mesh
 
-
 #ifdef XR_MSFT_hand_tracking_mesh
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<HandMeshMSFT> HandTrackerEXT::updateHandMeshMSFT (
+OPENXR_HPP_INLINE ResultValue<HandMeshMSFT> HandTrackerEXT::updateHandMeshMSFT(
     const HandMeshUpdateInfoMSFT& updateInfo, Dispatch&& d) const {
-    HandMeshMSFT handMesh;
-    Result result = static_cast<Result>( d.xrUpdateHandMeshMSFT(this->get(), updateInfo.get(), OPENXR_HPP_NAMESPACE::put(handMesh)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  HandMeshMSFT handMesh;
+  Result result = static_cast<Result>(
+      d.xrUpdateHandMeshMSFT(this->get(), updateInfo.get(), OPENXR_HPP_NAMESPACE::put(handMesh)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handMesh) };
+  return {result, std::move(handMesh)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_MSFT_hand_tracking_mesh
 
-
 #ifdef XR_MSFT_controller_model
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<ControllerModelKeyStateMSFT> Session::getControllerModelKeyMSFT (
+OPENXR_HPP_INLINE ResultValue<ControllerModelKeyStateMSFT> Session::getControllerModelKeyMSFT(
     Path topLevelUserPath, Dispatch&& d) const {
-    ControllerModelKeyStateMSFT controllerModelKeyState;
-    Result result = static_cast<Result>( d.xrGetControllerModelKeyMSFT(this->get(), topLevelUserPath.get(), OPENXR_HPP_NAMESPACE::put(controllerModelKeyState)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  ControllerModelKeyStateMSFT controllerModelKeyState;
+  Result result = static_cast<Result>(d.xrGetControllerModelKeyMSFT(
+      this->get(), topLevelUserPath.get(), OPENXR_HPP_NAMESPACE::put(controllerModelKeyState)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(controllerModelKeyState) };
+  return {result, std::move(controllerModelKeyState)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_MSFT_controller_model
 
-
 #ifdef XR_MSFT_controller_model
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<uint8_t, Allocator>> Session::loadControllerModelToVectorMSFT (
-    ControllerModelKeyMSFT modelKey, Dispatch&& d) const {
-    std::vector<uint8_t, Allocator> buffer;
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<uint8_t, Allocator>>
+Session::loadControllerModelToVectorMSFT(ControllerModelKeyMSFT modelKey, Dispatch&& d) const {
+  std::vector<uint8_t, Allocator> buffer;
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrLoadControllerModelMSFT(this->get(), modelKey.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrLoadControllerModelMSFT(
+      this->get(), modelKey.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(buffer)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(
+        d.xrLoadControllerModelMSFT(this->get(), modelKey.get(), bufferCapacityInput,
+                                    &bufferCountOutput, reinterpret_cast<uint8_t*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(buffer) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrLoadControllerModelMSFT(this->get(), modelKey.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<uint8_t*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(buffer) };
-
+  return {result, std::move(buffer)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<uint8_t, Allocator>> Session::loadControllerModelToVectorMSFT (
-    ControllerModelKeyMSFT modelKey, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<uint8_t, Allocator> buffer{vectorAllocator};
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<uint8_t, Allocator>>
+Session::loadControllerModelToVectorMSFT(ControllerModelKeyMSFT modelKey,
+                                         Allocator const& vectorAllocator, Dispatch&& d) const {
+  std::vector<uint8_t, Allocator> buffer{vectorAllocator};
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrLoadControllerModelMSFT(this->get(), modelKey.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrLoadControllerModelMSFT(
+      this->get(), modelKey.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(buffer)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(
+        d.xrLoadControllerModelMSFT(this->get(), modelKey.get(), bufferCapacityInput,
+                                    &bufferCountOutput, reinterpret_cast<uint8_t*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(buffer) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrLoadControllerModelMSFT(this->get(), modelKey.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<uint8_t*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(buffer) };
-
+  return {result, std::move(buffer)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_MSFT_controller_model
-
 
 #ifdef XR_MSFT_controller_model
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getControllerModelPropertiesMSFT (
-    ControllerModelKeyMSFT modelKey, ControllerModelPropertiesMSFT& properties, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetControllerModelPropertiesMSFT(this->get(), modelKey.get(), properties.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::getControllerModelPropertiesMSFT(
+    ControllerModelKeyMSFT modelKey, ControllerModelPropertiesMSFT& properties,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetControllerModelPropertiesMSFT(this->get(), modelKey.get(), properties.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_MSFT_controller_model
-
 
 #ifdef XR_MSFT_controller_model
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getControllerModelStateMSFT (
-    ControllerModelKeyMSFT modelKey, ControllerModelStateMSFT& state, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetControllerModelStateMSFT(this->get(), modelKey.get(), state.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::getControllerModelStateMSFT(ControllerModelKeyMSFT modelKey,
+                                                              ControllerModelStateMSFT& state,
+                                                              Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetControllerModelStateMSFT(this->get(), modelKey.get(), state.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_MSFT_controller_model
-
 
 #ifdef XR_MSFT_perception_anchor_interop
 #if defined(XR_USE_PLATFORM_WIN32)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<SpatialAnchorMSFT> Session::createSpatialAnchorFromPerceptionAnchorMSFT (
-    IUnknown* perceptionAnchor, Dispatch&& d) const {
-    SpatialAnchorMSFT handle;
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorFromPerceptionAnchorMSFT(this->get(), perceptionAnchor, handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<SpatialAnchorMSFT>
+Session::createSpatialAnchorFromPerceptionAnchorMSFT(IUnknown* perceptionAnchor,
+                                                     Dispatch&& d) const {
+  SpatialAnchorMSFT handle;
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialAnchorFromPerceptionAnchorMSFT(this->get(), perceptionAnchor, handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<SpatialAnchorMSFT, impl::RemoveRefConst<Dispatch>>> Session::createSpatialAnchorFromPerceptionAnchorUniqueMSFT (
-    IUnknown* perceptionAnchor, Dispatch&& d) const {
-    SpatialAnchorMSFT handle;
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorFromPerceptionAnchorMSFT(this->get(), perceptionAnchor, handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<SpatialAnchorMSFT, impl::RemoveRefConst<Dispatch>>>
+Session::createSpatialAnchorFromPerceptionAnchorUniqueMSFT(IUnknown* perceptionAnchor,
+                                                           Dispatch&& d) const {
+  SpatialAnchorMSFT handle;
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialAnchorFromPerceptionAnchorMSFT(this->get(), perceptionAnchor, handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<SpatialAnchorMSFT, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<SpatialAnchorMSFT, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
 #endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-#endif // defined(XR_USE_PLATFORM_WIN32)
+#endif  // defined(XR_USE_PLATFORM_WIN32)
 #endif  // XR_MSFT_perception_anchor_interop
-
 
 #ifdef XR_MSFT_perception_anchor_interop
 #if defined(XR_USE_PLATFORM_WIN32)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::tryGetPerceptionAnchorFromSpatialAnchorMSFT (
+OPENXR_HPP_INLINE Result Session::tryGetPerceptionAnchorFromSpatialAnchorMSFT(
     SpatialAnchorMSFT anchor, IUnknown** perceptionAnchor, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrTryGetPerceptionAnchorFromSpatialAnchorMSFT(this->get(), anchor.get(), perceptionAnchor) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(
+      d.xrTryGetPerceptionAnchorFromSpatialAnchorMSFT(this->get(), anchor.get(), perceptionAnchor));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-#endif // defined(XR_USE_PLATFORM_WIN32)
+#endif  // defined(XR_USE_PLATFORM_WIN32)
 #endif  // XR_MSFT_perception_anchor_interop
-
 
 #ifdef XR_MSFT_composition_layer_reprojection
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<ReprojectionModeMSFT, Allocator>> Instance::enumerateReprojectionModesToVectorMSFT (
-    SystemId systemId, ViewConfigurationType viewConfigurationType, Dispatch&& d) const {
-    std::vector<ReprojectionModeMSFT, Allocator> modes;
-        uint32_t modeCountOutput = 0;
-    uint32_t modeCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<ReprojectionModeMSFT, Allocator>>
+Instance::enumerateReprojectionModesToVectorMSFT(SystemId systemId,
+                                                 ViewConfigurationType viewConfigurationType,
+                                                 Dispatch&& d) const {
+  std::vector<ReprojectionModeMSFT, Allocator> modes;
+  uint32_t modeCountOutput = 0;
+  uint32_t modeCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateReprojectionModesMSFT(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType), modeCapacityInput, &modeCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || modeCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateReprojectionModesMSFT(
+      this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType),
+      modeCapacityInput, &modeCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || modeCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(modes)};
+  }
+  do {
+    modes.resize(modeCountOutput);
+    modeCapacityInput = static_cast<uint32_t>(modes.size());
+    result = static_cast<Result>(d.xrEnumerateReprojectionModesMSFT(
+        this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType),
+        modeCapacityInput, &modeCountOutput,
+        reinterpret_cast<XrReprojectionModeMSFT*>(modes.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(modeCountOutput <= modes.size());
+    modes.resize(modeCountOutput);
+  } else
+    modes.clear();
 
-        return { result, std::move(modes) };
-    }
-    do {
-        modes.resize(modeCountOutput);
-        modeCapacityInput = static_cast<uint32_t>(modes.size());
-        result = static_cast<Result>( d.xrEnumerateReprojectionModesMSFT(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType), modeCapacityInput, &modeCountOutput, reinterpret_cast<XrReprojectionModeMSFT*>(modes.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(modeCountOutput <= modes.size());
-        modes.resize(modeCountOutput);
-    } else modes.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(modes) };
-
+  return {result, std::move(modes)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<ReprojectionModeMSFT, Allocator>> Instance::enumerateReprojectionModesToVectorMSFT (
-    SystemId systemId, ViewConfigurationType viewConfigurationType, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<ReprojectionModeMSFT, Allocator> modes{vectorAllocator};
-        uint32_t modeCountOutput = 0;
-    uint32_t modeCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<ReprojectionModeMSFT, Allocator>>
+Instance::enumerateReprojectionModesToVectorMSFT(SystemId systemId,
+                                                 ViewConfigurationType viewConfigurationType,
+                                                 Allocator const& vectorAllocator,
+                                                 Dispatch&& d) const {
+  std::vector<ReprojectionModeMSFT, Allocator> modes{vectorAllocator};
+  uint32_t modeCountOutput = 0;
+  uint32_t modeCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateReprojectionModesMSFT(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType), modeCapacityInput, &modeCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || modeCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateReprojectionModesMSFT(
+      this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType),
+      modeCapacityInput, &modeCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || modeCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(modes)};
+  }
+  do {
+    modes.resize(modeCountOutput);
+    modeCapacityInput = static_cast<uint32_t>(modes.size());
+    result = static_cast<Result>(d.xrEnumerateReprojectionModesMSFT(
+        this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType),
+        modeCapacityInput, &modeCountOutput,
+        reinterpret_cast<XrReprojectionModeMSFT*>(modes.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(modeCountOutput <= modes.size());
+    modes.resize(modeCountOutput);
+  } else
+    modes.clear();
 
-        return { result, std::move(modes) };
-    }
-    do {
-        modes.resize(modeCountOutput);
-        modeCapacityInput = static_cast<uint32_t>(modes.size());
-        result = static_cast<Result>( d.xrEnumerateReprojectionModesMSFT(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(viewConfigurationType), modeCapacityInput, &modeCountOutput, reinterpret_cast<XrReprojectionModeMSFT*>(modes.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(modeCountOutput <= modes.size());
-        modes.resize(modeCountOutput);
-    } else modes.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(modes) };
-
+  return {result, std::move(modes)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_MSFT_composition_layer_reprojection
 
-
 #ifdef XR_FB_swapchain_update_state
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Swapchain::updateSwapchainFB (
-    const SwapchainStateBaseHeaderFB& state, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrUpdateSwapchainFB(this->get(), state.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Swapchain::updateSwapchainFB(const SwapchainStateBaseHeaderFB& state,
+                                                      Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrUpdateSwapchainFB(this->get(), state.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_swapchain_update_state
 
-
 #ifdef XR_FB_swapchain_update_state
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Swapchain::getSwapchainStateFB (
-    SwapchainStateBaseHeaderFB& state, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSwapchainStateFB(this->get(), state.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Swapchain::getSwapchainStateFB(SwapchainStateBaseHeaderFB& state,
+                                                        Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetSwapchainStateFB(this->get(), state.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_swapchain_update_state
 
-
 #ifdef XR_FB_body_tracking
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<BodyTrackerFB> Session::createBodyTrackerFB (
+OPENXR_HPP_INLINE ResultValue<BodyTrackerFB> Session::createBodyTrackerFB(
     const BodyTrackerCreateInfoFB& createInfo, Dispatch&& d) const {
-    BodyTrackerFB handle;
-    Result result = static_cast<Result>( d.xrCreateBodyTrackerFB(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  BodyTrackerFB handle;
+  Result result =
+      static_cast<Result>(d.xrCreateBodyTrackerFB(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<BodyTrackerFB, impl::RemoveRefConst<Dispatch>>> Session::createBodyTrackerUniqueFB (
-    const BodyTrackerCreateInfoFB& createInfo, Dispatch&& d) const {
-    BodyTrackerFB handle;
-    Result result = static_cast<Result>( d.xrCreateBodyTrackerFB(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<BodyTrackerFB, impl::RemoveRefConst<Dispatch>>>
+Session::createBodyTrackerUniqueFB(const BodyTrackerCreateInfoFB& createInfo, Dispatch&& d) const {
+  BodyTrackerFB handle;
+  Result result =
+      static_cast<Result>(d.xrCreateBodyTrackerFB(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<BodyTrackerFB, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<BodyTrackerFB, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -7577,335 +3237,160 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<BodyTrackerFB, impl::RemoveRefConst<D
 
 #endif  // XR_FB_body_tracking
 
-
 #ifdef XR_FB_body_tracking
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result BodyTrackerFB::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyBodyTrackerFB(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result BodyTrackerFB::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyBodyTrackerFB(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_body_tracking
-
 
 #ifdef XR_FB_body_tracking
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result BodyTrackerFB::locateBodyJointsFB (
-    const BodyJointsLocateInfoFB& locateInfo, BodyJointLocationsFB& locations, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrLocateBodyJointsFB(this->get(), locateInfo.get(), locations.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result BodyTrackerFB::locateBodyJointsFB(const BodyJointsLocateInfoFB& locateInfo,
+                                                           BodyJointLocationsFB& locations,
+                                                           Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrLocateBodyJointsFB(this->get(), locateInfo.get(), locations.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_body_tracking
-
 
 #ifdef XR_FB_body_tracking
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result BodyTrackerFB::getBodySkeletonFB (
-    BodySkeletonFB& skeleton, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetBodySkeletonFB(this->get(), skeleton.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result BodyTrackerFB::getBodySkeletonFB(BodySkeletonFB& skeleton,
+                                                          Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetBodySkeletonFB(this->get(), skeleton.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_body_tracking
-
 
 #ifdef XR_MSFT_scene_understanding
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<SceneComputeFeatureMSFT, Allocator>> Instance::enumerateSceneComputeFeaturesToVectorMSFT (
-    SystemId systemId, Dispatch&& d) const {
-    std::vector<SceneComputeFeatureMSFT, Allocator> features;
-        uint32_t featureCountOutput = 0;
-    uint32_t featureCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<SceneComputeFeatureMSFT, Allocator>>
+Instance::enumerateSceneComputeFeaturesToVectorMSFT(SystemId systemId, Dispatch&& d) const {
+  std::vector<SceneComputeFeatureMSFT, Allocator> features;
+  uint32_t featureCountOutput = 0;
+  uint32_t featureCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateSceneComputeFeaturesMSFT(this->get(), systemId.get(), featureCapacityInput, &featureCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || featureCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateSceneComputeFeaturesMSFT(
+      this->get(), systemId.get(), featureCapacityInput, &featureCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || featureCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(features)};
+  }
+  do {
+    features.resize(featureCountOutput);
+    featureCapacityInput = static_cast<uint32_t>(features.size());
+    result = static_cast<Result>(d.xrEnumerateSceneComputeFeaturesMSFT(
+        this->get(), systemId.get(), featureCapacityInput, &featureCountOutput,
+        reinterpret_cast<XrSceneComputeFeatureMSFT*>(features.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(featureCountOutput <= features.size());
+    features.resize(featureCountOutput);
+  } else
+    features.clear();
 
-        return { result, std::move(features) };
-    }
-    do {
-        features.resize(featureCountOutput);
-        featureCapacityInput = static_cast<uint32_t>(features.size());
-        result = static_cast<Result>( d.xrEnumerateSceneComputeFeaturesMSFT(this->get(), systemId.get(), featureCapacityInput, &featureCountOutput, reinterpret_cast<XrSceneComputeFeatureMSFT*>(features.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(featureCountOutput <= features.size());
-        features.resize(featureCountOutput);
-    } else features.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(features) };
-
+  return {result, std::move(features)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<SceneComputeFeatureMSFT, Allocator>> Instance::enumerateSceneComputeFeaturesToVectorMSFT (
-    SystemId systemId, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<SceneComputeFeatureMSFT, Allocator> features{vectorAllocator};
-        uint32_t featureCountOutput = 0;
-    uint32_t featureCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<SceneComputeFeatureMSFT, Allocator>>
+Instance::enumerateSceneComputeFeaturesToVectorMSFT(SystemId systemId,
+                                                    Allocator const& vectorAllocator,
+                                                    Dispatch&& d) const {
+  std::vector<SceneComputeFeatureMSFT, Allocator> features{vectorAllocator};
+  uint32_t featureCountOutput = 0;
+  uint32_t featureCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateSceneComputeFeaturesMSFT(this->get(), systemId.get(), featureCapacityInput, &featureCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || featureCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateSceneComputeFeaturesMSFT(
+      this->get(), systemId.get(), featureCapacityInput, &featureCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || featureCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(features)};
+  }
+  do {
+    features.resize(featureCountOutput);
+    featureCapacityInput = static_cast<uint32_t>(features.size());
+    result = static_cast<Result>(d.xrEnumerateSceneComputeFeaturesMSFT(
+        this->get(), systemId.get(), featureCapacityInput, &featureCountOutput,
+        reinterpret_cast<XrSceneComputeFeatureMSFT*>(features.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(featureCountOutput <= features.size());
+    features.resize(featureCountOutput);
+  } else
+    features.clear();
 
-        return { result, std::move(features) };
-    }
-    do {
-        features.resize(featureCountOutput);
-        featureCapacityInput = static_cast<uint32_t>(features.size());
-        result = static_cast<Result>( d.xrEnumerateSceneComputeFeaturesMSFT(this->get(), systemId.get(), featureCapacityInput, &featureCountOutput, reinterpret_cast<XrSceneComputeFeatureMSFT*>(features.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(featureCountOutput <= features.size());
-        features.resize(featureCountOutput);
-    } else features.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(features) };
-
+  return {result, std::move(features)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_MSFT_scene_understanding
 
-
 #ifdef XR_MSFT_scene_understanding
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<SceneObserverMSFT> Session::createSceneObserverMSFT (
+OPENXR_HPP_INLINE ResultValue<SceneObserverMSFT> Session::createSceneObserverMSFT(
     const SceneObserverCreateInfoMSFT& createInfo, Dispatch&& d) const {
-    SceneObserverMSFT handle;
-    Result result = static_cast<Result>( d.xrCreateSceneObserverMSFT(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  SceneObserverMSFT handle;
+  Result result =
+      static_cast<Result>(d.xrCreateSceneObserverMSFT(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<SceneObserverMSFT, impl::RemoveRefConst<Dispatch>>> Session::createSceneObserverUniqueMSFT (
-    const SceneObserverCreateInfoMSFT& createInfo, Dispatch&& d) const {
-    SceneObserverMSFT handle;
-    Result result = static_cast<Result>( d.xrCreateSceneObserverMSFT(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<SceneObserverMSFT, impl::RemoveRefConst<Dispatch>>>
+Session::createSceneObserverUniqueMSFT(const SceneObserverCreateInfoMSFT& createInfo,
+                                       Dispatch&& d) const {
+  SceneObserverMSFT handle;
+  Result result =
+      static_cast<Result>(d.xrCreateSceneObserverMSFT(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<SceneObserverMSFT, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<SceneObserverMSFT, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -7913,127 +3398,51 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<SceneObserverMSFT, impl::RemoveRefCon
 
 #endif  // XR_MSFT_scene_understanding
 
-
 #ifdef XR_MSFT_scene_understanding
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SceneObserverMSFT::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySceneObserverMSFT(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result SceneObserverMSFT::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySceneObserverMSFT(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_MSFT_scene_understanding
 
-
 #ifdef XR_MSFT_scene_understanding
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<SceneMSFT> SceneObserverMSFT::createSceneMSFT (
+OPENXR_HPP_INLINE ResultValue<SceneMSFT> SceneObserverMSFT::createSceneMSFT(
     const SceneCreateInfoMSFT& createInfo, Dispatch&& d) const {
-    SceneMSFT handle;
-    Result result = static_cast<Result>( d.xrCreateSceneMSFT(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  SceneMSFT handle;
+  Result result =
+      static_cast<Result>(d.xrCreateSceneMSFT(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<SceneMSFT, impl::RemoveRefConst<Dispatch>>> SceneObserverMSFT::createSceneUniqueMSFT (
-    const SceneCreateInfoMSFT& createInfo, Dispatch&& d) const {
-    SceneMSFT handle;
-    Result result = static_cast<Result>( d.xrCreateSceneMSFT(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<SceneMSFT, impl::RemoveRefConst<Dispatch>>>
+SceneObserverMSFT::createSceneUniqueMSFT(const SceneCreateInfoMSFT& createInfo,
+                                         Dispatch&& d) const {
+  SceneMSFT handle;
+  Result result =
+      static_cast<Result>(d.xrCreateSceneMSFT(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<SceneMSFT, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<SceneMSFT, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -8041,803 +3450,360 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<SceneMSFT, impl::RemoveRefConst<Dispa
 
 #endif  // XR_MSFT_scene_understanding
 
-
 #ifdef XR_MSFT_scene_understanding
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SceneMSFT::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySceneMSFT(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result SceneMSFT::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySceneMSFT(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_MSFT_scene_understanding
 
-
 #ifdef XR_MSFT_scene_understanding
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SceneObserverMSFT::computeNewSceneMSFT (
+OPENXR_HPP_INLINE Result SceneObserverMSFT::computeNewSceneMSFT(
     const NewSceneComputeInfoMSFT& computeInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrComputeNewSceneMSFT(this->get(), computeInfo.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrComputeNewSceneMSFT(this->get(), computeInfo.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_MSFT_scene_understanding
 
-
 #ifdef XR_MSFT_scene_understanding
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<SceneComputeStateMSFT> SceneObserverMSFT::getSceneComputeStateMSFT (
+OPENXR_HPP_INLINE ResultValue<SceneComputeStateMSFT> SceneObserverMSFT::getSceneComputeStateMSFT(
     Dispatch&& d) const {
-    SceneComputeStateMSFT state;
-    Result result = static_cast<Result>( d.xrGetSceneComputeStateMSFT(this->get(), OPENXR_HPP_NAMESPACE::put(state)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  SceneComputeStateMSFT state;
+  Result result = static_cast<Result>(
+      d.xrGetSceneComputeStateMSFT(this->get(), OPENXR_HPP_NAMESPACE::put(state)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(state) };
+  return {result, std::move(state)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_MSFT_scene_understanding
 
-
 #ifdef XR_MSFT_scene_understanding
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SceneMSFT::getSceneComponentsMSFT (
-    const SceneComponentsGetInfoMSFT& getInfo, SceneComponentsMSFT& components, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSceneComponentsMSFT(this->get(), getInfo.get(), components.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result
+SceneMSFT::getSceneComponentsMSFT(const SceneComponentsGetInfoMSFT& getInfo,
+                                  SceneComponentsMSFT& components, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetSceneComponentsMSFT(this->get(), getInfo.get(), components.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_MSFT_scene_understanding
 
-
 #ifdef XR_MSFT_scene_understanding
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SceneMSFT::locateSceneComponentsMSFT (
-    const SceneComponentsLocateInfoMSFT& locateInfo, SceneComponentLocationsMSFT& locations, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrLocateSceneComponentsMSFT(this->get(), locateInfo.get(), locations.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result
+SceneMSFT::locateSceneComponentsMSFT(const SceneComponentsLocateInfoMSFT& locateInfo,
+                                     SceneComponentLocationsMSFT& locations, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrLocateSceneComponentsMSFT(this->get(), locateInfo.get(), locations.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_MSFT_scene_understanding
 
-
 #ifdef XR_MSFT_scene_understanding
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<SceneMeshBuffersMSFT> SceneMSFT::getSceneMeshBuffersMSFT (
+OPENXR_HPP_INLINE ResultValue<SceneMeshBuffersMSFT> SceneMSFT::getSceneMeshBuffersMSFT(
     const SceneMeshBuffersGetInfoMSFT& getInfo, Dispatch&& d) const {
-    SceneMeshBuffersMSFT buffers;
-    Result result = static_cast<Result>( d.xrGetSceneMeshBuffersMSFT(this->get(), getInfo.get(), OPENXR_HPP_NAMESPACE::put(buffers)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  SceneMeshBuffersMSFT buffers;
+  Result result = static_cast<Result>(
+      d.xrGetSceneMeshBuffersMSFT(this->get(), getInfo.get(), OPENXR_HPP_NAMESPACE::put(buffers)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(buffers) };
+  return {result, std::move(buffers)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_MSFT_scene_understanding
 
-
 #ifdef XR_MSFT_scene_understanding_serialization
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SceneObserverMSFT::deserializeSceneMSFT (
+OPENXR_HPP_INLINE Result SceneObserverMSFT::deserializeSceneMSFT(
     const SceneDeserializeInfoMSFT& deserializeInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrDeserializeSceneMSFT(this->get(), deserializeInfo.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrDeserializeSceneMSFT(this->get(), deserializeInfo.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_MSFT_scene_understanding_serialization
-
 
 #ifdef XR_MSFT_scene_understanding_serialization
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SceneMSFT::getSerializedSceneFragmentDataMSFT (
-    const SerializedSceneFragmentDataGetInfoMSFT& getInfo, uint32_t countInput, uint32_t& readOutput, uint8_t* buffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSerializedSceneFragmentDataMSFT(this->get(), getInfo.get(), countInput, &readOutput, buffer) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result SceneMSFT::getSerializedSceneFragmentDataMSFT(
+    const SerializedSceneFragmentDataGetInfoMSFT& getInfo, uint32_t countInput,
+    uint32_t& readOutput, uint8_t* buffer, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetSerializedSceneFragmentDataMSFT(
+      this->get(), getInfo.get(), countInput, &readOutput, buffer));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_MSFT_scene_understanding_serialization
 
-
 #ifdef XR_FB_display_refresh_rate
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<float, Allocator>> Session::enumerateDisplayRefreshRatesToVectorFB (
-    Dispatch&& d) const {
-    std::vector<float, Allocator> displayRefreshRates;
-        uint32_t displayRefreshRateCountOutput = 0;
-    uint32_t displayRefreshRateCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<float, Allocator>>
+Session::enumerateDisplayRefreshRatesToVectorFB(Dispatch&& d) const {
+  std::vector<float, Allocator> displayRefreshRates;
+  uint32_t displayRefreshRateCountOutput = 0;
+  uint32_t displayRefreshRateCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateDisplayRefreshRatesFB(this->get(), displayRefreshRateCapacityInput, &displayRefreshRateCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || displayRefreshRateCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateDisplayRefreshRatesFB(
+      this->get(), displayRefreshRateCapacityInput, &displayRefreshRateCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || displayRefreshRateCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(displayRefreshRates)};
+  }
+  do {
+    displayRefreshRates.resize(displayRefreshRateCountOutput);
+    displayRefreshRateCapacityInput = static_cast<uint32_t>(displayRefreshRates.size());
+    result = static_cast<Result>(d.xrEnumerateDisplayRefreshRatesFB(
+        this->get(), displayRefreshRateCapacityInput, &displayRefreshRateCountOutput,
+        reinterpret_cast<float*>(displayRefreshRates.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(displayRefreshRateCountOutput <= displayRefreshRates.size());
+    displayRefreshRates.resize(displayRefreshRateCountOutput);
+  } else
+    displayRefreshRates.clear();
 
-        return { result, std::move(displayRefreshRates) };
-    }
-    do {
-        displayRefreshRates.resize(displayRefreshRateCountOutput);
-        displayRefreshRateCapacityInput = static_cast<uint32_t>(displayRefreshRates.size());
-        result = static_cast<Result>( d.xrEnumerateDisplayRefreshRatesFB(this->get(), displayRefreshRateCapacityInput, &displayRefreshRateCountOutput, reinterpret_cast<float*>(displayRefreshRates.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(displayRefreshRateCountOutput <= displayRefreshRates.size());
-        displayRefreshRates.resize(displayRefreshRateCountOutput);
-    } else displayRefreshRates.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(displayRefreshRates) };
-
+  return {result, std::move(displayRefreshRates)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<float, Allocator>> Session::enumerateDisplayRefreshRatesToVectorFB (
-    Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<float, Allocator> displayRefreshRates{vectorAllocator};
-        uint32_t displayRefreshRateCountOutput = 0;
-    uint32_t displayRefreshRateCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<float, Allocator>>
+Session::enumerateDisplayRefreshRatesToVectorFB(Allocator const& vectorAllocator,
+                                                Dispatch&& d) const {
+  std::vector<float, Allocator> displayRefreshRates{vectorAllocator};
+  uint32_t displayRefreshRateCountOutput = 0;
+  uint32_t displayRefreshRateCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateDisplayRefreshRatesFB(this->get(), displayRefreshRateCapacityInput, &displayRefreshRateCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || displayRefreshRateCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateDisplayRefreshRatesFB(
+      this->get(), displayRefreshRateCapacityInput, &displayRefreshRateCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || displayRefreshRateCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(displayRefreshRates)};
+  }
+  do {
+    displayRefreshRates.resize(displayRefreshRateCountOutput);
+    displayRefreshRateCapacityInput = static_cast<uint32_t>(displayRefreshRates.size());
+    result = static_cast<Result>(d.xrEnumerateDisplayRefreshRatesFB(
+        this->get(), displayRefreshRateCapacityInput, &displayRefreshRateCountOutput,
+        reinterpret_cast<float*>(displayRefreshRates.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(displayRefreshRateCountOutput <= displayRefreshRates.size());
+    displayRefreshRates.resize(displayRefreshRateCountOutput);
+  } else
+    displayRefreshRates.clear();
 
-        return { result, std::move(displayRefreshRates) };
-    }
-    do {
-        displayRefreshRates.resize(displayRefreshRateCountOutput);
-        displayRefreshRateCapacityInput = static_cast<uint32_t>(displayRefreshRates.size());
-        result = static_cast<Result>( d.xrEnumerateDisplayRefreshRatesFB(this->get(), displayRefreshRateCapacityInput, &displayRefreshRateCountOutput, reinterpret_cast<float*>(displayRefreshRates.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(displayRefreshRateCountOutput <= displayRefreshRates.size());
-        displayRefreshRates.resize(displayRefreshRateCountOutput);
-    } else displayRefreshRates.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(displayRefreshRates) };
-
+  return {result, std::move(displayRefreshRates)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_display_refresh_rate
-
 
 #ifdef XR_FB_display_refresh_rate
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<float> Session::getDisplayRefreshRateFB (
-    Dispatch&& d) const {
-    float displayRefreshRate;
-    Result result = static_cast<Result>( d.xrGetDisplayRefreshRateFB(this->get(), &displayRefreshRate) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<float> Session::getDisplayRefreshRateFB(Dispatch&& d) const {
+  float displayRefreshRate;
+  Result result =
+      static_cast<Result>(d.xrGetDisplayRefreshRateFB(this->get(), &displayRefreshRate));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(displayRefreshRate) };
+  return {result, std::move(displayRefreshRate)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_display_refresh_rate
-
 
 #ifdef XR_FB_display_refresh_rate
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::requestDisplayRefreshRateFB (
-    float displayRefreshRate, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrRequestDisplayRefreshRateFB(this->get(), displayRefreshRate) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::requestDisplayRefreshRateFB(float displayRefreshRate,
+                                                              Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrRequestDisplayRefreshRateFB(this->get(), displayRefreshRate));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_display_refresh_rate
-
 
 #ifdef XR_HTCX_vive_tracker_interaction
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<ViveTrackerPathsHTCX, Allocator>> Instance::enumerateViveTrackerPathsToVectorHTCX (
-    Dispatch&& d) const {
-    std::vector<ViveTrackerPathsHTCX, Allocator> paths;
-        uint32_t pathCountOutput = 0;
-    uint32_t pathCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<ViveTrackerPathsHTCX, Allocator>>
+Instance::enumerateViveTrackerPathsToVectorHTCX(Dispatch&& d) const {
+  std::vector<ViveTrackerPathsHTCX, Allocator> paths;
+  uint32_t pathCountOutput = 0;
+  uint32_t pathCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateViveTrackerPathsHTCX(this->get(), pathCapacityInput, &pathCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || pathCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(
+      d.xrEnumerateViveTrackerPathsHTCX(this->get(), pathCapacityInput, &pathCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || pathCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(paths)};
+  }
+  do {
+    paths.resize(pathCountOutput);
+    pathCapacityInput = static_cast<uint32_t>(paths.size());
+    result = static_cast<Result>(
+        d.xrEnumerateViveTrackerPathsHTCX(this->get(), pathCapacityInput, &pathCountOutput,
+                                          reinterpret_cast<XrViveTrackerPathsHTCX*>(paths.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(pathCountOutput <= paths.size());
+    paths.resize(pathCountOutput);
+  } else
+    paths.clear();
 
-        return { result, std::move(paths) };
-    }
-    do {
-        paths.resize(pathCountOutput);
-        pathCapacityInput = static_cast<uint32_t>(paths.size());
-        result = static_cast<Result>( d.xrEnumerateViveTrackerPathsHTCX(this->get(), pathCapacityInput, &pathCountOutput, reinterpret_cast<XrViveTrackerPathsHTCX*>(paths.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(pathCountOutput <= paths.size());
-        paths.resize(pathCountOutput);
-    } else paths.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(paths) };
-
+  return {result, std::move(paths)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<ViveTrackerPathsHTCX, Allocator>> Instance::enumerateViveTrackerPathsToVectorHTCX (
-    Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<ViveTrackerPathsHTCX, Allocator> paths{vectorAllocator};
-        uint32_t pathCountOutput = 0;
-    uint32_t pathCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<ViveTrackerPathsHTCX, Allocator>>
+Instance::enumerateViveTrackerPathsToVectorHTCX(Allocator const& vectorAllocator,
+                                                Dispatch&& d) const {
+  std::vector<ViveTrackerPathsHTCX, Allocator> paths{vectorAllocator};
+  uint32_t pathCountOutput = 0;
+  uint32_t pathCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateViveTrackerPathsHTCX(this->get(), pathCapacityInput, &pathCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || pathCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(
+      d.xrEnumerateViveTrackerPathsHTCX(this->get(), pathCapacityInput, &pathCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || pathCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(paths)};
+  }
+  do {
+    paths.resize(pathCountOutput);
+    pathCapacityInput = static_cast<uint32_t>(paths.size());
+    result = static_cast<Result>(
+        d.xrEnumerateViveTrackerPathsHTCX(this->get(), pathCapacityInput, &pathCountOutput,
+                                          reinterpret_cast<XrViveTrackerPathsHTCX*>(paths.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(pathCountOutput <= paths.size());
+    paths.resize(pathCountOutput);
+  } else
+    paths.clear();
 
-        return { result, std::move(paths) };
-    }
-    do {
-        paths.resize(pathCountOutput);
-        pathCapacityInput = static_cast<uint32_t>(paths.size());
-        result = static_cast<Result>( d.xrEnumerateViveTrackerPathsHTCX(this->get(), pathCapacityInput, &pathCountOutput, reinterpret_cast<XrViveTrackerPathsHTCX*>(paths.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(pathCountOutput <= paths.size());
-        paths.resize(pathCountOutput);
-    } else paths.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(paths) };
-
+  return {result, std::move(paths)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_HTCX_vive_tracker_interaction
 
-
 #ifdef XR_HTC_facial_tracking
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FacialTrackerHTC> Session::createFacialTrackerHTC (
+OPENXR_HPP_INLINE ResultValue<FacialTrackerHTC> Session::createFacialTrackerHTC(
     const FacialTrackerCreateInfoHTC& createInfo, Dispatch&& d) const {
-    FacialTrackerHTC handle;
-    Result result = static_cast<Result>( d.xrCreateFacialTrackerHTC(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  FacialTrackerHTC handle;
+  Result result =
+      static_cast<Result>(d.xrCreateFacialTrackerHTC(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<FacialTrackerHTC, impl::RemoveRefConst<Dispatch>>> Session::createFacialTrackerUniqueHTC (
-    const FacialTrackerCreateInfoHTC& createInfo, Dispatch&& d) const {
-    FacialTrackerHTC handle;
-    Result result = static_cast<Result>( d.xrCreateFacialTrackerHTC(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<FacialTrackerHTC, impl::RemoveRefConst<Dispatch>>>
+Session::createFacialTrackerUniqueHTC(const FacialTrackerCreateInfoHTC& createInfo,
+                                      Dispatch&& d) const {
+  FacialTrackerHTC handle;
+  Result result =
+      static_cast<Result>(d.xrCreateFacialTrackerHTC(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<FacialTrackerHTC, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<FacialTrackerHTC, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -8845,699 +3811,321 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<FacialTrackerHTC, impl::RemoveRefCons
 
 #endif  // XR_HTC_facial_tracking
 
-
 #ifdef XR_HTC_facial_tracking
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result FacialTrackerHTC::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyFacialTrackerHTC(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result FacialTrackerHTC::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyFacialTrackerHTC(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_HTC_facial_tracking
 
-
 #ifdef XR_HTC_facial_tracking
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result FacialTrackerHTC::getFacialExpressionsHTC (
+OPENXR_HPP_INLINE Result FacialTrackerHTC::getFacialExpressionsHTC(
     FacialExpressionsHTC& facialExpressions, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetFacialExpressionsHTC(this->get(), facialExpressions.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result =
+      static_cast<Result>(d.xrGetFacialExpressionsHTC(this->get(), facialExpressions.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_HTC_facial_tracking
 
-
 #ifdef XR_FB_color_space
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<ColorSpaceFB, Allocator>> Session::enumerateColorSpacesToVectorFB (
-    Dispatch&& d) const {
-    std::vector<ColorSpaceFB, Allocator> colorSpaces;
-        uint32_t colorSpaceCountOutput = 0;
-    uint32_t colorSpaceCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<ColorSpaceFB, Allocator>>
+Session::enumerateColorSpacesToVectorFB(Dispatch&& d) const {
+  std::vector<ColorSpaceFB, Allocator> colorSpaces;
+  uint32_t colorSpaceCountOutput = 0;
+  uint32_t colorSpaceCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateColorSpacesFB(this->get(), colorSpaceCapacityInput, &colorSpaceCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || colorSpaceCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateColorSpacesFB(
+      this->get(), colorSpaceCapacityInput, &colorSpaceCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || colorSpaceCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(colorSpaces)};
+  }
+  do {
+    colorSpaces.resize(colorSpaceCountOutput);
+    colorSpaceCapacityInput = static_cast<uint32_t>(colorSpaces.size());
+    result = static_cast<Result>(
+        d.xrEnumerateColorSpacesFB(this->get(), colorSpaceCapacityInput, &colorSpaceCountOutput,
+                                   reinterpret_cast<XrColorSpaceFB*>(colorSpaces.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(colorSpaceCountOutput <= colorSpaces.size());
+    colorSpaces.resize(colorSpaceCountOutput);
+  } else
+    colorSpaces.clear();
 
-        return { result, std::move(colorSpaces) };
-    }
-    do {
-        colorSpaces.resize(colorSpaceCountOutput);
-        colorSpaceCapacityInput = static_cast<uint32_t>(colorSpaces.size());
-        result = static_cast<Result>( d.xrEnumerateColorSpacesFB(this->get(), colorSpaceCapacityInput, &colorSpaceCountOutput, reinterpret_cast<XrColorSpaceFB*>(colorSpaces.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(colorSpaceCountOutput <= colorSpaces.size());
-        colorSpaces.resize(colorSpaceCountOutput);
-    } else colorSpaces.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(colorSpaces) };
-
+  return {result, std::move(colorSpaces)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<ColorSpaceFB, Allocator>> Session::enumerateColorSpacesToVectorFB (
-    Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<ColorSpaceFB, Allocator> colorSpaces{vectorAllocator};
-        uint32_t colorSpaceCountOutput = 0;
-    uint32_t colorSpaceCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<ColorSpaceFB, Allocator>>
+Session::enumerateColorSpacesToVectorFB(Allocator const& vectorAllocator, Dispatch&& d) const {
+  std::vector<ColorSpaceFB, Allocator> colorSpaces{vectorAllocator};
+  uint32_t colorSpaceCountOutput = 0;
+  uint32_t colorSpaceCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateColorSpacesFB(this->get(), colorSpaceCapacityInput, &colorSpaceCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || colorSpaceCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateColorSpacesFB(
+      this->get(), colorSpaceCapacityInput, &colorSpaceCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || colorSpaceCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(colorSpaces)};
+  }
+  do {
+    colorSpaces.resize(colorSpaceCountOutput);
+    colorSpaceCapacityInput = static_cast<uint32_t>(colorSpaces.size());
+    result = static_cast<Result>(
+        d.xrEnumerateColorSpacesFB(this->get(), colorSpaceCapacityInput, &colorSpaceCountOutput,
+                                   reinterpret_cast<XrColorSpaceFB*>(colorSpaces.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(colorSpaceCountOutput <= colorSpaces.size());
+    colorSpaces.resize(colorSpaceCountOutput);
+  } else
+    colorSpaces.clear();
 
-        return { result, std::move(colorSpaces) };
-    }
-    do {
-        colorSpaces.resize(colorSpaceCountOutput);
-        colorSpaceCapacityInput = static_cast<uint32_t>(colorSpaces.size());
-        result = static_cast<Result>( d.xrEnumerateColorSpacesFB(this->get(), colorSpaceCapacityInput, &colorSpaceCountOutput, reinterpret_cast<XrColorSpaceFB*>(colorSpaces.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(colorSpaceCountOutput <= colorSpaces.size());
-        colorSpaces.resize(colorSpaceCountOutput);
-    } else colorSpaces.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(colorSpaces) };
-
+  return {result, std::move(colorSpaces)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_color_space
 
-
 #ifdef XR_FB_color_space
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setColorSpaceFB (
-    ColorSpaceFB colorSpace, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetColorSpaceFB(this->get(), OPENXR_HPP_NAMESPACE::get(colorSpace)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::setColorSpaceFB(ColorSpaceFB colorSpace, Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrSetColorSpaceFB(this->get(), OPENXR_HPP_NAMESPACE::get(colorSpace)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_color_space
-
 
 #ifdef XR_FB_hand_tracking_mesh
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result HandTrackerEXT::getHandMeshFB (
-    HandTrackingMeshFB& mesh, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetHandMeshFB(this->get(), mesh.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result HandTrackerEXT::getHandMeshFB(HandTrackingMeshFB& mesh,
+                                                       Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetHandMeshFB(this->get(), mesh.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_hand_tracking_mesh
 
-
 #ifdef XR_FB_spatial_entity
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<AsyncRequestIdFB> Session::createSpatialAnchorFB (
+OPENXR_HPP_INLINE ResultValue<AsyncRequestIdFB> Session::createSpatialAnchorFB(
     const SpatialAnchorCreateInfoFB& info, Dispatch&& d) const {
-    AsyncRequestIdFB requestId;
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorFB(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(requestId)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  AsyncRequestIdFB requestId;
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialAnchorFB(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(requestId)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(requestId) };
+  return {result, std::move(requestId)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_spatial_entity
 
-
 #ifdef XR_FB_spatial_entity
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UuidEXT> Space::getSpaceUuidFB (
-    Dispatch&& d) const {
-    UuidEXT uuid;
-    Result result = static_cast<Result>( d.xrGetSpaceUuidFB(this->get(), &uuid) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UuidEXT> Space::getSpaceUuidFB(Dispatch&& d) const {
+  UuidEXT uuid;
+  Result result = static_cast<Result>(d.xrGetSpaceUuidFB(this->get(), &uuid));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(uuid) };
+  return {result, std::move(uuid)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_spatial_entity
 
-
 #ifdef XR_FB_spatial_entity
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<SpaceComponentTypeFB, Allocator>> Space::enumerateSpaceSupportedComponentsToVectorFB (
-    Dispatch&& d) const {
-    std::vector<SpaceComponentTypeFB, Allocator> componentTypes;
-        uint32_t componentTypeCountOutput = 0;
-    uint32_t componentTypeCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<SpaceComponentTypeFB, Allocator>>
+Space::enumerateSpaceSupportedComponentsToVectorFB(Dispatch&& d) const {
+  std::vector<SpaceComponentTypeFB, Allocator> componentTypes;
+  uint32_t componentTypeCountOutput = 0;
+  uint32_t componentTypeCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateSpaceSupportedComponentsFB(this->get(), componentTypeCapacityInput, &componentTypeCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || componentTypeCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateSpaceSupportedComponentsFB(
+      this->get(), componentTypeCapacityInput, &componentTypeCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || componentTypeCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(componentTypes)};
+  }
+  do {
+    componentTypes.resize(componentTypeCountOutput);
+    componentTypeCapacityInput = static_cast<uint32_t>(componentTypes.size());
+    result = static_cast<Result>(d.xrEnumerateSpaceSupportedComponentsFB(
+        this->get(), componentTypeCapacityInput, &componentTypeCountOutput,
+        reinterpret_cast<XrSpaceComponentTypeFB*>(componentTypes.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(componentTypeCountOutput <= componentTypes.size());
+    componentTypes.resize(componentTypeCountOutput);
+  } else
+    componentTypes.clear();
 
-        return { result, std::move(componentTypes) };
-    }
-    do {
-        componentTypes.resize(componentTypeCountOutput);
-        componentTypeCapacityInput = static_cast<uint32_t>(componentTypes.size());
-        result = static_cast<Result>( d.xrEnumerateSpaceSupportedComponentsFB(this->get(), componentTypeCapacityInput, &componentTypeCountOutput, reinterpret_cast<XrSpaceComponentTypeFB*>(componentTypes.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(componentTypeCountOutput <= componentTypes.size());
-        componentTypes.resize(componentTypeCountOutput);
-    } else componentTypes.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(componentTypes) };
-
+  return {result, std::move(componentTypes)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<SpaceComponentTypeFB, Allocator>> Space::enumerateSpaceSupportedComponentsToVectorFB (
-    Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<SpaceComponentTypeFB, Allocator> componentTypes{vectorAllocator};
-        uint32_t componentTypeCountOutput = 0;
-    uint32_t componentTypeCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<SpaceComponentTypeFB, Allocator>>
+Space::enumerateSpaceSupportedComponentsToVectorFB(Allocator const& vectorAllocator,
+                                                   Dispatch&& d) const {
+  std::vector<SpaceComponentTypeFB, Allocator> componentTypes{vectorAllocator};
+  uint32_t componentTypeCountOutput = 0;
+  uint32_t componentTypeCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateSpaceSupportedComponentsFB(this->get(), componentTypeCapacityInput, &componentTypeCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || componentTypeCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateSpaceSupportedComponentsFB(
+      this->get(), componentTypeCapacityInput, &componentTypeCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || componentTypeCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(componentTypes)};
+  }
+  do {
+    componentTypes.resize(componentTypeCountOutput);
+    componentTypeCapacityInput = static_cast<uint32_t>(componentTypes.size());
+    result = static_cast<Result>(d.xrEnumerateSpaceSupportedComponentsFB(
+        this->get(), componentTypeCapacityInput, &componentTypeCountOutput,
+        reinterpret_cast<XrSpaceComponentTypeFB*>(componentTypes.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(componentTypeCountOutput <= componentTypes.size());
+    componentTypes.resize(componentTypeCountOutput);
+  } else
+    componentTypes.clear();
 
-        return { result, std::move(componentTypes) };
-    }
-    do {
-        componentTypes.resize(componentTypeCountOutput);
-        componentTypeCapacityInput = static_cast<uint32_t>(componentTypes.size());
-        result = static_cast<Result>( d.xrEnumerateSpaceSupportedComponentsFB(this->get(), componentTypeCapacityInput, &componentTypeCountOutput, reinterpret_cast<XrSpaceComponentTypeFB*>(componentTypes.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(componentTypeCountOutput <= componentTypes.size());
-        componentTypes.resize(componentTypeCountOutput);
-    } else componentTypes.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(componentTypes) };
-
+  return {result, std::move(componentTypes)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_spatial_entity
 
-
 #ifdef XR_FB_spatial_entity
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<AsyncRequestIdFB> Space::setSpaceComponentStatusFB (
+OPENXR_HPP_INLINE ResultValue<AsyncRequestIdFB> Space::setSpaceComponentStatusFB(
     const SpaceComponentStatusSetInfoFB& info, Dispatch&& d) const {
-    AsyncRequestIdFB requestId;
-    Result result = static_cast<Result>( d.xrSetSpaceComponentStatusFB(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(requestId)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  AsyncRequestIdFB requestId;
+  Result result = static_cast<Result>(
+      d.xrSetSpaceComponentStatusFB(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(requestId)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(requestId) };
+  return {result, std::move(requestId)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_spatial_entity
-
 
 #ifdef XR_FB_spatial_entity
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<SpaceComponentStatusFB> Space::getSpaceComponentStatusFB (
+OPENXR_HPP_INLINE ResultValue<SpaceComponentStatusFB> Space::getSpaceComponentStatusFB(
     SpaceComponentTypeFB componentType, Dispatch&& d) const {
-    SpaceComponentStatusFB status;
-    Result result = static_cast<Result>( d.xrGetSpaceComponentStatusFB(this->get(), OPENXR_HPP_NAMESPACE::get(componentType), OPENXR_HPP_NAMESPACE::put(status)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  SpaceComponentStatusFB status;
+  Result result = static_cast<Result>(d.xrGetSpaceComponentStatusFB(
+      this->get(), OPENXR_HPP_NAMESPACE::get(componentType), OPENXR_HPP_NAMESPACE::put(status)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(status) };
+  return {result, std::move(status)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_spatial_entity
 
-
 #ifdef XR_FB_foveation
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FoveationProfileFB> Session::createFoveationProfileFB (
+OPENXR_HPP_INLINE ResultValue<FoveationProfileFB> Session::createFoveationProfileFB(
     const FoveationProfileCreateInfoFB& createInfo, Dispatch&& d) const {
-    FoveationProfileFB handle;
-    Result result = static_cast<Result>( d.xrCreateFoveationProfileFB(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  FoveationProfileFB handle;
+  Result result = static_cast<Result>(
+      d.xrCreateFoveationProfileFB(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<FoveationProfileFB, impl::RemoveRefConst<Dispatch>>> Session::createFoveationProfileUniqueFB (
-    const FoveationProfileCreateInfoFB& createInfo, Dispatch&& d) const {
-    FoveationProfileFB handle;
-    Result result = static_cast<Result>( d.xrCreateFoveationProfileFB(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<FoveationProfileFB, impl::RemoveRefConst<Dispatch>>>
+Session::createFoveationProfileUniqueFB(const FoveationProfileCreateInfoFB& createInfo,
+                                        Dispatch&& d) const {
+  FoveationProfileFB handle;
+  Result result = static_cast<Result>(
+      d.xrCreateFoveationProfileFB(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<FoveationProfileFB, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result,
+          UniqueHandle<FoveationProfileFB, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -9545,179 +4133,70 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<FoveationProfileFB, impl::RemoveRefCo
 
 #endif  // XR_FB_foveation
 
-
 #ifdef XR_FB_foveation
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result FoveationProfileFB::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyFoveationProfileFB(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result FoveationProfileFB::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyFoveationProfileFB(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_foveation
 
-
 #ifdef XR_FB_keyboard_tracking
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<KeyboardTrackingDescriptionFB> Session::querySystemTrackedKeyboardFB (
+OPENXR_HPP_INLINE ResultValue<KeyboardTrackingDescriptionFB> Session::querySystemTrackedKeyboardFB(
     const KeyboardTrackingQueryFB& queryInfo, Dispatch&& d) const {
-    KeyboardTrackingDescriptionFB keyboard;
-    Result result = static_cast<Result>( d.xrQuerySystemTrackedKeyboardFB(this->get(), queryInfo.get(), OPENXR_HPP_NAMESPACE::put(keyboard)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  KeyboardTrackingDescriptionFB keyboard;
+  Result result = static_cast<Result>(d.xrQuerySystemTrackedKeyboardFB(
+      this->get(), queryInfo.get(), OPENXR_HPP_NAMESPACE::put(keyboard)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(keyboard) };
+  return {result, std::move(keyboard)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_keyboard_tracking
-
 
 #ifdef XR_FB_keyboard_tracking
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<Space> Session::createKeyboardSpaceFB (
+OPENXR_HPP_INLINE ResultValue<Space> Session::createKeyboardSpaceFB(
     const KeyboardSpaceCreateInfoFB& createInfo, Dispatch&& d) const {
-    Space handle;
-    Result result = static_cast<Result>( d.xrCreateKeyboardSpaceFB(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Space handle;
+  Result result =
+      static_cast<Result>(d.xrCreateKeyboardSpaceFB(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>> Session::createKeyboardSpaceUniqueFB (
-    const KeyboardSpaceCreateInfoFB& createInfo, Dispatch&& d) const {
-    Space handle;
-    Result result = static_cast<Result>( d.xrCreateKeyboardSpaceFB(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>>
+Session::createKeyboardSpaceUniqueFB(const KeyboardSpaceCreateInfoFB& createInfo,
+                                     Dispatch&& d) const {
+  Space handle;
+  Result result =
+      static_cast<Result>(d.xrCreateKeyboardSpaceFB(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -9725,75 +4204,35 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>
 
 #endif  // XR_FB_keyboard_tracking
 
-
 #ifdef XR_FB_triangle_mesh
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<TriangleMeshFB> Session::createTriangleMeshFB (
+OPENXR_HPP_INLINE ResultValue<TriangleMeshFB> Session::createTriangleMeshFB(
     const TriangleMeshCreateInfoFB& createInfo, Dispatch&& d) const {
-    TriangleMeshFB handle;
-    Result result = static_cast<Result>( d.xrCreateTriangleMeshFB(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  TriangleMeshFB handle;
+  Result result =
+      static_cast<Result>(d.xrCreateTriangleMeshFB(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<TriangleMeshFB, impl::RemoveRefConst<Dispatch>>> Session::createTriangleMeshUniqueFB (
-    const TriangleMeshCreateInfoFB& createInfo, Dispatch&& d) const {
-    TriangleMeshFB handle;
-    Result result = static_cast<Result>( d.xrCreateTriangleMeshFB(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<TriangleMeshFB, impl::RemoveRefConst<Dispatch>>>
+Session::createTriangleMeshUniqueFB(const TriangleMeshCreateInfoFB& createInfo,
+                                    Dispatch&& d) const {
+  TriangleMeshFB handle;
+  Result result =
+      static_cast<Result>(d.xrCreateTriangleMeshFB(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<TriangleMeshFB, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<TriangleMeshFB, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -9801,439 +4240,156 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<TriangleMeshFB, impl::RemoveRefConst<
 
 #endif  // XR_FB_triangle_mesh
 
-
 #ifdef XR_FB_triangle_mesh
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result TriangleMeshFB::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyTriangleMeshFB(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result TriangleMeshFB::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyTriangleMeshFB(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_triangle_mesh
 
-
 #ifdef XR_FB_triangle_mesh
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result TriangleMeshFB::triangleMeshGetVertexBufferFB (
-    Vector3f*& outVertexBuffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrTriangleMeshGetVertexBufferFB(this->get(), reinterpret_cast<XrVector3f**>(&outVertexBuffer)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result TriangleMeshFB::triangleMeshGetVertexBufferFB(Vector3f*& outVertexBuffer,
+                                                                       Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrTriangleMeshGetVertexBufferFB(
+      this->get(), reinterpret_cast<XrVector3f**>(&outVertexBuffer)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_triangle_mesh
 
-
 #ifdef XR_FB_triangle_mesh
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result TriangleMeshFB::triangleMeshGetIndexBufferFB (
-    uint32_t*& outIndexBuffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrTriangleMeshGetIndexBufferFB(this->get(), &outIndexBuffer) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result TriangleMeshFB::triangleMeshGetIndexBufferFB(uint32_t*& outIndexBuffer,
+                                                                      Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrTriangleMeshGetIndexBufferFB(this->get(), &outIndexBuffer));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_triangle_mesh
 
-
 #ifdef XR_FB_triangle_mesh
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result TriangleMeshFB::triangleMeshBeginUpdateFB (
+OPENXR_HPP_INLINE Result TriangleMeshFB::triangleMeshBeginUpdateFB(Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrTriangleMeshBeginUpdateFB(this->get()));
+
+  OPENXR_HPP_ASSERT(succeeded(result));
+
+  return result;
+}
+
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
+
+#endif  // XR_FB_triangle_mesh
+
+#ifdef XR_FB_triangle_mesh
+
+#ifdef OPENXR_HPP_NO_EXCEPTIONS
+template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
+OPENXR_HPP_INLINE Result TriangleMeshFB::triangleMeshEndUpdateFB(uint32_t vertexCount,
+                                                                 uint32_t triangleCount,
+                                                                 Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrTriangleMeshEndUpdateFB(this->get(), vertexCount, triangleCount));
+
+  OPENXR_HPP_ASSERT(succeeded(result));
+
+  return result;
+}
+
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
+
+#endif  // XR_FB_triangle_mesh
+
+#ifdef XR_FB_triangle_mesh
+
+#ifdef OPENXR_HPP_NO_EXCEPTIONS
+template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
+OPENXR_HPP_INLINE ResultValue<uint32_t> TriangleMeshFB::triangleMeshBeginVertexBufferUpdateFB(
     Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrTriangleMeshBeginUpdateFB(this->get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  uint32_t outVertexCount;
+  Result result =
+      static_cast<Result>(d.xrTriangleMeshBeginVertexBufferUpdateFB(this->get(), &outVertexCount));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return {result, std::move(outVertexCount)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_triangle_mesh
-
 
 #ifdef XR_FB_triangle_mesh
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result TriangleMeshFB::triangleMeshEndUpdateFB (
-    uint32_t vertexCount, uint32_t triangleCount, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrTriangleMeshEndUpdateFB(this->get(), vertexCount, triangleCount) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result TriangleMeshFB::triangleMeshEndVertexBufferUpdateFB(Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrTriangleMeshEndVertexBufferUpdateFB(this->get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_triangle_mesh
-
-
-#ifdef XR_FB_triangle_mesh
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#ifdef OPENXR_HPP_NO_EXCEPTIONS
-template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<uint32_t> TriangleMeshFB::triangleMeshBeginVertexBufferUpdateFB (
-    Dispatch&& d) const {
-    uint32_t outVertexCount;
-    Result result = static_cast<Result>( d.xrTriangleMeshBeginVertexBufferUpdateFB(this->get(), &outVertexCount) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
-
-
-    return { result, std::move(outVertexCount) };
-}
-
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-#endif  // XR_FB_triangle_mesh
-
-
-#ifdef XR_FB_triangle_mesh
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#ifdef OPENXR_HPP_NO_EXCEPTIONS
-template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result TriangleMeshFB::triangleMeshEndVertexBufferUpdateFB (
-    Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrTriangleMeshEndVertexBufferUpdateFB(this->get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
-
-
-    return result;
-}
-
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-#endif  // XR_FB_triangle_mesh
-
 
 #ifdef XR_FB_passthrough
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<PassthroughFB> Session::createPassthroughFB (
+OPENXR_HPP_INLINE ResultValue<PassthroughFB> Session::createPassthroughFB(
     const PassthroughCreateInfoFB& createInfo, Dispatch&& d) const {
-    PassthroughFB handle;
-    Result result = static_cast<Result>( d.xrCreatePassthroughFB(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  PassthroughFB handle;
+  Result result =
+      static_cast<Result>(d.xrCreatePassthroughFB(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<PassthroughFB, impl::RemoveRefConst<Dispatch>>> Session::createPassthroughUniqueFB (
-    const PassthroughCreateInfoFB& createInfo, Dispatch&& d) const {
-    PassthroughFB handle;
-    Result result = static_cast<Result>( d.xrCreatePassthroughFB(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<PassthroughFB, impl::RemoveRefConst<Dispatch>>>
+Session::createPassthroughUniqueFB(const PassthroughCreateInfoFB& createInfo, Dispatch&& d) const {
+  PassthroughFB handle;
+  Result result =
+      static_cast<Result>(d.xrCreatePassthroughFB(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<PassthroughFB, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<PassthroughFB, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -10241,231 +4397,84 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<PassthroughFB, impl::RemoveRefConst<D
 
 #endif  // XR_FB_passthrough
 
-
 #ifdef XR_FB_passthrough
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PassthroughFB::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyPassthroughFB(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result PassthroughFB::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyPassthroughFB(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_passthrough
 
-
 #ifdef XR_FB_passthrough
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PassthroughFB::passthroughStartFB (
-    Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPassthroughStartFB(this->get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result PassthroughFB::passthroughStartFB(Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrPassthroughStartFB(this->get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_passthrough
 
-
 #ifdef XR_FB_passthrough
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PassthroughFB::passthroughPauseFB (
-    Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPassthroughPauseFB(this->get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result PassthroughFB::passthroughPauseFB(Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrPassthroughPauseFB(this->get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_passthrough
 
-
 #ifdef XR_FB_passthrough
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<PassthroughLayerFB> Session::createPassthroughLayerFB (
+OPENXR_HPP_INLINE ResultValue<PassthroughLayerFB> Session::createPassthroughLayerFB(
     const PassthroughLayerCreateInfoFB& createInfo, Dispatch&& d) const {
-    PassthroughLayerFB handle;
-    Result result = static_cast<Result>( d.xrCreatePassthroughLayerFB(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  PassthroughLayerFB handle;
+  Result result = static_cast<Result>(
+      d.xrCreatePassthroughLayerFB(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<PassthroughLayerFB, impl::RemoveRefConst<Dispatch>>> Session::createPassthroughLayerUniqueFB (
-    const PassthroughLayerCreateInfoFB& createInfo, Dispatch&& d) const {
-    PassthroughLayerFB handle;
-    Result result = static_cast<Result>( d.xrCreatePassthroughLayerFB(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<PassthroughLayerFB, impl::RemoveRefConst<Dispatch>>>
+Session::createPassthroughLayerUniqueFB(const PassthroughLayerCreateInfoFB& createInfo,
+                                        Dispatch&& d) const {
+  PassthroughLayerFB handle;
+  Result result = static_cast<Result>(
+      d.xrCreatePassthroughLayerFB(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<PassthroughLayerFB, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result,
+          UniqueHandle<PassthroughLayerFB, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -10473,283 +4482,101 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<PassthroughLayerFB, impl::RemoveRefCo
 
 #endif  // XR_FB_passthrough
 
-
 #ifdef XR_FB_passthrough
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PassthroughLayerFB::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyPassthroughLayerFB(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result PassthroughLayerFB::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyPassthroughLayerFB(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_passthrough
 
-
 #ifdef XR_FB_passthrough
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PassthroughLayerFB::passthroughLayerPauseFB (
-    Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPassthroughLayerPauseFB(this->get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result PassthroughLayerFB::passthroughLayerPauseFB(Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrPassthroughLayerPauseFB(this->get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_passthrough
 
-
 #ifdef XR_FB_passthrough
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PassthroughLayerFB::passthroughLayerResumeFB (
-    Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPassthroughLayerResumeFB(this->get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result PassthroughLayerFB::passthroughLayerResumeFB(Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrPassthroughLayerResumeFB(this->get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_passthrough
 
-
 #ifdef XR_FB_passthrough
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PassthroughLayerFB::passthroughLayerSetStyleFB (
+OPENXR_HPP_INLINE Result PassthroughLayerFB::passthroughLayerSetStyleFB(
     const PassthroughStyleFB& style, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPassthroughLayerSetStyleFB(this->get(), style.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrPassthroughLayerSetStyleFB(this->get(), style.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_passthrough
 
-
 #ifdef XR_FB_passthrough
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<GeometryInstanceFB> Session::createGeometryInstanceFB (
+OPENXR_HPP_INLINE ResultValue<GeometryInstanceFB> Session::createGeometryInstanceFB(
     const GeometryInstanceCreateInfoFB& createInfo, Dispatch&& d) const {
-    GeometryInstanceFB handle;
-    Result result = static_cast<Result>( d.xrCreateGeometryInstanceFB(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  GeometryInstanceFB handle;
+  Result result = static_cast<Result>(
+      d.xrCreateGeometryInstanceFB(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<GeometryInstanceFB, impl::RemoveRefConst<Dispatch>>> Session::createGeometryInstanceUniqueFB (
-    const GeometryInstanceCreateInfoFB& createInfo, Dispatch&& d) const {
-    GeometryInstanceFB handle;
-    Result result = static_cast<Result>( d.xrCreateGeometryInstanceFB(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<GeometryInstanceFB, impl::RemoveRefConst<Dispatch>>>
+Session::createGeometryInstanceUniqueFB(const GeometryInstanceCreateInfoFB& createInfo,
+                                        Dispatch&& d) const {
+  GeometryInstanceFB handle;
+  Result result = static_cast<Result>(
+      d.xrCreateGeometryInstanceFB(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<GeometryInstanceFB, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result,
+          UniqueHandle<GeometryInstanceFB, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -10757,657 +4584,275 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<GeometryInstanceFB, impl::RemoveRefCo
 
 #endif  // XR_FB_passthrough
 
-
 #ifdef XR_FB_passthrough
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result GeometryInstanceFB::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyGeometryInstanceFB(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result GeometryInstanceFB::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyGeometryInstanceFB(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_passthrough
 
-
 #ifdef XR_FB_passthrough
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result GeometryInstanceFB::geometryInstanceSetTransformFB (
+OPENXR_HPP_INLINE Result GeometryInstanceFB::geometryInstanceSetTransformFB(
     const GeometryInstanceTransformFB& transformation, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGeometryInstanceSetTransformFB(this->get(), transformation.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result =
+      static_cast<Result>(d.xrGeometryInstanceSetTransformFB(this->get(), transformation.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_passthrough
 
-
 #ifdef XR_FB_render_model
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<RenderModelPathInfoFB, Allocator>> Session::enumerateRenderModelPathsToVectorFB (
-    Dispatch&& d) const {
-    std::vector<RenderModelPathInfoFB, Allocator> paths;
-        uint32_t pathCountOutput = 0;
-    uint32_t pathCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<RenderModelPathInfoFB, Allocator>>
+Session::enumerateRenderModelPathsToVectorFB(Dispatch&& d) const {
+  std::vector<RenderModelPathInfoFB, Allocator> paths;
+  uint32_t pathCountOutput = 0;
+  uint32_t pathCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateRenderModelPathsFB(this->get(), pathCapacityInput, &pathCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || pathCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(
+      d.xrEnumerateRenderModelPathsFB(this->get(), pathCapacityInput, &pathCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || pathCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(paths)};
+  }
+  do {
+    paths.resize(pathCountOutput);
+    pathCapacityInput = static_cast<uint32_t>(paths.size());
+    result = static_cast<Result>(
+        d.xrEnumerateRenderModelPathsFB(this->get(), pathCapacityInput, &pathCountOutput,
+                                        reinterpret_cast<XrRenderModelPathInfoFB*>(paths.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(pathCountOutput <= paths.size());
+    paths.resize(pathCountOutput);
+  } else
+    paths.clear();
 
-        return { result, std::move(paths) };
-    }
-    do {
-        paths.resize(pathCountOutput);
-        pathCapacityInput = static_cast<uint32_t>(paths.size());
-        result = static_cast<Result>( d.xrEnumerateRenderModelPathsFB(this->get(), pathCapacityInput, &pathCountOutput, reinterpret_cast<XrRenderModelPathInfoFB*>(paths.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(pathCountOutput <= paths.size());
-        paths.resize(pathCountOutput);
-    } else paths.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(paths) };
-
+  return {result, std::move(paths)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<RenderModelPathInfoFB, Allocator>> Session::enumerateRenderModelPathsToVectorFB (
-    Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<RenderModelPathInfoFB, Allocator> paths{vectorAllocator};
-        uint32_t pathCountOutput = 0;
-    uint32_t pathCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<RenderModelPathInfoFB, Allocator>>
+Session::enumerateRenderModelPathsToVectorFB(Allocator const& vectorAllocator, Dispatch&& d) const {
+  std::vector<RenderModelPathInfoFB, Allocator> paths{vectorAllocator};
+  uint32_t pathCountOutput = 0;
+  uint32_t pathCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateRenderModelPathsFB(this->get(), pathCapacityInput, &pathCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || pathCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(
+      d.xrEnumerateRenderModelPathsFB(this->get(), pathCapacityInput, &pathCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || pathCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(paths)};
+  }
+  do {
+    paths.resize(pathCountOutput);
+    pathCapacityInput = static_cast<uint32_t>(paths.size());
+    result = static_cast<Result>(
+        d.xrEnumerateRenderModelPathsFB(this->get(), pathCapacityInput, &pathCountOutput,
+                                        reinterpret_cast<XrRenderModelPathInfoFB*>(paths.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(pathCountOutput <= paths.size());
+    paths.resize(pathCountOutput);
+  } else
+    paths.clear();
 
-        return { result, std::move(paths) };
-    }
-    do {
-        paths.resize(pathCountOutput);
-        pathCapacityInput = static_cast<uint32_t>(paths.size());
-        result = static_cast<Result>( d.xrEnumerateRenderModelPathsFB(this->get(), pathCapacityInput, &pathCountOutput, reinterpret_cast<XrRenderModelPathInfoFB*>(paths.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(pathCountOutput <= paths.size());
-        paths.resize(pathCountOutput);
-    } else paths.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(paths) };
-
+  return {result, std::move(paths)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_render_model
-
 
 #ifdef XR_FB_render_model
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getRenderModelPropertiesFB (
-    Path path, RenderModelPropertiesFB& properties, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetRenderModelPropertiesFB(this->get(), path.get(), properties.put()) );
-    
-        #ifdef OPENXR_HPP_NO_EXCEPTIONS
-    OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::getRenderModelPropertiesFB(Path path,
+                                                             RenderModelPropertiesFB& properties,
+                                                             Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetRenderModelPropertiesFB(this->get(), path.get(), properties.put()));
+
+#ifdef OPENXR_HPP_NO_EXCEPTIONS
+  OPENXR_HPP_ASSERT(succeeded(result));
 #else
-    if (!(succeeded(result))) {
-        exceptions::throwResultException(result, OPENXR_HPP_NAMESPACE_STRING "::Session::getRenderModelPropertiesFB");
-    }
+  if (!(succeeded(result))) {
+    exceptions::throwResultException(
+        result, OPENXR_HPP_NAMESPACE_STRING "::Session::getRenderModelPropertiesFB");
+  }
 #endif
 
-
-
-    return result;
+  return result;
 }
 
-
 #endif  // XR_FB_render_model
-
 
 #ifdef XR_FB_render_model
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::loadRenderModelFB (
-    const RenderModelLoadInfoFB& info, RenderModelBufferFB& buffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrLoadRenderModelFB(this->get(), info.get(), buffer.put(false)) );
-    
-        #ifdef OPENXR_HPP_NO_EXCEPTIONS
-    OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::loadRenderModelFB(const RenderModelLoadInfoFB& info,
+                                                    RenderModelBufferFB& buffer,
+                                                    Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrLoadRenderModelFB(this->get(), info.get(), buffer.put(false)));
+
+#ifdef OPENXR_HPP_NO_EXCEPTIONS
+  OPENXR_HPP_ASSERT(succeeded(result));
 #else
-    if (!(succeeded(result))) {
-        exceptions::throwResultException(result, OPENXR_HPP_NAMESPACE_STRING "::Session::loadRenderModelFB");
-    }
+  if (!(succeeded(result))) {
+    exceptions::throwResultException(result,
+                                     OPENXR_HPP_NAMESPACE_STRING "::Session::loadRenderModelFB");
+  }
 #endif
 
-
-
-    return result;
+  return result;
 }
 
-
 #endif  // XR_FB_render_model
-
 
 #ifdef XR_VARJO_environment_depth_estimation
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setEnvironmentDepthEstimationVARJO (
-    Bool32 enabled, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetEnvironmentDepthEstimationVARJO(this->get(), enabled.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::setEnvironmentDepthEstimationVARJO(Bool32 enabled,
+                                                                     Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrSetEnvironmentDepthEstimationVARJO(this->get(), enabled.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_VARJO_environment_depth_estimation
 
-
 #ifdef XR_VARJO_marker_tracking
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setMarkerTrackingVARJO (
-    Bool32 enabled, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetMarkerTrackingVARJO(this->get(), enabled.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::setMarkerTrackingVARJO(Bool32 enabled, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrSetMarkerTrackingVARJO(this->get(), enabled.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_VARJO_marker_tracking
 
-
 #ifdef XR_VARJO_marker_tracking
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setMarkerTrackingTimeoutVARJO (
-    uint64_t markerId, Duration timeout, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetMarkerTrackingTimeoutVARJO(this->get(), markerId, timeout.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::setMarkerTrackingTimeoutVARJO(uint64_t markerId, Duration timeout,
+                                                                Dispatch&& d) const {
+  Result result =
+      static_cast<Result>(d.xrSetMarkerTrackingTimeoutVARJO(this->get(), markerId, timeout.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_VARJO_marker_tracking
 
-
 #ifdef XR_VARJO_marker_tracking
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setMarkerTrackingPredictionVARJO (
-    uint64_t markerId, Bool32 enable, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetMarkerTrackingPredictionVARJO(this->get(), markerId, enable.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::setMarkerTrackingPredictionVARJO(uint64_t markerId, Bool32 enable,
+                                                                   Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrSetMarkerTrackingPredictionVARJO(this->get(), markerId, enable.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_VARJO_marker_tracking
 
-
 #ifdef XR_VARJO_marker_tracking
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<Extent2Df> Session::getMarkerSizeVARJO (
-    uint64_t markerId, Dispatch&& d) const {
-    Extent2Df size;
-    Result result = static_cast<Result>( d.xrGetMarkerSizeVARJO(this->get(), markerId, OPENXR_HPP_NAMESPACE::put(size)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<Extent2Df> Session::getMarkerSizeVARJO(uint64_t markerId,
+                                                                     Dispatch&& d) const {
+  Extent2Df size;
+  Result result = static_cast<Result>(
+      d.xrGetMarkerSizeVARJO(this->get(), markerId, OPENXR_HPP_NAMESPACE::put(size)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(size) };
+  return {result, std::move(size)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_VARJO_marker_tracking
 
-
 #ifdef XR_VARJO_marker_tracking
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<Space> Session::createMarkerSpaceVARJO (
+OPENXR_HPP_INLINE ResultValue<Space> Session::createMarkerSpaceVARJO(
     const MarkerSpaceCreateInfoVARJO& createInfo, Dispatch&& d) const {
-    Space handle;
-    Result result = static_cast<Result>( d.xrCreateMarkerSpaceVARJO(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Space handle;
+  Result result =
+      static_cast<Result>(d.xrCreateMarkerSpaceVARJO(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>> Session::createMarkerSpaceUniqueVARJO (
-    const MarkerSpaceCreateInfoVARJO& createInfo, Dispatch&& d) const {
-    Space handle;
-    Result result = static_cast<Result>( d.xrCreateMarkerSpaceVARJO(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>>
+Session::createMarkerSpaceUniqueVARJO(const MarkerSpaceCreateInfoVARJO& createInfo,
+                                      Dispatch&& d) const {
+  Space handle;
+  Result result =
+      static_cast<Result>(d.xrCreateMarkerSpaceVARJO(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -11415,205 +4860,89 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>
 
 #endif  // XR_VARJO_marker_tracking
 
-
 #ifdef XR_VARJO_view_offset
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setViewOffsetVARJO (
-    float offset, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetViewOffsetVARJO(this->get(), offset) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::setViewOffsetVARJO(float offset, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrSetViewOffsetVARJO(this->get(), offset));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_VARJO_view_offset
-
 
 #ifdef XR_ML_compat
 #if defined(XR_USE_PLATFORM_ML)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<Space> Session::createSpaceFromCoordinateFrameUIDML (
+OPENXR_HPP_INLINE ResultValue<Space> Session::createSpaceFromCoordinateFrameUIDML(
     const CoordinateSpaceCreateInfoML& createInfo, Dispatch&& d) const {
-    Space handle;
-    Result result = static_cast<Result>( d.xrCreateSpaceFromCoordinateFrameUIDML(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Space handle;
+  Result result = static_cast<Result>(
+      d.xrCreateSpaceFromCoordinateFrameUIDML(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>> Session::createSpaceFromCoordinateFrameUIDUniqueML (
-    const CoordinateSpaceCreateInfoML& createInfo, Dispatch&& d) const {
-    Space handle;
-    Result result = static_cast<Result>( d.xrCreateSpaceFromCoordinateFrameUIDML(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>>
+Session::createSpaceFromCoordinateFrameUIDUniqueML(const CoordinateSpaceCreateInfoML& createInfo,
+                                                   Dispatch&& d) const {
+  Space handle;
+  Result result = static_cast<Result>(
+      d.xrCreateSpaceFromCoordinateFrameUIDML(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
 #endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-#endif // defined(XR_USE_PLATFORM_ML)
+#endif  // defined(XR_USE_PLATFORM_ML)
 #endif  // XR_ML_compat
 
-
 #ifdef XR_ML_marker_understanding
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<MarkerDetectorML> Session::createMarkerDetectorML (
+OPENXR_HPP_INLINE ResultValue<MarkerDetectorML> Session::createMarkerDetectorML(
     const MarkerDetectorCreateInfoML& createInfo, Dispatch&& d) const {
-    MarkerDetectorML handle;
-    Result result = static_cast<Result>( d.xrCreateMarkerDetectorML(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  MarkerDetectorML handle;
+  Result result =
+      static_cast<Result>(d.xrCreateMarkerDetectorML(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<MarkerDetectorML, impl::RemoveRefConst<Dispatch>>> Session::createMarkerDetectorUniqueML (
-    const MarkerDetectorCreateInfoML& createInfo, Dispatch&& d) const {
-    MarkerDetectorML handle;
-    Result result = static_cast<Result>( d.xrCreateMarkerDetectorML(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<MarkerDetectorML, impl::RemoveRefConst<Dispatch>>>
+Session::createMarkerDetectorUniqueML(const MarkerDetectorCreateInfoML& createInfo,
+                                      Dispatch&& d) const {
+  MarkerDetectorML handle;
+  Result result =
+      static_cast<Result>(d.xrCreateMarkerDetectorML(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<MarkerDetectorML, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<MarkerDetectorML, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -11621,599 +4950,289 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<MarkerDetectorML, impl::RemoveRefCons
 
 #endif  // XR_ML_marker_understanding
 
-
 #ifdef XR_ML_marker_understanding
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result MarkerDetectorML::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyMarkerDetectorML(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result MarkerDetectorML::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyMarkerDetectorML(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_marker_understanding
 
-
 #ifdef XR_ML_marker_understanding
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<MarkerDetectorSnapshotInfoML> MarkerDetectorML::snapshotMarkerDetectorML (
+OPENXR_HPP_INLINE ResultValue<MarkerDetectorSnapshotInfoML>
+MarkerDetectorML::snapshotMarkerDetectorML(Dispatch&& d) const {
+  MarkerDetectorSnapshotInfoML snapshotInfo;
+  Result result = static_cast<Result>(
+      d.xrSnapshotMarkerDetectorML(this->get(), OPENXR_HPP_NAMESPACE::put(snapshotInfo)));
+
+  OPENXR_HPP_ASSERT(succeeded(result));
+
+  return {result, std::move(snapshotInfo)};
+}
+
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
+
+#endif  // XR_ML_marker_understanding
+
+#ifdef XR_ML_marker_understanding
+
+#ifdef OPENXR_HPP_NO_EXCEPTIONS
+template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
+OPENXR_HPP_INLINE ResultValue<MarkerDetectorStateML> MarkerDetectorML::getMarkerDetectorStateML(
     Dispatch&& d) const {
-    MarkerDetectorSnapshotInfoML snapshotInfo;
-    Result result = static_cast<Result>( d.xrSnapshotMarkerDetectorML(this->get(), OPENXR_HPP_NAMESPACE::put(snapshotInfo)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  MarkerDetectorStateML state;
+  Result result = static_cast<Result>(
+      d.xrGetMarkerDetectorStateML(this->get(), OPENXR_HPP_NAMESPACE::put(state)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(snapshotInfo) };
+  return {result, std::move(state)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_marker_understanding
 
-
 #ifdef XR_ML_marker_understanding
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#ifdef OPENXR_HPP_NO_EXCEPTIONS
-template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<MarkerDetectorStateML> MarkerDetectorML::getMarkerDetectorStateML (
-    Dispatch&& d) const {
-    MarkerDetectorStateML state;
-    Result result = static_cast<Result>( d.xrGetMarkerDetectorStateML(this->get(), OPENXR_HPP_NAMESPACE::put(state)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
-
-
-    return { result, std::move(state) };
-}
-
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-#endif  // XR_ML_marker_understanding
-
-
-#ifdef XR_ML_marker_understanding
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<MarkerML, Allocator>> MarkerDetectorML::getMarkersToVectorML (
-    Dispatch&& d) const {
-    std::vector<MarkerML, Allocator> markers;
-        uint32_t markerCountOutput = 0;
-    uint32_t markerCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<MarkerML, Allocator>>
+MarkerDetectorML::getMarkersToVectorML(Dispatch&& d) const {
+  std::vector<MarkerML, Allocator> markers;
+  uint32_t markerCountOutput = 0;
+  uint32_t markerCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrGetMarkersML(this->get(), markerCapacityInput, &markerCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || markerCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(
+      d.xrGetMarkersML(this->get(), markerCapacityInput, &markerCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || markerCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(markers)};
+  }
+  do {
+    markers.resize(markerCountOutput);
+    markerCapacityInput = static_cast<uint32_t>(markers.size());
+    result =
+        static_cast<Result>(d.xrGetMarkersML(this->get(), markerCapacityInput, &markerCountOutput,
+                                             reinterpret_cast<XrMarkerML*>(markers.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(markerCountOutput <= markers.size());
+    markers.resize(markerCountOutput);
+  } else
+    markers.clear();
 
-        return { result, std::move(markers) };
-    }
-    do {
-        markers.resize(markerCountOutput);
-        markerCapacityInput = static_cast<uint32_t>(markers.size());
-        result = static_cast<Result>( d.xrGetMarkersML(this->get(), markerCapacityInput, &markerCountOutput, reinterpret_cast<XrMarkerML*>(markers.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(markerCountOutput <= markers.size());
-        markers.resize(markerCountOutput);
-    } else markers.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(markers) };
-
+  return {result, std::move(markers)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<MarkerML, Allocator>> MarkerDetectorML::getMarkersToVectorML (
-    Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<MarkerML, Allocator> markers{vectorAllocator};
-        uint32_t markerCountOutput = 0;
-    uint32_t markerCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<MarkerML, Allocator>>
+MarkerDetectorML::getMarkersToVectorML(Allocator const& vectorAllocator, Dispatch&& d) const {
+  std::vector<MarkerML, Allocator> markers{vectorAllocator};
+  uint32_t markerCountOutput = 0;
+  uint32_t markerCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrGetMarkersML(this->get(), markerCapacityInput, &markerCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || markerCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(
+      d.xrGetMarkersML(this->get(), markerCapacityInput, &markerCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || markerCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(markers)};
+  }
+  do {
+    markers.resize(markerCountOutput);
+    markerCapacityInput = static_cast<uint32_t>(markers.size());
+    result =
+        static_cast<Result>(d.xrGetMarkersML(this->get(), markerCapacityInput, &markerCountOutput,
+                                             reinterpret_cast<XrMarkerML*>(markers.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(markerCountOutput <= markers.size());
+    markers.resize(markerCountOutput);
+  } else
+    markers.clear();
 
-        return { result, std::move(markers) };
-    }
-    do {
-        markers.resize(markerCountOutput);
-        markerCapacityInput = static_cast<uint32_t>(markers.size());
-        result = static_cast<Result>( d.xrGetMarkersML(this->get(), markerCapacityInput, &markerCountOutput, reinterpret_cast<XrMarkerML*>(markers.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(markerCountOutput <= markers.size());
-        markers.resize(markerCountOutput);
-    } else markers.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(markers) };
-
+  return {result, std::move(markers)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_marker_understanding
 
-
 #ifdef XR_ML_marker_understanding
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<float> MarkerDetectorML::getMarkerReprojectionErrorML (
+OPENXR_HPP_INLINE ResultValue<float> MarkerDetectorML::getMarkerReprojectionErrorML(
     MarkerML marker, Dispatch&& d) const {
-    float reprojectionErrorMeters;
-    Result result = static_cast<Result>( d.xrGetMarkerReprojectionErrorML(this->get(), marker.get(), &reprojectionErrorMeters) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  float reprojectionErrorMeters;
+  Result result = static_cast<Result>(
+      d.xrGetMarkerReprojectionErrorML(this->get(), marker.get(), &reprojectionErrorMeters));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(reprojectionErrorMeters) };
+  return {result, std::move(reprojectionErrorMeters)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_marker_understanding
 
-
 #ifdef XR_ML_marker_understanding
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<float> MarkerDetectorML::getMarkerLengthML (
-    MarkerML marker, Dispatch&& d) const {
-    float meters;
-    Result result = static_cast<Result>( d.xrGetMarkerLengthML(this->get(), marker.get(), &meters) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<float> MarkerDetectorML::getMarkerLengthML(MarkerML marker,
+                                                                         Dispatch&& d) const {
+  float meters;
+  Result result = static_cast<Result>(d.xrGetMarkerLengthML(this->get(), marker.get(), &meters));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(meters) };
+  return {result, std::move(meters)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_marker_understanding
 
-
 #ifdef XR_ML_marker_understanding
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<uint64_t> MarkerDetectorML::getMarkerNumberML (
-    MarkerML marker, Dispatch&& d) const {
-    uint64_t number;
-    Result result = static_cast<Result>( d.xrGetMarkerNumberML(this->get(), marker.get(), &number) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<uint64_t> MarkerDetectorML::getMarkerNumberML(MarkerML marker,
+                                                                            Dispatch&& d) const {
+  uint64_t number;
+  Result result = static_cast<Result>(d.xrGetMarkerNumberML(this->get(), marker.get(), &number));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(number) };
+  return {result, std::move(number)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_marker_understanding
 
-
 #ifdef XR_ML_marker_understanding
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>> MarkerDetectorML::getMarkerStringML (
+OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>> MarkerDetectorML::getMarkerStringML(
     MarkerML marker, Dispatch&& d) const {
-    std::vector<char, Allocator> buffer;
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+  std::vector<char, Allocator> buffer;
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    std::basic_string<char, std::char_traits<char>, Allocator> str{{}};
-    Result result = static_cast<Result>( d.xrGetMarkerStringML(this->get(), marker.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  std::basic_string<char, std::char_traits<char>, Allocator> str{{}};
+  Result result = static_cast<Result>(d.xrGetMarkerStringML(
+      this->get(), marker.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(str)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(d.xrGetMarkerStringML(this->get(), marker.get(),
+                                                       bufferCapacityInput, &bufferCountOutput,
+                                                       reinterpret_cast<char*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(str) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrGetMarkerStringML(this->get(), marker.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<char*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-    str.assign(buffer.begin(), buffer.end());
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  str.assign(buffer.begin(), buffer.end());
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(str) };
-
+  return {result, std::move(str)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>> MarkerDetectorML::getMarkerStringML (
+OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>> MarkerDetectorML::getMarkerStringML(
     MarkerML marker, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<char, Allocator> buffer{vectorAllocator};
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+  std::vector<char, Allocator> buffer{vectorAllocator};
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    std::basic_string<char, std::char_traits<char>, Allocator> str{vectorAllocator};
-    Result result = static_cast<Result>( d.xrGetMarkerStringML(this->get(), marker.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  std::basic_string<char, std::char_traits<char>, Allocator> str{vectorAllocator};
+  Result result = static_cast<Result>(d.xrGetMarkerStringML(
+      this->get(), marker.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(str)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(d.xrGetMarkerStringML(this->get(), marker.get(),
+                                                       bufferCapacityInput, &bufferCountOutput,
+                                                       reinterpret_cast<char*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(str) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrGetMarkerStringML(this->get(), marker.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<char*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-    str.assign(buffer.begin(), buffer.end());
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  str.assign(buffer.begin(), buffer.end());
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(str) };
-
+  return {result, std::move(str)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_marker_understanding
-
 
 #ifdef XR_ML_marker_understanding
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<Space> Session::createMarkerSpaceML (
+OPENXR_HPP_INLINE ResultValue<Space> Session::createMarkerSpaceML(
     const MarkerSpaceCreateInfoML& createInfo, Dispatch&& d) const {
-    Space handle;
-    Result result = static_cast<Result>( d.xrCreateMarkerSpaceML(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Space handle;
+  Result result =
+      static_cast<Result>(d.xrCreateMarkerSpaceML(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>> Session::createMarkerSpaceUniqueML (
-    const MarkerSpaceCreateInfoML& createInfo, Dispatch&& d) const {
-    Space handle;
-    Result result = static_cast<Result>( d.xrCreateMarkerSpaceML(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>>
+Session::createMarkerSpaceUniqueML(const MarkerSpaceCreateInfoML& createInfo, Dispatch&& d) const {
+  Space handle;
+  Result result =
+      static_cast<Result>(d.xrCreateMarkerSpaceML(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -12221,335 +5240,162 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>
 
 #endif  // XR_ML_marker_understanding
 
-
 #ifdef XR_ML_localization_map
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::enableLocalizationEventsML (
+OPENXR_HPP_INLINE Result Session::enableLocalizationEventsML(
     const LocalizationEnableEventsInfoML& info, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnableLocalizationEventsML(this->get(), info.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnableLocalizationEventsML(this->get(), info.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_localization_map
 
-
 #ifdef XR_ML_localization_map
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<LocalizationMapML, Allocator>> Session::queryLocalizationMapsToVectorML (
-    const LocalizationMapQueryInfoBaseHeaderML& queryInfo, Dispatch&& d) const {
-    std::vector<LocalizationMapML, Allocator> maps;
-        uint32_t mapCountOutput = 0;
-    uint32_t mapCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<LocalizationMapML, Allocator>>
+Session::queryLocalizationMapsToVectorML(const LocalizationMapQueryInfoBaseHeaderML& queryInfo,
+                                         Dispatch&& d) const {
+  std::vector<LocalizationMapML, Allocator> maps;
+  uint32_t mapCountOutput = 0;
+  uint32_t mapCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrQueryLocalizationMapsML(this->get(), queryInfo.get(), mapCapacityInput, &mapCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || mapCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrQueryLocalizationMapsML(
+      this->get(), queryInfo.get(), mapCapacityInput, &mapCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || mapCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(maps)};
+  }
+  do {
+    maps.resize(mapCountOutput);
+    mapCapacityInput = static_cast<uint32_t>(maps.size());
+    result = static_cast<Result>(
+        d.xrQueryLocalizationMapsML(this->get(), queryInfo.get(), mapCapacityInput, &mapCountOutput,
+                                    reinterpret_cast<XrLocalizationMapML*>(maps.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(mapCountOutput <= maps.size());
+    maps.resize(mapCountOutput);
+  } else
+    maps.clear();
 
-        return { result, std::move(maps) };
-    }
-    do {
-        maps.resize(mapCountOutput);
-        mapCapacityInput = static_cast<uint32_t>(maps.size());
-        result = static_cast<Result>( d.xrQueryLocalizationMapsML(this->get(), queryInfo.get(), mapCapacityInput, &mapCountOutput, reinterpret_cast<XrLocalizationMapML*>(maps.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(mapCountOutput <= maps.size());
-        maps.resize(mapCountOutput);
-    } else maps.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(maps) };
-
+  return {result, std::move(maps)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<LocalizationMapML, Allocator>> Session::queryLocalizationMapsToVectorML (
-    const LocalizationMapQueryInfoBaseHeaderML& queryInfo, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<LocalizationMapML, Allocator> maps{vectorAllocator};
-        uint32_t mapCountOutput = 0;
-    uint32_t mapCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<LocalizationMapML, Allocator>>
+Session::queryLocalizationMapsToVectorML(const LocalizationMapQueryInfoBaseHeaderML& queryInfo,
+                                         Allocator const& vectorAllocator, Dispatch&& d) const {
+  std::vector<LocalizationMapML, Allocator> maps{vectorAllocator};
+  uint32_t mapCountOutput = 0;
+  uint32_t mapCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrQueryLocalizationMapsML(this->get(), queryInfo.get(), mapCapacityInput, &mapCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || mapCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrQueryLocalizationMapsML(
+      this->get(), queryInfo.get(), mapCapacityInput, &mapCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || mapCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(maps)};
+  }
+  do {
+    maps.resize(mapCountOutput);
+    mapCapacityInput = static_cast<uint32_t>(maps.size());
+    result = static_cast<Result>(
+        d.xrQueryLocalizationMapsML(this->get(), queryInfo.get(), mapCapacityInput, &mapCountOutput,
+                                    reinterpret_cast<XrLocalizationMapML*>(maps.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(mapCountOutput <= maps.size());
+    maps.resize(mapCountOutput);
+  } else
+    maps.clear();
 
-        return { result, std::move(maps) };
-    }
-    do {
-        maps.resize(mapCountOutput);
-        mapCapacityInput = static_cast<uint32_t>(maps.size());
-        result = static_cast<Result>( d.xrQueryLocalizationMapsML(this->get(), queryInfo.get(), mapCapacityInput, &mapCountOutput, reinterpret_cast<XrLocalizationMapML*>(maps.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(mapCountOutput <= maps.size());
-        maps.resize(mapCountOutput);
-    } else maps.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(maps) };
-
+  return {result, std::move(maps)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_localization_map
 
-
 #ifdef XR_ML_localization_map
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::requestMapLocalizationML (
+OPENXR_HPP_INLINE Result Session::requestMapLocalizationML(
     const MapLocalizationRequestInfoML& requestInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrRequestMapLocalizationML(this->get(), requestInfo.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrRequestMapLocalizationML(this->get(), requestInfo.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_localization_map
 
-
 #ifdef XR_ML_localization_map
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UuidEXT> Session::importLocalizationMapML (
+OPENXR_HPP_INLINE ResultValue<UuidEXT> Session::importLocalizationMapML(
     const LocalizationMapImportInfoML& importInfo, Dispatch&& d) const {
-    UuidEXT mapUuid;
-    Result result = static_cast<Result>( d.xrImportLocalizationMapML(this->get(), importInfo.get(), &mapUuid) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  UuidEXT mapUuid;
+  Result result =
+      static_cast<Result>(d.xrImportLocalizationMapML(this->get(), importInfo.get(), &mapUuid));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(mapUuid) };
+  return {result, std::move(mapUuid)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_localization_map
 
-
 #ifdef XR_ML_localization_map
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<ExportedLocalizationMapML> Session::createExportedLocalizationMapML (
+OPENXR_HPP_INLINE ResultValue<ExportedLocalizationMapML> Session::createExportedLocalizationMapML(
     const XrUuidEXT* mapUuid, Dispatch&& d) const {
-    ExportedLocalizationMapML handle;
-    Result result = static_cast<Result>( d.xrCreateExportedLocalizationMapML(this->get(), mapUuid, handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  ExportedLocalizationMapML handle;
+  Result result =
+      static_cast<Result>(d.xrCreateExportedLocalizationMapML(this->get(), mapUuid, handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<ExportedLocalizationMapML, impl::RemoveRefConst<Dispatch>>> Session::createExportedLocalizationMapUniqueML (
-    const XrUuidEXT* mapUuid, Dispatch&& d) const {
-    ExportedLocalizationMapML handle;
-    Result result = static_cast<Result>( d.xrCreateExportedLocalizationMapML(this->get(), mapUuid, handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE
+    ResultValue<UniqueHandle<ExportedLocalizationMapML, impl::RemoveRefConst<Dispatch>>>
+    Session::createExportedLocalizationMapUniqueML(const XrUuidEXT* mapUuid, Dispatch&& d) const {
+  ExportedLocalizationMapML handle;
+  Result result =
+      static_cast<Result>(d.xrCreateExportedLocalizationMapML(this->get(), mapUuid, handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<ExportedLocalizationMapML, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result,
+          UniqueHandle<ExportedLocalizationMapML, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -12557,391 +5403,184 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<ExportedLocalizationMapML, impl::Remo
 
 #endif  // XR_ML_localization_map
 
-
 #ifdef XR_ML_localization_map
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result ExportedLocalizationMapML::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyExportedLocalizationMapML(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result ExportedLocalizationMapML::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyExportedLocalizationMapML(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_localization_map
-
 
 #ifdef XR_ML_localization_map
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>> ExportedLocalizationMapML::getExportedLocalizationMapDataML (
-    Dispatch&& d) const {
-    std::vector<char, Allocator> buffer;
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>>
+ExportedLocalizationMapML::getExportedLocalizationMapDataML(Dispatch&& d) const {
+  std::vector<char, Allocator> buffer;
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    std::basic_string<char, std::char_traits<char>, Allocator> str{{}};
-    Result result = static_cast<Result>( d.xrGetExportedLocalizationMapDataML(this->get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  std::basic_string<char, std::char_traits<char>, Allocator> str{{}};
+  Result result = static_cast<Result>(d.xrGetExportedLocalizationMapDataML(
+      this->get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(str)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(
+        d.xrGetExportedLocalizationMapDataML(this->get(), bufferCapacityInput, &bufferCountOutput,
+                                             reinterpret_cast<char*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(str) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrGetExportedLocalizationMapDataML(this->get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<char*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-    str.assign(buffer.begin(), buffer.end());
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  str.assign(buffer.begin(), buffer.end());
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(str) };
-
+  return {result, std::move(str)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>> ExportedLocalizationMapML::getExportedLocalizationMapDataML (
-    Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<char, Allocator> buffer{vectorAllocator};
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>>
+ExportedLocalizationMapML::getExportedLocalizationMapDataML(Allocator const& vectorAllocator,
+                                                            Dispatch&& d) const {
+  std::vector<char, Allocator> buffer{vectorAllocator};
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    std::basic_string<char, std::char_traits<char>, Allocator> str{vectorAllocator};
-    Result result = static_cast<Result>( d.xrGetExportedLocalizationMapDataML(this->get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  std::basic_string<char, std::char_traits<char>, Allocator> str{vectorAllocator};
+  Result result = static_cast<Result>(d.xrGetExportedLocalizationMapDataML(
+      this->get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(str)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(
+        d.xrGetExportedLocalizationMapDataML(this->get(), bufferCapacityInput, &bufferCountOutput,
+                                             reinterpret_cast<char*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(str) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrGetExportedLocalizationMapDataML(this->get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<char*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-    str.assign(buffer.begin(), buffer.end());
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  str.assign(buffer.begin(), buffer.end());
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(str) };
-
+  return {result, std::move(str)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_localization_map
 
-
-#ifdef XR_ML_spatial_anchors
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_spatial_anchors
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FutureEXT> Session::createSpatialAnchorsAsyncML (
+OPENXR_HPP_INLINE ResultValue<FutureEXT> Session::createSpatialAnchorsAsyncML(
     const SpatialAnchorsCreateInfoBaseHeaderML& createInfo, Dispatch&& d) const {
-    FutureEXT future;
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorsAsyncML(this->get(), createInfo.get(), OPENXR_HPP_NAMESPACE::put(future)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  FutureEXT future;
+  Result result = static_cast<Result>(d.xrCreateSpatialAnchorsAsyncML(
+      this->get(), createInfo.get(), OPENXR_HPP_NAMESPACE::put(future)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(future) };
+  return {result, std::move(future)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_spatial_anchors
 
-
-#ifdef XR_ML_spatial_anchors
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_spatial_anchors
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::createSpatialAnchorsCompleteML (
+OPENXR_HPP_INLINE Result Session::createSpatialAnchorsCompleteML(
     FutureEXT future, CreateSpatialAnchorsCompletionML& completion, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorsCompleteML(this->get(), future.get(), completion.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialAnchorsCompleteML(this->get(), future.get(), completion.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_spatial_anchors
 
-
-#ifdef XR_ML_spatial_anchors
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_spatial_anchors
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<SpatialAnchorStateML> Space::getSpatialAnchorStateML (
+OPENXR_HPP_INLINE ResultValue<SpatialAnchorStateML> Space::getSpatialAnchorStateML(
     Dispatch&& d) const {
-    SpatialAnchorStateML state;
-    Result result = static_cast<Result>( d.xrGetSpatialAnchorStateML(this->get(), OPENXR_HPP_NAMESPACE::put(state)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  SpatialAnchorStateML state;
+  Result result = static_cast<Result>(
+      d.xrGetSpatialAnchorStateML(this->get(), OPENXR_HPP_NAMESPACE::put(state)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(state) };
+  return {result, std::move(state)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_spatial_anchors
 
-
-#ifdef XR_ML_spatial_anchors_storage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_spatial_anchors_storage
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<SpatialAnchorsStorageML> Session::createSpatialAnchorsStorageML (
+OPENXR_HPP_INLINE ResultValue<SpatialAnchorsStorageML> Session::createSpatialAnchorsStorageML(
     const SpatialAnchorsCreateStorageInfoML& createInfo, Dispatch&& d) const {
-    SpatialAnchorsStorageML handle;
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorsStorageML(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  SpatialAnchorsStorageML handle;
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialAnchorsStorageML(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<SpatialAnchorsStorageML, impl::RemoveRefConst<Dispatch>>> Session::createSpatialAnchorsStorageUniqueML (
-    const SpatialAnchorsCreateStorageInfoML& createInfo, Dispatch&& d) const {
-    SpatialAnchorsStorageML handle;
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorsStorageML(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<SpatialAnchorsStorageML, impl::RemoveRefConst<Dispatch>>>
+Session::createSpatialAnchorsStorageUniqueML(const SpatialAnchorsCreateStorageInfoML& createInfo,
+                                             Dispatch&& d) const {
+  SpatialAnchorsStorageML handle;
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialAnchorsStorageML(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<SpatialAnchorsStorageML, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result,
+          UniqueHandle<SpatialAnchorsStorageML, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -12949,543 +5588,204 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<SpatialAnchorsStorageML, impl::Remove
 
 #endif  // XR_ML_spatial_anchors_storage
 
-
-#ifdef XR_ML_spatial_anchors_storage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_spatial_anchors_storage
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialAnchorsStorageML::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySpatialAnchorsStorageML(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result SpatialAnchorsStorageML::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySpatialAnchorsStorageML(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_spatial_anchors_storage
 
-
-#ifdef XR_ML_spatial_anchors_storage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_spatial_anchors_storage
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FutureEXT> SpatialAnchorsStorageML::querySpatialAnchorsAsyncML (
+OPENXR_HPP_INLINE ResultValue<FutureEXT> SpatialAnchorsStorageML::querySpatialAnchorsAsyncML(
     const SpatialAnchorsQueryInfoBaseHeaderML& queryInfo, Dispatch&& d) const {
-    FutureEXT future;
-    Result result = static_cast<Result>( d.xrQuerySpatialAnchorsAsyncML(this->get(), queryInfo.get(), OPENXR_HPP_NAMESPACE::put(future)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  FutureEXT future;
+  Result result = static_cast<Result>(d.xrQuerySpatialAnchorsAsyncML(
+      this->get(), queryInfo.get(), OPENXR_HPP_NAMESPACE::put(future)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(future) };
+  return {result, std::move(future)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_spatial_anchors_storage
 
-
-#ifdef XR_ML_spatial_anchors_storage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_spatial_anchors_storage
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialAnchorsStorageML::querySpatialAnchorsCompleteML (
+OPENXR_HPP_INLINE Result SpatialAnchorsStorageML::querySpatialAnchorsCompleteML(
     FutureEXT future, SpatialAnchorsQueryCompletionML& completion, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrQuerySpatialAnchorsCompleteML(this->get(), future.get(), completion.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(
+      d.xrQuerySpatialAnchorsCompleteML(this->get(), future.get(), completion.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_spatial_anchors_storage
 
-
-#ifdef XR_ML_spatial_anchors_storage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_spatial_anchors_storage
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FutureEXT> SpatialAnchorsStorageML::publishSpatialAnchorsAsyncML (
+OPENXR_HPP_INLINE ResultValue<FutureEXT> SpatialAnchorsStorageML::publishSpatialAnchorsAsyncML(
     const SpatialAnchorsPublishInfoML& publishInfo, Dispatch&& d) const {
-    FutureEXT future;
-    Result result = static_cast<Result>( d.xrPublishSpatialAnchorsAsyncML(this->get(), publishInfo.get(), OPENXR_HPP_NAMESPACE::put(future)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  FutureEXT future;
+  Result result = static_cast<Result>(d.xrPublishSpatialAnchorsAsyncML(
+      this->get(), publishInfo.get(), OPENXR_HPP_NAMESPACE::put(future)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(future) };
+  return {result, std::move(future)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_spatial_anchors_storage
 
-
-#ifdef XR_ML_spatial_anchors_storage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_spatial_anchors_storage
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialAnchorsStorageML::publishSpatialAnchorsCompleteML (
+OPENXR_HPP_INLINE Result SpatialAnchorsStorageML::publishSpatialAnchorsCompleteML(
     FutureEXT future, SpatialAnchorsPublishCompletionML& completion, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPublishSpatialAnchorsCompleteML(this->get(), future.get(), completion.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(
+      d.xrPublishSpatialAnchorsCompleteML(this->get(), future.get(), completion.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_spatial_anchors_storage
 
-
-#ifdef XR_ML_spatial_anchors_storage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_spatial_anchors_storage
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FutureEXT> SpatialAnchorsStorageML::deleteSpatialAnchorsAsyncML (
+OPENXR_HPP_INLINE ResultValue<FutureEXT> SpatialAnchorsStorageML::deleteSpatialAnchorsAsyncML(
     const SpatialAnchorsDeleteInfoML& deleteInfo, Dispatch&& d) const {
-    FutureEXT future;
-    Result result = static_cast<Result>( d.xrDeleteSpatialAnchorsAsyncML(this->get(), deleteInfo.get(), OPENXR_HPP_NAMESPACE::put(future)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  FutureEXT future;
+  Result result = static_cast<Result>(d.xrDeleteSpatialAnchorsAsyncML(
+      this->get(), deleteInfo.get(), OPENXR_HPP_NAMESPACE::put(future)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(future) };
+  return {result, std::move(future)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_spatial_anchors_storage
 
-
-#ifdef XR_ML_spatial_anchors_storage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_spatial_anchors_storage
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<SpatialAnchorsDeleteCompletionML> SpatialAnchorsStorageML::deleteSpatialAnchorsCompleteML (
-    FutureEXT future, Dispatch&& d) const {
-    SpatialAnchorsDeleteCompletionML completion;
-    Result result = static_cast<Result>( d.xrDeleteSpatialAnchorsCompleteML(this->get(), future.get(), OPENXR_HPP_NAMESPACE::put(completion)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<SpatialAnchorsDeleteCompletionML>
+SpatialAnchorsStorageML::deleteSpatialAnchorsCompleteML(FutureEXT future, Dispatch&& d) const {
+  SpatialAnchorsDeleteCompletionML completion;
+  Result result = static_cast<Result>(d.xrDeleteSpatialAnchorsCompleteML(
+      this->get(), future.get(), OPENXR_HPP_NAMESPACE::put(completion)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(completion) };
+  return {result, std::move(completion)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_spatial_anchors_storage
 
-
-#ifdef XR_ML_spatial_anchors_storage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_spatial_anchors_storage
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FutureEXT> SpatialAnchorsStorageML::updateSpatialAnchorsExpirationAsyncML (
+OPENXR_HPP_INLINE ResultValue<FutureEXT>
+SpatialAnchorsStorageML::updateSpatialAnchorsExpirationAsyncML(
     const SpatialAnchorsUpdateExpirationInfoML& updateInfo, Dispatch&& d) const {
-    FutureEXT future;
-    Result result = static_cast<Result>( d.xrUpdateSpatialAnchorsExpirationAsyncML(this->get(), updateInfo.get(), OPENXR_HPP_NAMESPACE::put(future)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  FutureEXT future;
+  Result result = static_cast<Result>(d.xrUpdateSpatialAnchorsExpirationAsyncML(
+      this->get(), updateInfo.get(), OPENXR_HPP_NAMESPACE::put(future)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(future) };
+  return {result, std::move(future)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_spatial_anchors_storage
 
-
-#ifdef XR_ML_spatial_anchors_storage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_spatial_anchors_storage
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<SpatialAnchorsUpdateExpirationCompletionML> SpatialAnchorsStorageML::updateSpatialAnchorsExpirationCompleteML (
-    FutureEXT future, Dispatch&& d) const {
-    SpatialAnchorsUpdateExpirationCompletionML completion;
-    Result result = static_cast<Result>( d.xrUpdateSpatialAnchorsExpirationCompleteML(this->get(), future.get(), OPENXR_HPP_NAMESPACE::put(completion)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<SpatialAnchorsUpdateExpirationCompletionML>
+SpatialAnchorsStorageML::updateSpatialAnchorsExpirationCompleteML(FutureEXT future,
+                                                                  Dispatch&& d) const {
+  SpatialAnchorsUpdateExpirationCompletionML completion;
+  Result result = static_cast<Result>(d.xrUpdateSpatialAnchorsExpirationCompleteML(
+      this->get(), future.get(), OPENXR_HPP_NAMESPACE::put(completion)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(completion) };
+  return {result, std::move(completion)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_spatial_anchors_storage
-
 
 #ifdef XR_MSFT_spatial_anchor_persistence
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<SpatialAnchorStoreConnectionMSFT> Session::createSpatialAnchorStoreConnectionMSFT (
-    Dispatch&& d) const {
-    SpatialAnchorStoreConnectionMSFT handle;
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorStoreConnectionMSFT(this->get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<SpatialAnchorStoreConnectionMSFT>
+Session::createSpatialAnchorStoreConnectionMSFT(Dispatch&& d) const {
+  SpatialAnchorStoreConnectionMSFT handle;
+  Result result =
+      static_cast<Result>(d.xrCreateSpatialAnchorStoreConnectionMSFT(this->get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<SpatialAnchorStoreConnectionMSFT, impl::RemoveRefConst<Dispatch>>> Session::createSpatialAnchorStoreConnectionUniqueMSFT (
-    Dispatch&& d) const {
-    SpatialAnchorStoreConnectionMSFT handle;
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorStoreConnectionMSFT(this->get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE
+    ResultValue<UniqueHandle<SpatialAnchorStoreConnectionMSFT, impl::RemoveRefConst<Dispatch>>>
+    Session::createSpatialAnchorStoreConnectionUniqueMSFT(Dispatch&& d) const {
+  SpatialAnchorStoreConnectionMSFT handle;
+  Result result =
+      static_cast<Result>(d.xrCreateSpatialAnchorStoreConnectionMSFT(this->get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<SpatialAnchorStoreConnectionMSFT, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<SpatialAnchorStoreConnectionMSFT, impl::RemoveRefConst<Dispatch>>(
+                      handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -13493,283 +5793,144 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<SpatialAnchorStoreConnectionMSFT, imp
 
 #endif  // XR_MSFT_spatial_anchor_persistence
 
-
 #ifdef XR_MSFT_spatial_anchor_persistence
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialAnchorStoreConnectionMSFT::destroy (
-    Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrDestroySpatialAnchorStoreConnectionMSFT(this->get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result SpatialAnchorStoreConnectionMSFT::destroy(Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrDestroySpatialAnchorStoreConnectionMSFT(this->get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_MSFT_spatial_anchor_persistence
 
-
 #ifdef XR_MSFT_spatial_anchor_persistence
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialAnchorStoreConnectionMSFT::persistSpatialAnchorMSFT (
+OPENXR_HPP_INLINE Result SpatialAnchorStoreConnectionMSFT::persistSpatialAnchorMSFT(
     const SpatialAnchorPersistenceInfoMSFT& spatialAnchorPersistenceInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPersistSpatialAnchorMSFT(this->get(), spatialAnchorPersistenceInfo.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(
+      d.xrPersistSpatialAnchorMSFT(this->get(), spatialAnchorPersistenceInfo.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_MSFT_spatial_anchor_persistence
 
-
 #ifdef XR_MSFT_spatial_anchor_persistence
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<SpatialAnchorPersistenceNameMSFT, Allocator>> SpatialAnchorStoreConnectionMSFT::enumeratePersistedSpatialAnchorNamesToVectorMSFT (
+OPENXR_HPP_INLINE ResultValue<std::vector<SpatialAnchorPersistenceNameMSFT, Allocator>>
+SpatialAnchorStoreConnectionMSFT::enumeratePersistedSpatialAnchorNamesToVectorMSFT(
     Dispatch&& d) const {
-    std::vector<SpatialAnchorPersistenceNameMSFT, Allocator> spatialAnchorNames;
-        uint32_t spatialAnchorNameCountOutput = 0;
-    uint32_t spatialAnchorNameCapacityInput = 0;
+  std::vector<SpatialAnchorPersistenceNameMSFT, Allocator> spatialAnchorNames;
+  uint32_t spatialAnchorNameCountOutput = 0;
+  uint32_t spatialAnchorNameCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumeratePersistedSpatialAnchorNamesMSFT(this->get(), spatialAnchorNameCapacityInput, &spatialAnchorNameCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || spatialAnchorNameCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumeratePersistedSpatialAnchorNamesMSFT(
+      this->get(), spatialAnchorNameCapacityInput, &spatialAnchorNameCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || spatialAnchorNameCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(spatialAnchorNames)};
+  }
+  do {
+    spatialAnchorNames.resize(spatialAnchorNameCountOutput);
+    spatialAnchorNameCapacityInput = static_cast<uint32_t>(spatialAnchorNames.size());
+    result = static_cast<Result>(d.xrEnumeratePersistedSpatialAnchorNamesMSFT(
+        this->get(), spatialAnchorNameCapacityInput, &spatialAnchorNameCountOutput,
+        reinterpret_cast<XrSpatialAnchorPersistenceNameMSFT*>(spatialAnchorNames.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(spatialAnchorNameCountOutput <= spatialAnchorNames.size());
+    spatialAnchorNames.resize(spatialAnchorNameCountOutput);
+  } else
+    spatialAnchorNames.clear();
 
-        return { result, std::move(spatialAnchorNames) };
-    }
-    do {
-        spatialAnchorNames.resize(spatialAnchorNameCountOutput);
-        spatialAnchorNameCapacityInput = static_cast<uint32_t>(spatialAnchorNames.size());
-        result = static_cast<Result>( d.xrEnumeratePersistedSpatialAnchorNamesMSFT(this->get(), spatialAnchorNameCapacityInput, &spatialAnchorNameCountOutput, reinterpret_cast<XrSpatialAnchorPersistenceNameMSFT*>(spatialAnchorNames.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(spatialAnchorNameCountOutput <= spatialAnchorNames.size());
-        spatialAnchorNames.resize(spatialAnchorNameCountOutput);
-    } else spatialAnchorNames.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(spatialAnchorNames) };
-
+  return {result, std::move(spatialAnchorNames)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<SpatialAnchorPersistenceNameMSFT, Allocator>> SpatialAnchorStoreConnectionMSFT::enumeratePersistedSpatialAnchorNamesToVectorMSFT (
+OPENXR_HPP_INLINE ResultValue<std::vector<SpatialAnchorPersistenceNameMSFT, Allocator>>
+SpatialAnchorStoreConnectionMSFT::enumeratePersistedSpatialAnchorNamesToVectorMSFT(
     Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<SpatialAnchorPersistenceNameMSFT, Allocator> spatialAnchorNames{vectorAllocator};
-        uint32_t spatialAnchorNameCountOutput = 0;
-    uint32_t spatialAnchorNameCapacityInput = 0;
+  std::vector<SpatialAnchorPersistenceNameMSFT, Allocator> spatialAnchorNames{vectorAllocator};
+  uint32_t spatialAnchorNameCountOutput = 0;
+  uint32_t spatialAnchorNameCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumeratePersistedSpatialAnchorNamesMSFT(this->get(), spatialAnchorNameCapacityInput, &spatialAnchorNameCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || spatialAnchorNameCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumeratePersistedSpatialAnchorNamesMSFT(
+      this->get(), spatialAnchorNameCapacityInput, &spatialAnchorNameCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || spatialAnchorNameCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(spatialAnchorNames)};
+  }
+  do {
+    spatialAnchorNames.resize(spatialAnchorNameCountOutput);
+    spatialAnchorNameCapacityInput = static_cast<uint32_t>(spatialAnchorNames.size());
+    result = static_cast<Result>(d.xrEnumeratePersistedSpatialAnchorNamesMSFT(
+        this->get(), spatialAnchorNameCapacityInput, &spatialAnchorNameCountOutput,
+        reinterpret_cast<XrSpatialAnchorPersistenceNameMSFT*>(spatialAnchorNames.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(spatialAnchorNameCountOutput <= spatialAnchorNames.size());
+    spatialAnchorNames.resize(spatialAnchorNameCountOutput);
+  } else
+    spatialAnchorNames.clear();
 
-        return { result, std::move(spatialAnchorNames) };
-    }
-    do {
-        spatialAnchorNames.resize(spatialAnchorNameCountOutput);
-        spatialAnchorNameCapacityInput = static_cast<uint32_t>(spatialAnchorNames.size());
-        result = static_cast<Result>( d.xrEnumeratePersistedSpatialAnchorNamesMSFT(this->get(), spatialAnchorNameCapacityInput, &spatialAnchorNameCountOutput, reinterpret_cast<XrSpatialAnchorPersistenceNameMSFT*>(spatialAnchorNames.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(spatialAnchorNameCountOutput <= spatialAnchorNames.size());
-        spatialAnchorNames.resize(spatialAnchorNameCountOutput);
-    } else spatialAnchorNames.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(spatialAnchorNames) };
-
+  return {result, std::move(spatialAnchorNames)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_MSFT_spatial_anchor_persistence
 
-
 #ifdef XR_MSFT_spatial_anchor_persistence
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<SpatialAnchorMSFT> Session::createSpatialAnchorFromPersistedNameMSFT (
-    const SpatialAnchorFromPersistedAnchorCreateInfoMSFT& spatialAnchorCreateInfo, Dispatch&& d) const {
-    SpatialAnchorMSFT handle;
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorFromPersistedNameMSFT(this->get(), spatialAnchorCreateInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<SpatialAnchorMSFT> Session::createSpatialAnchorFromPersistedNameMSFT(
+    const SpatialAnchorFromPersistedAnchorCreateInfoMSFT& spatialAnchorCreateInfo,
+    Dispatch&& d) const {
+  SpatialAnchorMSFT handle;
+  Result result = static_cast<Result>(d.xrCreateSpatialAnchorFromPersistedNameMSFT(
+      this->get(), spatialAnchorCreateInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<SpatialAnchorMSFT, impl::RemoveRefConst<Dispatch>>> Session::createSpatialAnchorFromPersistedNameUniqueMSFT (
-    const SpatialAnchorFromPersistedAnchorCreateInfoMSFT& spatialAnchorCreateInfo, Dispatch&& d) const {
-    SpatialAnchorMSFT handle;
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorFromPersistedNameMSFT(this->get(), spatialAnchorCreateInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<SpatialAnchorMSFT, impl::RemoveRefConst<Dispatch>>>
+Session::createSpatialAnchorFromPersistedNameUniqueMSFT(
+    const SpatialAnchorFromPersistedAnchorCreateInfoMSFT& spatialAnchorCreateInfo,
+    Dispatch&& d) const {
+  SpatialAnchorMSFT handle;
+  Result result = static_cast<Result>(d.xrCreateSpatialAnchorFromPersistedNameMSFT(
+      this->get(), spatialAnchorCreateInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<SpatialAnchorMSFT, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<SpatialAnchorMSFT, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -13777,1225 +5938,515 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<SpatialAnchorMSFT, impl::RemoveRefCon
 
 #endif  // XR_MSFT_spatial_anchor_persistence
 
-
 #ifdef XR_MSFT_spatial_anchor_persistence
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialAnchorStoreConnectionMSFT::unpersistSpatialAnchorMSFT (
+OPENXR_HPP_INLINE Result SpatialAnchorStoreConnectionMSFT::unpersistSpatialAnchorMSFT(
     const SpatialAnchorPersistenceNameMSFT& spatialAnchorPersistenceName, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrUnpersistSpatialAnchorMSFT(this->get(), spatialAnchorPersistenceName.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(
+      d.xrUnpersistSpatialAnchorMSFT(this->get(), spatialAnchorPersistenceName.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_MSFT_spatial_anchor_persistence
-
 
 #ifdef XR_MSFT_spatial_anchor_persistence
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialAnchorStoreConnectionMSFT::clearSpatialAnchorStoreMSFT (
-    Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrClearSpatialAnchorStoreMSFT(this->get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result
+SpatialAnchorStoreConnectionMSFT::clearSpatialAnchorStoreMSFT(Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrClearSpatialAnchorStoreMSFT(this->get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_MSFT_spatial_anchor_persistence
 
-
 #ifdef XR_MSFT_scene_marker
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<uint8_t, Allocator>> SceneMSFT::getSceneMarkerRawDataToVectorMSFT (
-    const UuidMSFT& markerId, Dispatch&& d) const {
-    std::vector<uint8_t, Allocator> buffer;
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<uint8_t, Allocator>>
+SceneMSFT::getSceneMarkerRawDataToVectorMSFT(const UuidMSFT& markerId, Dispatch&& d) const {
+  std::vector<uint8_t, Allocator> buffer;
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrGetSceneMarkerRawDataMSFT(this->get(), markerId.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrGetSceneMarkerRawDataMSFT(
+      this->get(), markerId.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(buffer)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(d.xrGetSceneMarkerRawDataMSFT(
+        this->get(), markerId.get(), bufferCapacityInput, &bufferCountOutput,
+        reinterpret_cast<uint8_t*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(buffer) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrGetSceneMarkerRawDataMSFT(this->get(), markerId.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<uint8_t*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(buffer) };
-
+  return {result, std::move(buffer)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<uint8_t, Allocator>> SceneMSFT::getSceneMarkerRawDataToVectorMSFT (
-    const UuidMSFT& markerId, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<uint8_t, Allocator> buffer{vectorAllocator};
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<uint8_t, Allocator>>
+SceneMSFT::getSceneMarkerRawDataToVectorMSFT(const UuidMSFT& markerId,
+                                             Allocator const& vectorAllocator, Dispatch&& d) const {
+  std::vector<uint8_t, Allocator> buffer{vectorAllocator};
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrGetSceneMarkerRawDataMSFT(this->get(), markerId.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrGetSceneMarkerRawDataMSFT(
+      this->get(), markerId.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(buffer)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(d.xrGetSceneMarkerRawDataMSFT(
+        this->get(), markerId.get(), bufferCapacityInput, &bufferCountOutput,
+        reinterpret_cast<uint8_t*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(buffer) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrGetSceneMarkerRawDataMSFT(this->get(), markerId.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<uint8_t*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(buffer) };
-
+  return {result, std::move(buffer)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_MSFT_scene_marker
-
 
 #ifdef XR_MSFT_scene_marker
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>> SceneMSFT::getSceneMarkerDecodedStringMSFT (
-    const UuidMSFT& markerId, Dispatch&& d) const {
-    std::vector<char, Allocator> buffer;
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>>
+SceneMSFT::getSceneMarkerDecodedStringMSFT(const UuidMSFT& markerId, Dispatch&& d) const {
+  std::vector<char, Allocator> buffer;
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    std::basic_string<char, std::char_traits<char>, Allocator> str{{}};
-    Result result = static_cast<Result>( d.xrGetSceneMarkerDecodedStringMSFT(this->get(), markerId.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  std::basic_string<char, std::char_traits<char>, Allocator> str{{}};
+  Result result = static_cast<Result>(d.xrGetSceneMarkerDecodedStringMSFT(
+      this->get(), markerId.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(str)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(d.xrGetSceneMarkerDecodedStringMSFT(
+        this->get(), markerId.get(), bufferCapacityInput, &bufferCountOutput,
+        reinterpret_cast<char*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(str) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrGetSceneMarkerDecodedStringMSFT(this->get(), markerId.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<char*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-    str.assign(buffer.begin(), buffer.end());
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  str.assign(buffer.begin(), buffer.end());
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(str) };
-
+  return {result, std::move(str)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>> SceneMSFT::getSceneMarkerDecodedStringMSFT (
-    const UuidMSFT& markerId, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<char, Allocator> buffer{vectorAllocator};
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>>
+SceneMSFT::getSceneMarkerDecodedStringMSFT(const UuidMSFT& markerId,
+                                           Allocator const& vectorAllocator, Dispatch&& d) const {
+  std::vector<char, Allocator> buffer{vectorAllocator};
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    std::basic_string<char, std::char_traits<char>, Allocator> str{vectorAllocator};
-    Result result = static_cast<Result>( d.xrGetSceneMarkerDecodedStringMSFT(this->get(), markerId.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  std::basic_string<char, std::char_traits<char>, Allocator> str{vectorAllocator};
+  Result result = static_cast<Result>(d.xrGetSceneMarkerDecodedStringMSFT(
+      this->get(), markerId.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(str)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(d.xrGetSceneMarkerDecodedStringMSFT(
+        this->get(), markerId.get(), bufferCapacityInput, &bufferCountOutput,
+        reinterpret_cast<char*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(str) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrGetSceneMarkerDecodedStringMSFT(this->get(), markerId.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<char*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-    str.assign(buffer.begin(), buffer.end());
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  str.assign(buffer.begin(), buffer.end());
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(str) };
-
+  return {result, std::move(str)};
 }
-
 
 #endif  // XR_MSFT_scene_marker
-
 
 #ifdef XR_FB_spatial_entity_query
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<AsyncRequestIdFB> Session::querySpacesFB (
+OPENXR_HPP_INLINE ResultValue<AsyncRequestIdFB> Session::querySpacesFB(
     const SpaceQueryInfoBaseHeaderFB& info, Dispatch&& d) const {
-    AsyncRequestIdFB requestId;
-    Result result = static_cast<Result>( d.xrQuerySpacesFB(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(requestId)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  AsyncRequestIdFB requestId;
+  Result result = static_cast<Result>(
+      d.xrQuerySpacesFB(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(requestId)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(requestId) };
+  return {result, std::move(requestId)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_spatial_entity_query
-
 
 #ifdef XR_FB_spatial_entity_query
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::retrieveSpaceQueryResultsFB (
-    AsyncRequestIdFB requestId, SpaceQueryResultsFB& results, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrRetrieveSpaceQueryResultsFB(this->get(), requestId.get(), results.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::retrieveSpaceQueryResultsFB(AsyncRequestIdFB requestId,
+                                                              SpaceQueryResultsFB& results,
+                                                              Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrRetrieveSpaceQueryResultsFB(this->get(), requestId.get(), results.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_spatial_entity_query
 
-
 #ifdef XR_FB_spatial_entity_storage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<AsyncRequestIdFB> Session::saveSpaceFB (
-    const SpaceSaveInfoFB& info, Dispatch&& d) const {
-    AsyncRequestIdFB requestId;
-    Result result = static_cast<Result>( d.xrSaveSpaceFB(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(requestId)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<AsyncRequestIdFB> Session::saveSpaceFB(const SpaceSaveInfoFB& info,
+                                                                     Dispatch&& d) const {
+  AsyncRequestIdFB requestId;
+  Result result = static_cast<Result>(
+      d.xrSaveSpaceFB(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(requestId)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(requestId) };
+  return {result, std::move(requestId)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_spatial_entity_storage
-
 
 #ifdef XR_FB_spatial_entity_storage
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<AsyncRequestIdFB> Session::eraseSpaceFB (
-    const SpaceEraseInfoFB& info, Dispatch&& d) const {
-    AsyncRequestIdFB requestId;
-    Result result = static_cast<Result>( d.xrEraseSpaceFB(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(requestId)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<AsyncRequestIdFB> Session::eraseSpaceFB(const SpaceEraseInfoFB& info,
+                                                                      Dispatch&& d) const {
+  AsyncRequestIdFB requestId;
+  Result result = static_cast<Result>(
+      d.xrEraseSpaceFB(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(requestId)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(requestId) };
+  return {result, std::move(requestId)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_spatial_entity_storage
-
 
 #ifdef XR_OCULUS_audio_device_guid
 #if defined(XR_USE_PLATFORM_WIN32)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::getAudioOutputDeviceGuidOculus (
+OPENXR_HPP_INLINE Result Instance::getAudioOutputDeviceGuidOculus(
     wchar_t buffer[XR_MAX_AUDIO_DEVICE_STR_SIZE_OCULUS], Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetAudioOutputDeviceGuidOculus(this->get(), buffer) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrGetAudioOutputDeviceGuidOculus(this->get(), buffer));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-#endif // defined(XR_USE_PLATFORM_WIN32)
+#endif  // defined(XR_USE_PLATFORM_WIN32)
 #endif  // XR_OCULUS_audio_device_guid
-
 
 #ifdef XR_OCULUS_audio_device_guid
 #if defined(XR_USE_PLATFORM_WIN32)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::getAudioInputDeviceGuidOculus (
+OPENXR_HPP_INLINE Result Instance::getAudioInputDeviceGuidOculus(
     wchar_t buffer[XR_MAX_AUDIO_DEVICE_STR_SIZE_OCULUS], Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetAudioInputDeviceGuidOculus(this->get(), buffer) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrGetAudioInputDeviceGuidOculus(this->get(), buffer));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
-#endif // defined(XR_USE_PLATFORM_WIN32)
+#endif  // defined(XR_USE_PLATFORM_WIN32)
 #endif  // XR_OCULUS_audio_device_guid
-
 
 #ifdef XR_FB_spatial_entity_sharing
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<AsyncRequestIdFB> Session::shareSpacesFB (
-    const SpaceShareInfoFB& info, Dispatch&& d) const {
-    AsyncRequestIdFB requestId;
-    Result result = static_cast<Result>( d.xrShareSpacesFB(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(requestId)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<AsyncRequestIdFB> Session::shareSpacesFB(const SpaceShareInfoFB& info,
+                                                                       Dispatch&& d) const {
+  AsyncRequestIdFB requestId;
+  Result result = static_cast<Result>(
+      d.xrShareSpacesFB(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(requestId)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(requestId) };
+  return {result, std::move(requestId)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_spatial_entity_sharing
 
-
 #ifdef XR_FB_scene
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<Rect2Df> Session::getSpaceBoundingBox2DFB (
-    Space space, Dispatch&& d) const {
-    Rect2Df boundingBox2DOutput;
-    Result result = static_cast<Result>( d.xrGetSpaceBoundingBox2DFB(this->get(), space.get(), OPENXR_HPP_NAMESPACE::put(boundingBox2DOutput)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<Rect2Df> Session::getSpaceBoundingBox2DFB(Space space,
+                                                                        Dispatch&& d) const {
+  Rect2Df boundingBox2DOutput;
+  Result result = static_cast<Result>(d.xrGetSpaceBoundingBox2DFB(
+      this->get(), space.get(), OPENXR_HPP_NAMESPACE::put(boundingBox2DOutput)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(boundingBox2DOutput) };
+  return {result, std::move(boundingBox2DOutput)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_scene
-
 
 #ifdef XR_FB_scene
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<Rect3DfFB> Session::getSpaceBoundingBox3DFB (
-    Space space, Dispatch&& d) const {
-    Rect3DfFB boundingBox3DOutput;
-    Result result = static_cast<Result>( d.xrGetSpaceBoundingBox3DFB(this->get(), space.get(), OPENXR_HPP_NAMESPACE::put(boundingBox3DOutput)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<Rect3DfFB> Session::getSpaceBoundingBox3DFB(Space space,
+                                                                          Dispatch&& d) const {
+  Rect3DfFB boundingBox3DOutput;
+  Result result = static_cast<Result>(d.xrGetSpaceBoundingBox3DFB(
+      this->get(), space.get(), OPENXR_HPP_NAMESPACE::put(boundingBox3DOutput)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(boundingBox3DOutput) };
+  return {result, std::move(boundingBox3DOutput)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_scene
-
 
 #ifdef XR_FB_scene
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getSpaceSemanticLabelsFB (
-    Space space, SemanticLabelsFB& semanticLabelsOutput, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSpaceSemanticLabelsFB(this->get(), space.get(), semanticLabelsOutput.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::getSpaceSemanticLabelsFB(Space space,
+                                                           SemanticLabelsFB& semanticLabelsOutput,
+                                                           Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetSpaceSemanticLabelsFB(this->get(), space.get(), semanticLabelsOutput.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_scene
-
 
 #ifdef XR_FB_scene
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getSpaceBoundary2DFB (
-    Space space, Boundary2DFB& boundary2DOutput, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSpaceBoundary2DFB(this->get(), space.get(), boundary2DOutput.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::getSpaceBoundary2DFB(Space space, Boundary2DFB& boundary2DOutput,
+                                                       Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetSpaceBoundary2DFB(this->get(), space.get(), boundary2DOutput.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_scene
-
 
 #ifdef XR_FB_scene
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getSpaceRoomLayoutFB (
-    Space space, RoomLayoutFB& roomLayoutOutput, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSpaceRoomLayoutFB(this->get(), space.get(), roomLayoutOutput.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::getSpaceRoomLayoutFB(Space space, RoomLayoutFB& roomLayoutOutput,
+                                                       Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetSpaceRoomLayoutFB(this->get(), space.get(), roomLayoutOutput.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_scene
-
 
 #ifdef XR_ALMALENCE_digital_lens_control
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setDigitalLensControlALMALENCE (
+OPENXR_HPP_INLINE Result Session::setDigitalLensControlALMALENCE(
     const DigitalLensControlALMALENCE& digitalLensControl, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetDigitalLensControlALMALENCE(this->get(), digitalLensControl.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(
+      d.xrSetDigitalLensControlALMALENCE(this->get(), digitalLensControl.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ALMALENCE_digital_lens_control
 
-
 #ifdef XR_FB_scene_capture
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<AsyncRequestIdFB> Session::requestSceneCaptureFB (
+OPENXR_HPP_INLINE ResultValue<AsyncRequestIdFB> Session::requestSceneCaptureFB(
     const SceneCaptureRequestInfoFB& info, Dispatch&& d) const {
-    AsyncRequestIdFB requestId;
-    Result result = static_cast<Result>( d.xrRequestSceneCaptureFB(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(requestId)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  AsyncRequestIdFB requestId;
+  Result result = static_cast<Result>(
+      d.xrRequestSceneCaptureFB(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(requestId)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(requestId) };
+  return {result, std::move(requestId)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_scene_capture
 
-
 #ifdef XR_FB_spatial_entity_container
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::getSpaceContainerFB (
-    Space space, SpaceContainerFB& spaceContainerOutput, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSpaceContainerFB(this->get(), space.get(), spaceContainerOutput.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::getSpaceContainerFB(Space space,
+                                                      SpaceContainerFB& spaceContainerOutput,
+                                                      Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetSpaceContainerFB(this->get(), space.get(), spaceContainerOutput.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_spatial_entity_container
 
-
 #ifdef XR_META_foveation_eye_tracked
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FoveationEyeTrackedStateMETA> Session::getFoveationEyeTrackedStateMETA (
-    Dispatch&& d) const {
-    FoveationEyeTrackedStateMETA foveationState;
-    Result result = static_cast<Result>( d.xrGetFoveationEyeTrackedStateMETA(this->get(), OPENXR_HPP_NAMESPACE::put(foveationState)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<FoveationEyeTrackedStateMETA>
+Session::getFoveationEyeTrackedStateMETA(Dispatch&& d) const {
+  FoveationEyeTrackedStateMETA foveationState;
+  Result result = static_cast<Result>(
+      d.xrGetFoveationEyeTrackedStateMETA(this->get(), OPENXR_HPP_NAMESPACE::put(foveationState)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(foveationState) };
+  return {result, std::move(foveationState)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_foveation_eye_tracked
 
-
 #ifdef XR_FB_face_tracking
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FaceTrackerFB> Session::createFaceTrackerFB (
+OPENXR_HPP_INLINE ResultValue<FaceTrackerFB> Session::createFaceTrackerFB(
     const FaceTrackerCreateInfoFB& createInfo, Dispatch&& d) const {
-    FaceTrackerFB handle;
-    Result result = static_cast<Result>( d.xrCreateFaceTrackerFB(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  FaceTrackerFB handle;
+  Result result =
+      static_cast<Result>(d.xrCreateFaceTrackerFB(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<FaceTrackerFB, impl::RemoveRefConst<Dispatch>>> Session::createFaceTrackerUniqueFB (
-    const FaceTrackerCreateInfoFB& createInfo, Dispatch&& d) const {
-    FaceTrackerFB handle;
-    Result result = static_cast<Result>( d.xrCreateFaceTrackerFB(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<FaceTrackerFB, impl::RemoveRefConst<Dispatch>>>
+Session::createFaceTrackerUniqueFB(const FaceTrackerCreateInfoFB& createInfo, Dispatch&& d) const {
+  FaceTrackerFB handle;
+  Result result =
+      static_cast<Result>(d.xrCreateFaceTrackerFB(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<FaceTrackerFB, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<FaceTrackerFB, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -15003,179 +6454,69 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<FaceTrackerFB, impl::RemoveRefConst<D
 
 #endif  // XR_FB_face_tracking
 
-
 #ifdef XR_FB_face_tracking
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result FaceTrackerFB::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyFaceTrackerFB(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result FaceTrackerFB::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyFaceTrackerFB(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_face_tracking
-
 
 #ifdef XR_FB_face_tracking
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result FaceTrackerFB::getFaceExpressionWeightsFB (
-    const FaceExpressionInfoFB& expressionInfo, FaceExpressionWeightsFB& expressionWeights, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetFaceExpressionWeightsFB(this->get(), expressionInfo.get(), expressionWeights.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result FaceTrackerFB::getFaceExpressionWeightsFB(
+    const FaceExpressionInfoFB& expressionInfo, FaceExpressionWeightsFB& expressionWeights,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetFaceExpressionWeightsFB(
+      this->get(), expressionInfo.get(), expressionWeights.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_face_tracking
-
 
 #ifdef XR_FB_eye_tracking_social
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<EyeTrackerFB> Session::createEyeTrackerFB (
+OPENXR_HPP_INLINE ResultValue<EyeTrackerFB> Session::createEyeTrackerFB(
     const EyeTrackerCreateInfoFB& createInfo, Dispatch&& d) const {
-    EyeTrackerFB handle;
-    Result result = static_cast<Result>( d.xrCreateEyeTrackerFB(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  EyeTrackerFB handle;
+  Result result =
+      static_cast<Result>(d.xrCreateEyeTrackerFB(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<EyeTrackerFB, impl::RemoveRefConst<Dispatch>>> Session::createEyeTrackerUniqueFB (
-    const EyeTrackerCreateInfoFB& createInfo, Dispatch&& d) const {
-    EyeTrackerFB handle;
-    Result result = static_cast<Result>( d.xrCreateEyeTrackerFB(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<EyeTrackerFB, impl::RemoveRefConst<Dispatch>>>
+Session::createEyeTrackerUniqueFB(const EyeTrackerCreateInfoFB& createInfo, Dispatch&& d) const {
+  EyeTrackerFB handle;
+  Result result =
+      static_cast<Result>(d.xrCreateEyeTrackerFB(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<EyeTrackerFB, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<EyeTrackerFB, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -15183,335 +6524,127 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<EyeTrackerFB, impl::RemoveRefConst<Di
 
 #endif  // XR_FB_eye_tracking_social
 
-
 #ifdef XR_FB_eye_tracking_social
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result EyeTrackerFB::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyEyeTrackerFB(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result EyeTrackerFB::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyEyeTrackerFB(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_eye_tracking_social
 
-
 #ifdef XR_FB_eye_tracking_social
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<EyeGazesFB> EyeTrackerFB::getEyeGazesFB (
+OPENXR_HPP_INLINE ResultValue<EyeGazesFB> EyeTrackerFB::getEyeGazesFB(
     const EyeGazesInfoFB& gazeInfo, Dispatch&& d) const {
-    EyeGazesFB eyeGazes;
-    Result result = static_cast<Result>( d.xrGetEyeGazesFB(this->get(), gazeInfo.get(), OPENXR_HPP_NAMESPACE::put(eyeGazes)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  EyeGazesFB eyeGazes;
+  Result result = static_cast<Result>(
+      d.xrGetEyeGazesFB(this->get(), gazeInfo.get(), OPENXR_HPP_NAMESPACE::put(eyeGazes)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(eyeGazes) };
+  return {result, std::move(eyeGazes)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_eye_tracking_social
-
 
 #ifdef XR_FB_passthrough_keyboard_hands
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PassthroughLayerFB::passthroughLayerSetKeyboardHandsIntensityFB (
+OPENXR_HPP_INLINE Result PassthroughLayerFB::passthroughLayerSetKeyboardHandsIntensityFB(
     const PassthroughKeyboardHandsIntensityFB& intensity, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPassthroughLayerSetKeyboardHandsIntensityFB(this->get(), intensity.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(
+      d.xrPassthroughLayerSetKeyboardHandsIntensityFB(this->get(), intensity.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_passthrough_keyboard_hands
 
-
 #ifdef XR_FB_haptic_pcm
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<DevicePcmSampleRateGetInfoFB> Session::getDeviceSampleRateFB (
+OPENXR_HPP_INLINE ResultValue<DevicePcmSampleRateGetInfoFB> Session::getDeviceSampleRateFB(
     const HapticActionInfo& hapticActionInfo, Dispatch&& d) const {
-    DevicePcmSampleRateGetInfoFB deviceSampleRate;
-    Result result = static_cast<Result>( d.xrGetDeviceSampleRateFB(this->get(), hapticActionInfo.get(), &deviceSampleRate) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  DevicePcmSampleRateGetInfoFB deviceSampleRate;
+  Result result = static_cast<Result>(
+      d.xrGetDeviceSampleRateFB(this->get(), hapticActionInfo.get(), &deviceSampleRate));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(deviceSampleRate) };
+  return {result, std::move(deviceSampleRate)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_haptic_pcm
 
-
 #ifdef XR_META_passthrough_preferences
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<PassthroughPreferencesMETA> Session::getPassthroughPreferencesMETA (
+OPENXR_HPP_INLINE ResultValue<PassthroughPreferencesMETA> Session::getPassthroughPreferencesMETA(
     Dispatch&& d) const {
-    PassthroughPreferencesMETA preferences;
-    Result result = static_cast<Result>( d.xrGetPassthroughPreferencesMETA(this->get(), OPENXR_HPP_NAMESPACE::put(preferences)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  PassthroughPreferencesMETA preferences;
+  Result result = static_cast<Result>(
+      d.xrGetPassthroughPreferencesMETA(this->get(), OPENXR_HPP_NAMESPACE::put(preferences)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(preferences) };
+  return {result, std::move(preferences)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_passthrough_preferences
 
-
 #ifdef XR_META_virtual_keyboard
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<VirtualKeyboardMETA> Session::createVirtualKeyboardMETA (
+OPENXR_HPP_INLINE ResultValue<VirtualKeyboardMETA> Session::createVirtualKeyboardMETA(
     const VirtualKeyboardCreateInfoMETA& createInfo, Dispatch&& d) const {
-    VirtualKeyboardMETA handle;
-    Result result = static_cast<Result>( d.xrCreateVirtualKeyboardMETA(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  VirtualKeyboardMETA handle;
+  Result result = static_cast<Result>(
+      d.xrCreateVirtualKeyboardMETA(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<VirtualKeyboardMETA, impl::RemoveRefConst<Dispatch>>> Session::createVirtualKeyboardUniqueMETA (
-    const VirtualKeyboardCreateInfoMETA& createInfo, Dispatch&& d) const {
-    VirtualKeyboardMETA handle;
-    Result result = static_cast<Result>( d.xrCreateVirtualKeyboardMETA(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<VirtualKeyboardMETA, impl::RemoveRefConst<Dispatch>>>
+Session::createVirtualKeyboardUniqueMETA(const VirtualKeyboardCreateInfoMETA& createInfo,
+                                         Dispatch&& d) const {
+  VirtualKeyboardMETA handle;
+  Result result = static_cast<Result>(
+      d.xrCreateVirtualKeyboardMETA(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<VirtualKeyboardMETA, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result,
+          UniqueHandle<VirtualKeyboardMETA, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -15519,127 +6652,53 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<VirtualKeyboardMETA, impl::RemoveRefC
 
 #endif  // XR_META_virtual_keyboard
 
-
 #ifdef XR_META_virtual_keyboard
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result VirtualKeyboardMETA::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyVirtualKeyboardMETA(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result VirtualKeyboardMETA::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyVirtualKeyboardMETA(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_virtual_keyboard
 
-
 #ifdef XR_META_virtual_keyboard
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<Space> Session::createVirtualKeyboardSpaceMETA (
-    VirtualKeyboardMETA keyboard, const VirtualKeyboardSpaceCreateInfoMETA& createInfo, Dispatch&& d) const {
-    Space handle;
-    Result result = static_cast<Result>( d.xrCreateVirtualKeyboardSpaceMETA(this->get(), keyboard.get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<Space> Session::createVirtualKeyboardSpaceMETA(
+    VirtualKeyboardMETA keyboard, const VirtualKeyboardSpaceCreateInfoMETA& createInfo,
+    Dispatch&& d) const {
+  Space handle;
+  Result result = static_cast<Result>(d.xrCreateVirtualKeyboardSpaceMETA(
+      this->get(), keyboard.get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>> Session::createVirtualKeyboardSpaceUniqueMETA (
-    VirtualKeyboardMETA keyboard, const VirtualKeyboardSpaceCreateInfoMETA& createInfo, Dispatch&& d) const {
-    Space handle;
-    Result result = static_cast<Result>( d.xrCreateVirtualKeyboardSpaceMETA(this->get(), keyboard.get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>>
+Session::createVirtualKeyboardSpaceUniqueMETA(VirtualKeyboardMETA keyboard,
+                                              const VirtualKeyboardSpaceCreateInfoMETA& createInfo,
+                                              Dispatch&& d) const {
+  Space handle;
+  Result result = static_cast<Result>(d.xrCreateVirtualKeyboardSpaceMETA(
+      this->get(), keyboard.get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -15647,959 +6706,449 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>
 
 #endif  // XR_META_virtual_keyboard
 
-
 #ifdef XR_META_virtual_keyboard
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result VirtualKeyboardMETA::suggestVirtualKeyboardLocationMETA (
+OPENXR_HPP_INLINE Result VirtualKeyboardMETA::suggestVirtualKeyboardLocationMETA(
     const VirtualKeyboardLocationInfoMETA& locationInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSuggestVirtualKeyboardLocationMETA(this->get(), locationInfo.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result =
+      static_cast<Result>(d.xrSuggestVirtualKeyboardLocationMETA(this->get(), locationInfo.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_virtual_keyboard
 
-
 #ifdef XR_META_virtual_keyboard
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<float> VirtualKeyboardMETA::getVirtualKeyboardScaleMETA (
+OPENXR_HPP_INLINE ResultValue<float> VirtualKeyboardMETA::getVirtualKeyboardScaleMETA(
     Dispatch&& d) const {
-    float scale;
-    Result result = static_cast<Result>( d.xrGetVirtualKeyboardScaleMETA(this->get(), &scale) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  float scale;
+  Result result = static_cast<Result>(d.xrGetVirtualKeyboardScaleMETA(this->get(), &scale));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(scale) };
+  return {result, std::move(scale)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_virtual_keyboard
 
-
 #ifdef XR_META_virtual_keyboard
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result VirtualKeyboardMETA::setVirtualKeyboardModelVisibilityMETA (
+OPENXR_HPP_INLINE Result VirtualKeyboardMETA::setVirtualKeyboardModelVisibilityMETA(
     const VirtualKeyboardModelVisibilitySetInfoMETA& modelVisibility, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetVirtualKeyboardModelVisibilityMETA(this->get(), modelVisibility.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(
+      d.xrSetVirtualKeyboardModelVisibilityMETA(this->get(), modelVisibility.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_virtual_keyboard
 
-
 #ifdef XR_META_virtual_keyboard
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result VirtualKeyboardMETA::getVirtualKeyboardModelAnimationStatesMETA (
+OPENXR_HPP_INLINE Result VirtualKeyboardMETA::getVirtualKeyboardModelAnimationStatesMETA(
     VirtualKeyboardModelAnimationStatesMETA& animationStates, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetVirtualKeyboardModelAnimationStatesMETA(this->get(), animationStates.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(
+      d.xrGetVirtualKeyboardModelAnimationStatesMETA(this->get(), animationStates.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_virtual_keyboard
 
-
 #ifdef XR_META_virtual_keyboard
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<uint64_t, Allocator>> VirtualKeyboardMETA::getVirtualKeyboardDirtyTexturesToVectorMETA (
-    Dispatch&& d) const {
-    std::vector<uint64_t, Allocator> textureIds;
-        uint32_t textureIdCountOutput = 0;
-    uint32_t textureIdCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<uint64_t, Allocator>>
+VirtualKeyboardMETA::getVirtualKeyboardDirtyTexturesToVectorMETA(Dispatch&& d) const {
+  std::vector<uint64_t, Allocator> textureIds;
+  uint32_t textureIdCountOutput = 0;
+  uint32_t textureIdCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrGetVirtualKeyboardDirtyTexturesMETA(this->get(), textureIdCapacityInput, &textureIdCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || textureIdCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrGetVirtualKeyboardDirtyTexturesMETA(
+      this->get(), textureIdCapacityInput, &textureIdCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || textureIdCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(textureIds)};
+  }
+  do {
+    textureIds.resize(textureIdCountOutput);
+    textureIdCapacityInput = static_cast<uint32_t>(textureIds.size());
+    result = static_cast<Result>(d.xrGetVirtualKeyboardDirtyTexturesMETA(
+        this->get(), textureIdCapacityInput, &textureIdCountOutput,
+        reinterpret_cast<uint64_t*>(textureIds.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(textureIdCountOutput <= textureIds.size());
+    textureIds.resize(textureIdCountOutput);
+  } else
+    textureIds.clear();
 
-        return { result, std::move(textureIds) };
-    }
-    do {
-        textureIds.resize(textureIdCountOutput);
-        textureIdCapacityInput = static_cast<uint32_t>(textureIds.size());
-        result = static_cast<Result>( d.xrGetVirtualKeyboardDirtyTexturesMETA(this->get(), textureIdCapacityInput, &textureIdCountOutput, reinterpret_cast<uint64_t*>(textureIds.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(textureIdCountOutput <= textureIds.size());
-        textureIds.resize(textureIdCountOutput);
-    } else textureIds.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(textureIds) };
-
+  return {result, std::move(textureIds)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<uint64_t, Allocator>> VirtualKeyboardMETA::getVirtualKeyboardDirtyTexturesToVectorMETA (
-    Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<uint64_t, Allocator> textureIds{vectorAllocator};
-        uint32_t textureIdCountOutput = 0;
-    uint32_t textureIdCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<uint64_t, Allocator>>
+VirtualKeyboardMETA::getVirtualKeyboardDirtyTexturesToVectorMETA(Allocator const& vectorAllocator,
+                                                                 Dispatch&& d) const {
+  std::vector<uint64_t, Allocator> textureIds{vectorAllocator};
+  uint32_t textureIdCountOutput = 0;
+  uint32_t textureIdCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrGetVirtualKeyboardDirtyTexturesMETA(this->get(), textureIdCapacityInput, &textureIdCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || textureIdCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrGetVirtualKeyboardDirtyTexturesMETA(
+      this->get(), textureIdCapacityInput, &textureIdCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || textureIdCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(textureIds)};
+  }
+  do {
+    textureIds.resize(textureIdCountOutput);
+    textureIdCapacityInput = static_cast<uint32_t>(textureIds.size());
+    result = static_cast<Result>(d.xrGetVirtualKeyboardDirtyTexturesMETA(
+        this->get(), textureIdCapacityInput, &textureIdCountOutput,
+        reinterpret_cast<uint64_t*>(textureIds.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(textureIdCountOutput <= textureIds.size());
+    textureIds.resize(textureIdCountOutput);
+  } else
+    textureIds.clear();
 
-        return { result, std::move(textureIds) };
-    }
-    do {
-        textureIds.resize(textureIdCountOutput);
-        textureIdCapacityInput = static_cast<uint32_t>(textureIds.size());
-        result = static_cast<Result>( d.xrGetVirtualKeyboardDirtyTexturesMETA(this->get(), textureIdCapacityInput, &textureIdCountOutput, reinterpret_cast<uint64_t*>(textureIds.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(textureIdCountOutput <= textureIds.size());
-        textureIds.resize(textureIdCountOutput);
-    } else textureIds.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(textureIds) };
-
+  return {result, std::move(textureIds)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_virtual_keyboard
 
-
 #ifdef XR_META_virtual_keyboard
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result VirtualKeyboardMETA::getVirtualKeyboardTextureDataMETA (
+OPENXR_HPP_INLINE Result VirtualKeyboardMETA::getVirtualKeyboardTextureDataMETA(
     uint64_t textureId, VirtualKeyboardTextureDataMETA& textureData, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetVirtualKeyboardTextureDataMETA(this->get(), textureId, textureData.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(
+      d.xrGetVirtualKeyboardTextureDataMETA(this->get(), textureId, textureData.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_virtual_keyboard
 
-
 #ifdef XR_META_virtual_keyboard
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<Posef> VirtualKeyboardMETA::sendVirtualKeyboardInputMETA (
+OPENXR_HPP_INLINE ResultValue<Posef> VirtualKeyboardMETA::sendVirtualKeyboardInputMETA(
     const VirtualKeyboardInputInfoMETA& info, Dispatch&& d) const {
-    Posef interactorRootPose;
-    Result result = static_cast<Result>( d.xrSendVirtualKeyboardInputMETA(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(interactorRootPose)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Posef interactorRootPose;
+  Result result = static_cast<Result>(d.xrSendVirtualKeyboardInputMETA(
+      this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(interactorRootPose)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(interactorRootPose) };
+  return {result, std::move(interactorRootPose)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_virtual_keyboard
-
 
 #ifdef XR_META_virtual_keyboard
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result VirtualKeyboardMETA::changeVirtualKeyboardTextContextMETA (
+OPENXR_HPP_INLINE Result VirtualKeyboardMETA::changeVirtualKeyboardTextContextMETA(
     const VirtualKeyboardTextContextChangeInfoMETA& changeInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrChangeVirtualKeyboardTextContextMETA(this->get(), changeInfo.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result =
+      static_cast<Result>(d.xrChangeVirtualKeyboardTextContextMETA(this->get(), changeInfo.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_virtual_keyboard
-
 
 #ifdef XR_OCULUS_external_camera
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<ExternalCameraOCULUS, Allocator>> Session::enumerateExternalCamerasToVectorOCULUS (
-    Dispatch&& d) const {
-    std::vector<ExternalCameraOCULUS, Allocator> cameras;
-        uint32_t cameraCountOutput = 0;
-    uint32_t cameraCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<ExternalCameraOCULUS, Allocator>>
+Session::enumerateExternalCamerasToVectorOCULUS(Dispatch&& d) const {
+  std::vector<ExternalCameraOCULUS, Allocator> cameras;
+  uint32_t cameraCountOutput = 0;
+  uint32_t cameraCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateExternalCamerasOCULUS(this->get(), cameraCapacityInput, &cameraCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || cameraCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateExternalCamerasOCULUS(
+      this->get(), cameraCapacityInput, &cameraCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || cameraCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(cameras)};
+  }
+  do {
+    cameras.resize(cameraCountOutput);
+    cameraCapacityInput = static_cast<uint32_t>(cameras.size());
+    result = static_cast<Result>(d.xrEnumerateExternalCamerasOCULUS(
+        this->get(), cameraCapacityInput, &cameraCountOutput,
+        reinterpret_cast<XrExternalCameraOCULUS*>(cameras.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(cameraCountOutput <= cameras.size());
+    cameras.resize(cameraCountOutput);
+  } else
+    cameras.clear();
 
-        return { result, std::move(cameras) };
-    }
-    do {
-        cameras.resize(cameraCountOutput);
-        cameraCapacityInput = static_cast<uint32_t>(cameras.size());
-        result = static_cast<Result>( d.xrEnumerateExternalCamerasOCULUS(this->get(), cameraCapacityInput, &cameraCountOutput, reinterpret_cast<XrExternalCameraOCULUS*>(cameras.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(cameraCountOutput <= cameras.size());
-        cameras.resize(cameraCountOutput);
-    } else cameras.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(cameras) };
-
+  return {result, std::move(cameras)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<ExternalCameraOCULUS, Allocator>> Session::enumerateExternalCamerasToVectorOCULUS (
-    Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<ExternalCameraOCULUS, Allocator> cameras{vectorAllocator};
-        uint32_t cameraCountOutput = 0;
-    uint32_t cameraCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<ExternalCameraOCULUS, Allocator>>
+Session::enumerateExternalCamerasToVectorOCULUS(Allocator const& vectorAllocator,
+                                                Dispatch&& d) const {
+  std::vector<ExternalCameraOCULUS, Allocator> cameras{vectorAllocator};
+  uint32_t cameraCountOutput = 0;
+  uint32_t cameraCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateExternalCamerasOCULUS(this->get(), cameraCapacityInput, &cameraCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || cameraCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateExternalCamerasOCULUS(
+      this->get(), cameraCapacityInput, &cameraCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || cameraCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(cameras)};
+  }
+  do {
+    cameras.resize(cameraCountOutput);
+    cameraCapacityInput = static_cast<uint32_t>(cameras.size());
+    result = static_cast<Result>(d.xrEnumerateExternalCamerasOCULUS(
+        this->get(), cameraCapacityInput, &cameraCountOutput,
+        reinterpret_cast<XrExternalCameraOCULUS*>(cameras.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(cameraCountOutput <= cameras.size());
+    cameras.resize(cameraCountOutput);
+  } else
+    cameras.clear();
 
-        return { result, std::move(cameras) };
-    }
-    do {
-        cameras.resize(cameraCountOutput);
-        cameraCapacityInput = static_cast<uint32_t>(cameras.size());
-        result = static_cast<Result>( d.xrEnumerateExternalCamerasOCULUS(this->get(), cameraCapacityInput, &cameraCountOutput, reinterpret_cast<XrExternalCameraOCULUS*>(cameras.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(cameraCountOutput <= cameras.size());
-        cameras.resize(cameraCountOutput);
-    } else cameras.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(cameras) };
-
+  return {result, std::move(cameras)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_OCULUS_external_camera
 
-
 #ifdef XR_META_performance_metrics
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<Path, Allocator>> Instance::enumeratePerformanceMetricsCounterPathsToVectorMETA (
-    Dispatch&& d) const {
-    std::vector<Path, Allocator> counterPaths;
-        uint32_t counterPathCountOutput = 0;
-    uint32_t counterPathCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<Path, Allocator>>
+Instance::enumeratePerformanceMetricsCounterPathsToVectorMETA(Dispatch&& d) const {
+  std::vector<Path, Allocator> counterPaths;
+  uint32_t counterPathCountOutput = 0;
+  uint32_t counterPathCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumeratePerformanceMetricsCounterPathsMETA(this->get(), counterPathCapacityInput, &counterPathCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || counterPathCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumeratePerformanceMetricsCounterPathsMETA(
+      this->get(), counterPathCapacityInput, &counterPathCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || counterPathCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(counterPaths)};
+  }
+  do {
+    counterPaths.resize(counterPathCountOutput);
+    counterPathCapacityInput = static_cast<uint32_t>(counterPaths.size());
+    result = static_cast<Result>(d.xrEnumeratePerformanceMetricsCounterPathsMETA(
+        this->get(), counterPathCapacityInput, &counterPathCountOutput,
+        reinterpret_cast<XrPath*>(counterPaths.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(counterPathCountOutput <= counterPaths.size());
+    counterPaths.resize(counterPathCountOutput);
+  } else
+    counterPaths.clear();
 
-        return { result, std::move(counterPaths) };
-    }
-    do {
-        counterPaths.resize(counterPathCountOutput);
-        counterPathCapacityInput = static_cast<uint32_t>(counterPaths.size());
-        result = static_cast<Result>( d.xrEnumeratePerformanceMetricsCounterPathsMETA(this->get(), counterPathCapacityInput, &counterPathCountOutput, reinterpret_cast<XrPath*>(counterPaths.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(counterPathCountOutput <= counterPaths.size());
-        counterPaths.resize(counterPathCountOutput);
-    } else counterPaths.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(counterPaths) };
-
+  return {result, std::move(counterPaths)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<Path, Allocator>> Instance::enumeratePerformanceMetricsCounterPathsToVectorMETA (
-    Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<Path, Allocator> counterPaths{vectorAllocator};
-        uint32_t counterPathCountOutput = 0;
-    uint32_t counterPathCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<Path, Allocator>>
+Instance::enumeratePerformanceMetricsCounterPathsToVectorMETA(Allocator const& vectorAllocator,
+                                                              Dispatch&& d) const {
+  std::vector<Path, Allocator> counterPaths{vectorAllocator};
+  uint32_t counterPathCountOutput = 0;
+  uint32_t counterPathCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumeratePerformanceMetricsCounterPathsMETA(this->get(), counterPathCapacityInput, &counterPathCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || counterPathCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumeratePerformanceMetricsCounterPathsMETA(
+      this->get(), counterPathCapacityInput, &counterPathCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || counterPathCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(counterPaths)};
+  }
+  do {
+    counterPaths.resize(counterPathCountOutput);
+    counterPathCapacityInput = static_cast<uint32_t>(counterPaths.size());
+    result = static_cast<Result>(d.xrEnumeratePerformanceMetricsCounterPathsMETA(
+        this->get(), counterPathCapacityInput, &counterPathCountOutput,
+        reinterpret_cast<XrPath*>(counterPaths.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(counterPathCountOutput <= counterPaths.size());
+    counterPaths.resize(counterPathCountOutput);
+  } else
+    counterPaths.clear();
 
-        return { result, std::move(counterPaths) };
-    }
-    do {
-        counterPaths.resize(counterPathCountOutput);
-        counterPathCapacityInput = static_cast<uint32_t>(counterPaths.size());
-        result = static_cast<Result>( d.xrEnumeratePerformanceMetricsCounterPathsMETA(this->get(), counterPathCapacityInput, &counterPathCountOutput, reinterpret_cast<XrPath*>(counterPaths.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(counterPathCountOutput <= counterPaths.size());
-        counterPaths.resize(counterPathCountOutput);
-    } else counterPaths.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(counterPaths) };
-
+  return {result, std::move(counterPaths)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_performance_metrics
 
-
 #ifdef XR_META_performance_metrics
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setPerformanceMetricsStateMETA (
+OPENXR_HPP_INLINE Result Session::setPerformanceMetricsStateMETA(
     const PerformanceMetricsStateMETA& state, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetPerformanceMetricsStateMETA(this->get(), state.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrSetPerformanceMetricsStateMETA(this->get(), state.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_performance_metrics
 
-
 #ifdef XR_META_performance_metrics
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<PerformanceMetricsStateMETA> Session::getPerformanceMetricsStateMETA (
+OPENXR_HPP_INLINE ResultValue<PerformanceMetricsStateMETA> Session::getPerformanceMetricsStateMETA(
     Dispatch&& d) const {
-    PerformanceMetricsStateMETA state;
-    Result result = static_cast<Result>( d.xrGetPerformanceMetricsStateMETA(this->get(), OPENXR_HPP_NAMESPACE::put(state)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  PerformanceMetricsStateMETA state;
+  Result result = static_cast<Result>(
+      d.xrGetPerformanceMetricsStateMETA(this->get(), OPENXR_HPP_NAMESPACE::put(state)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(state) };
+  return {result, std::move(state)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_performance_metrics
-
 
 #ifdef XR_META_performance_metrics
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<PerformanceMetricsCounterMETA> Session::queryPerformanceMetricsCounterMETA (
-    Path counterPath, Dispatch&& d) const {
-    PerformanceMetricsCounterMETA counter;
-    Result result = static_cast<Result>( d.xrQueryPerformanceMetricsCounterMETA(this->get(), counterPath.get(), OPENXR_HPP_NAMESPACE::put(counter)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<PerformanceMetricsCounterMETA>
+Session::queryPerformanceMetricsCounterMETA(Path counterPath, Dispatch&& d) const {
+  PerformanceMetricsCounterMETA counter;
+  Result result = static_cast<Result>(d.xrQueryPerformanceMetricsCounterMETA(
+      this->get(), counterPath.get(), OPENXR_HPP_NAMESPACE::put(counter)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(counter) };
+  return {result, std::move(counter)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_performance_metrics
-
 
 #ifdef XR_FB_spatial_entity_storage_batch
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<AsyncRequestIdFB> Session::saveSpaceListFB (
+OPENXR_HPP_INLINE ResultValue<AsyncRequestIdFB> Session::saveSpaceListFB(
     const SpaceListSaveInfoFB& info, Dispatch&& d) const {
-    AsyncRequestIdFB requestId;
-    Result result = static_cast<Result>( d.xrSaveSpaceListFB(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(requestId)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  AsyncRequestIdFB requestId;
+  Result result = static_cast<Result>(
+      d.xrSaveSpaceListFB(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(requestId)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(requestId) };
+  return {result, std::move(requestId)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_spatial_entity_storage_batch
 
-
 #ifdef XR_FB_spatial_entity_user
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<SpaceUserFB> Session::createSpaceUserFB (
+OPENXR_HPP_INLINE ResultValue<SpaceUserFB> Session::createSpaceUserFB(
     const SpaceUserCreateInfoFB& info, Dispatch&& d) const {
-    SpaceUserFB handle;
-    Result result = static_cast<Result>( d.xrCreateSpaceUserFB(this->get(), info.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  SpaceUserFB handle;
+  Result result = static_cast<Result>(d.xrCreateSpaceUserFB(this->get(), info.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<SpaceUserFB, impl::RemoveRefConst<Dispatch>>> Session::createSpaceUserUniqueFB (
-    const SpaceUserCreateInfoFB& info, Dispatch&& d) const {
-    SpaceUserFB handle;
-    Result result = static_cast<Result>( d.xrCreateSpaceUserFB(this->get(), info.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<SpaceUserFB, impl::RemoveRefConst<Dispatch>>>
+Session::createSpaceUserUniqueFB(const SpaceUserCreateInfoFB& info, Dispatch&& d) const {
+  SpaceUserFB handle;
+  Result result = static_cast<Result>(d.xrCreateSpaceUserFB(this->get(), info.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<SpaceUserFB, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<SpaceUserFB, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -16607,231 +7156,89 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<SpaceUserFB, impl::RemoveRefConst<Dis
 
 #endif  // XR_FB_spatial_entity_user
 
-
 #ifdef XR_FB_spatial_entity_user
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<SpaceUserIdFB> SpaceUserFB::getSpaceUserIdFB (
-    Dispatch&& d) const {
-    SpaceUserIdFB userId;
-    Result result = static_cast<Result>( d.xrGetSpaceUserIdFB(this->get(), &userId) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<SpaceUserIdFB> SpaceUserFB::getSpaceUserIdFB(Dispatch&& d) const {
+  SpaceUserIdFB userId;
+  Result result = static_cast<Result>(d.xrGetSpaceUserIdFB(this->get(), &userId));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(userId) };
+  return {result, std::move(userId)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_spatial_entity_user
-
 
 #ifdef XR_FB_spatial_entity_user
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpaceUserFB::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySpaceUserFB(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result SpaceUserFB::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySpaceUserFB(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_spatial_entity_user
-
 
 #ifdef XR_META_recommended_layer_resolution
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<RecommendedLayerResolutionMETA> Session::getRecommendedLayerResolutionMETA (
-    const RecommendedLayerResolutionGetInfoMETA& info, Dispatch&& d) const {
-    RecommendedLayerResolutionMETA resolution;
-    Result result = static_cast<Result>( d.xrGetRecommendedLayerResolutionMETA(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(resolution)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<RecommendedLayerResolutionMETA>
+Session::getRecommendedLayerResolutionMETA(const RecommendedLayerResolutionGetInfoMETA& info,
+                                           Dispatch&& d) const {
+  RecommendedLayerResolutionMETA resolution;
+  Result result = static_cast<Result>(d.xrGetRecommendedLayerResolutionMETA(
+      this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(resolution)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(resolution) };
+  return {result, std::move(resolution)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_recommended_layer_resolution
 
-
 #ifdef XR_META_passthrough_color_lut
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<PassthroughColorLutMETA> PassthroughFB::createPassthroughColorLutMETA (
+OPENXR_HPP_INLINE ResultValue<PassthroughColorLutMETA> PassthroughFB::createPassthroughColorLutMETA(
     const PassthroughColorLutCreateInfoMETA& createInfo, Dispatch&& d) const {
-    PassthroughColorLutMETA handle;
-    Result result = static_cast<Result>( d.xrCreatePassthroughColorLutMETA(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  PassthroughColorLutMETA handle;
+  Result result = static_cast<Result>(
+      d.xrCreatePassthroughColorLutMETA(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<PassthroughColorLutMETA, impl::RemoveRefConst<Dispatch>>> PassthroughFB::createPassthroughColorLutUniqueMETA (
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<PassthroughColorLutMETA, impl::RemoveRefConst<Dispatch>>>
+PassthroughFB::createPassthroughColorLutUniqueMETA(
     const PassthroughColorLutCreateInfoMETA& createInfo, Dispatch&& d) const {
-    PassthroughColorLutMETA handle;
-    Result result = static_cast<Result>( d.xrCreatePassthroughColorLutMETA(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  PassthroughColorLutMETA handle;
+  Result result = static_cast<Result>(
+      d.xrCreatePassthroughColorLutMETA(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<PassthroughColorLutMETA, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result,
+          UniqueHandle<PassthroughColorLutMETA, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -16839,231 +7246,88 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<PassthroughColorLutMETA, impl::Remove
 
 #endif  // XR_META_passthrough_color_lut
 
-
 #ifdef XR_META_passthrough_color_lut
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PassthroughColorLutMETA::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyPassthroughColorLutMETA(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result PassthroughColorLutMETA::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyPassthroughColorLutMETA(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_passthrough_color_lut
 
-
 #ifdef XR_META_passthrough_color_lut
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PassthroughColorLutMETA::updatePassthroughColorLutMETA (
+OPENXR_HPP_INLINE Result PassthroughColorLutMETA::updatePassthroughColorLutMETA(
     const PassthroughColorLutUpdateInfoMETA& updateInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrUpdatePassthroughColorLutMETA(this->get(), updateInfo.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result =
+      static_cast<Result>(d.xrUpdatePassthroughColorLutMETA(this->get(), updateInfo.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_passthrough_color_lut
-
 
 #ifdef XR_META_spatial_entity_mesh
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Space::getSpaceTriangleMeshMETA (
-    const SpaceTriangleMeshGetInfoMETA& getInfo, SpaceTriangleMeshMETA& triangleMeshOutput, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSpaceTriangleMeshMETA(this->get(), getInfo.get(), triangleMeshOutput.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result
+Space::getSpaceTriangleMeshMETA(const SpaceTriangleMeshGetInfoMETA& getInfo,
+                                SpaceTriangleMeshMETA& triangleMeshOutput, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetSpaceTriangleMeshMETA(this->get(), getInfo.get(), triangleMeshOutput.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_spatial_entity_mesh
 
-
 #ifdef XR_FB_face_tracking2
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FaceTracker2FB> Session::createFaceTracker2FB (
+OPENXR_HPP_INLINE ResultValue<FaceTracker2FB> Session::createFaceTracker2FB(
     const FaceTrackerCreateInfo2FB& createInfo, Dispatch&& d) const {
-    FaceTracker2FB handle;
-    Result result = static_cast<Result>( d.xrCreateFaceTracker2FB(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  FaceTracker2FB handle;
+  Result result =
+      static_cast<Result>(d.xrCreateFaceTracker2FB(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<FaceTracker2FB, impl::RemoveRefConst<Dispatch>>> Session::createFaceTracker2UniqueFB (
-    const FaceTrackerCreateInfo2FB& createInfo, Dispatch&& d) const {
-    FaceTracker2FB handle;
-    Result result = static_cast<Result>( d.xrCreateFaceTracker2FB(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<FaceTracker2FB, impl::RemoveRefConst<Dispatch>>>
+Session::createFaceTracker2UniqueFB(const FaceTrackerCreateInfo2FB& createInfo,
+                                    Dispatch&& d) const {
+  FaceTracker2FB handle;
+  Result result =
+      static_cast<Result>(d.xrCreateFaceTracker2FB(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<FaceTracker2FB, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<FaceTracker2FB, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -17071,231 +7335,92 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<FaceTracker2FB, impl::RemoveRefConst<
 
 #endif  // XR_FB_face_tracking2
 
-
 #ifdef XR_FB_face_tracking2
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result FaceTracker2FB::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyFaceTracker2FB(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result FaceTracker2FB::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyFaceTracker2FB(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_face_tracking2
-
 
 #ifdef XR_FB_face_tracking2
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result FaceTracker2FB::getFaceExpressionWeights2FB (
-    const FaceExpressionInfo2FB& expressionInfo, FaceExpressionWeights2FB& expressionWeights, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetFaceExpressionWeights2FB(this->get(), expressionInfo.get(), expressionWeights.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result FaceTracker2FB::getFaceExpressionWeights2FB(
+    const FaceExpressionInfo2FB& expressionInfo, FaceExpressionWeights2FB& expressionWeights,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetFaceExpressionWeights2FB(
+      this->get(), expressionInfo.get(), expressionWeights.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_FB_face_tracking2
-
 
 #ifdef XR_META_spatial_entity_sharing
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<AsyncRequestIdFB> Session::shareSpacesMETA (
+OPENXR_HPP_INLINE ResultValue<AsyncRequestIdFB> Session::shareSpacesMETA(
     const ShareSpacesInfoMETA& info, Dispatch&& d) const {
-    AsyncRequestIdFB requestId;
-    Result result = static_cast<Result>( d.xrShareSpacesMETA(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(requestId)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  AsyncRequestIdFB requestId;
+  Result result = static_cast<Result>(
+      d.xrShareSpacesMETA(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(requestId)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(requestId) };
+  return {result, std::move(requestId)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_spatial_entity_sharing
 
-
 #ifdef XR_META_environment_depth
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<EnvironmentDepthProviderMETA> Session::createEnvironmentDepthProviderMETA (
+OPENXR_HPP_INLINE ResultValue<EnvironmentDepthProviderMETA>
+Session::createEnvironmentDepthProviderMETA(
     const EnvironmentDepthProviderCreateInfoMETA& createInfo, Dispatch&& d) const {
-    EnvironmentDepthProviderMETA handle;
-    Result result = static_cast<Result>( d.xrCreateEnvironmentDepthProviderMETA(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  EnvironmentDepthProviderMETA handle;
+  Result result = static_cast<Result>(
+      d.xrCreateEnvironmentDepthProviderMETA(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<EnvironmentDepthProviderMETA, impl::RemoveRefConst<Dispatch>>> Session::createEnvironmentDepthProviderUniqueMETA (
-    const EnvironmentDepthProviderCreateInfoMETA& createInfo, Dispatch&& d) const {
-    EnvironmentDepthProviderMETA handle;
-    Result result = static_cast<Result>( d.xrCreateEnvironmentDepthProviderMETA(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE
+    ResultValue<UniqueHandle<EnvironmentDepthProviderMETA, impl::RemoveRefConst<Dispatch>>>
+    Session::createEnvironmentDepthProviderUniqueMETA(
+        const EnvironmentDepthProviderCreateInfoMETA& createInfo, Dispatch&& d) const {
+  EnvironmentDepthProviderMETA handle;
+  Result result = static_cast<Result>(
+      d.xrCreateEnvironmentDepthProviderMETA(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<EnvironmentDepthProviderMETA, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<EnvironmentDepthProviderMETA, impl::RemoveRefConst<Dispatch>>(
+                      handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -17303,231 +7428,88 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<EnvironmentDepthProviderMETA, impl::R
 
 #endif  // XR_META_environment_depth
 
-
 #ifdef XR_META_environment_depth
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result EnvironmentDepthProviderMETA::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyEnvironmentDepthProviderMETA(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result EnvironmentDepthProviderMETA::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyEnvironmentDepthProviderMETA(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_environment_depth
 
-
 #ifdef XR_META_environment_depth
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result EnvironmentDepthProviderMETA::startEnvironmentDepthProviderMETA (
-    Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrStartEnvironmentDepthProviderMETA(this->get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result
+EnvironmentDepthProviderMETA::startEnvironmentDepthProviderMETA(Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrStartEnvironmentDepthProviderMETA(this->get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_environment_depth
 
-
 #ifdef XR_META_environment_depth
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result EnvironmentDepthProviderMETA::stopEnvironmentDepthProviderMETA (
-    Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrStopEnvironmentDepthProviderMETA(this->get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result
+EnvironmentDepthProviderMETA::stopEnvironmentDepthProviderMETA(Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrStopEnvironmentDepthProviderMETA(this->get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_environment_depth
 
-
 #ifdef XR_META_environment_depth
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<EnvironmentDepthSwapchainMETA> EnvironmentDepthProviderMETA::createEnvironmentDepthSwapchainMETA (
+OPENXR_HPP_INLINE ResultValue<EnvironmentDepthSwapchainMETA>
+EnvironmentDepthProviderMETA::createEnvironmentDepthSwapchainMETA(
     const EnvironmentDepthSwapchainCreateInfoMETA& createInfo, Dispatch&& d) const {
-    EnvironmentDepthSwapchainMETA handle;
-    Result result = static_cast<Result>( d.xrCreateEnvironmentDepthSwapchainMETA(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  EnvironmentDepthSwapchainMETA handle;
+  Result result = static_cast<Result>(
+      d.xrCreateEnvironmentDepthSwapchainMETA(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<EnvironmentDepthSwapchainMETA, impl::RemoveRefConst<Dispatch>>> EnvironmentDepthProviderMETA::createEnvironmentDepthSwapchainUniqueMETA (
-    const EnvironmentDepthSwapchainCreateInfoMETA& createInfo, Dispatch&& d) const {
-    EnvironmentDepthSwapchainMETA handle;
-    Result result = static_cast<Result>( d.xrCreateEnvironmentDepthSwapchainMETA(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE
+    ResultValue<UniqueHandle<EnvironmentDepthSwapchainMETA, impl::RemoveRefConst<Dispatch>>>
+    EnvironmentDepthProviderMETA::createEnvironmentDepthSwapchainUniqueMETA(
+        const EnvironmentDepthSwapchainCreateInfoMETA& createInfo, Dispatch&& d) const {
+  EnvironmentDepthSwapchainMETA handle;
+  Result result = static_cast<Result>(
+      d.xrCreateEnvironmentDepthSwapchainMETA(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<EnvironmentDepthSwapchainMETA, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<EnvironmentDepthSwapchainMETA, impl::RemoveRefConst<Dispatch>>(
+                      handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -17535,340 +7517,133 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<EnvironmentDepthSwapchainMETA, impl::
 
 #endif  // XR_META_environment_depth
 
-
 #ifdef XR_META_environment_depth
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result EnvironmentDepthSwapchainMETA::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyEnvironmentDepthSwapchainMETA(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result EnvironmentDepthSwapchainMETA::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyEnvironmentDepthSwapchainMETA(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_environment_depth
 
-
 #ifdef XR_META_environment_depth
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result EnvironmentDepthSwapchainMETA::enumerateEnvironmentDepthSwapchainImagesMETA (
-    uint32_t imageCapacityInput, uint32_t& imageCountOutput, SwapchainImageBaseHeader* images, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnumerateEnvironmentDepthSwapchainImagesMETA(this->get(), imageCapacityInput, &imageCountOutput, images == nullptr ? nullptr : images->put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
-
-
-    return result;
-}
-
-#endif // OPENXR_HPP_NO_EXCEPTIONS
-
-#endif  // XR_META_environment_depth
-
-
-#ifdef XR_META_environment_depth
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#ifdef OPENXR_HPP_NO_EXCEPTIONS
-template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<EnvironmentDepthSwapchainStateMETA> EnvironmentDepthSwapchainMETA::getEnvironmentDepthSwapchainStateMETA (
+OPENXR_HPP_INLINE Result
+EnvironmentDepthSwapchainMETA::enumerateEnvironmentDepthSwapchainImagesMETA(
+    uint32_t imageCapacityInput, uint32_t& imageCountOutput, SwapchainImageBaseHeader* images,
     Dispatch&& d) const {
-    EnvironmentDepthSwapchainStateMETA state;
-    Result result = static_cast<Result>( d.xrGetEnvironmentDepthSwapchainStateMETA(this->get(), OPENXR_HPP_NAMESPACE::put(state)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateEnvironmentDepthSwapchainImagesMETA(
+      this->get(), imageCapacityInput, &imageCountOutput,
+      images == nullptr ? nullptr : images->put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(state) };
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_environment_depth
 
+#ifdef XR_META_environment_depth
+
+#ifdef OPENXR_HPP_NO_EXCEPTIONS
+template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
+OPENXR_HPP_INLINE ResultValue<EnvironmentDepthSwapchainStateMETA>
+EnvironmentDepthSwapchainMETA::getEnvironmentDepthSwapchainStateMETA(Dispatch&& d) const {
+  EnvironmentDepthSwapchainStateMETA state;
+  Result result = static_cast<Result>(
+      d.xrGetEnvironmentDepthSwapchainStateMETA(this->get(), OPENXR_HPP_NAMESPACE::put(state)));
+
+  OPENXR_HPP_ASSERT(succeeded(result));
+
+  return {result, std::move(state)};
+}
+
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
+
+#endif  // XR_META_environment_depth
 
 #ifdef XR_META_environment_depth
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result EnvironmentDepthProviderMETA::acquireEnvironmentDepthImageMETA (
-    const EnvironmentDepthImageAcquireInfoMETA& acquireInfo, EnvironmentDepthImageMETA& environmentDepthImage, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrAcquireEnvironmentDepthImageMETA(this->get(), acquireInfo.get(), environmentDepthImage.put()) );
-    
-        #ifdef OPENXR_HPP_NO_EXCEPTIONS
-    OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result EnvironmentDepthProviderMETA::acquireEnvironmentDepthImageMETA(
+    const EnvironmentDepthImageAcquireInfoMETA& acquireInfo,
+    EnvironmentDepthImageMETA& environmentDepthImage, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrAcquireEnvironmentDepthImageMETA(
+      this->get(), acquireInfo.get(), environmentDepthImage.put()));
+
+#ifdef OPENXR_HPP_NO_EXCEPTIONS
+  OPENXR_HPP_ASSERT(succeeded(result));
 #else
-    if (!(succeeded(result))) {
-        exceptions::throwResultException(result, OPENXR_HPP_NAMESPACE_STRING "::EnvironmentDepthProviderMETA::acquireEnvironmentDepthImageMETA");
-    }
+  if (!(succeeded(result))) {
+    exceptions::throwResultException(
+        result, OPENXR_HPP_NAMESPACE_STRING
+        "::EnvironmentDepthProviderMETA::acquireEnvironmentDepthImageMETA");
+  }
 #endif
 
-
-
-    return result;
+  return result;
 }
 
-
 #endif  // XR_META_environment_depth
-
 
 #ifdef XR_META_environment_depth
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result EnvironmentDepthProviderMETA::setEnvironmentDepthHandRemovalMETA (
+OPENXR_HPP_INLINE Result EnvironmentDepthProviderMETA::setEnvironmentDepthHandRemovalMETA(
     const EnvironmentDepthHandRemovalSetInfoMETA& setInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetEnvironmentDepthHandRemovalMETA(this->get(), setInfo.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result =
+      static_cast<Result>(d.xrSetEnvironmentDepthHandRemovalMETA(this->get(), setInfo.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_environment_depth
 
-
 #ifdef XR_EXT_render_model
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<RenderModelEXT> Session::createRenderModelEXT (
+OPENXR_HPP_INLINE ResultValue<RenderModelEXT> Session::createRenderModelEXT(
     const RenderModelCreateInfoEXT& createInfo, Dispatch&& d) const {
-    RenderModelEXT handle;
-    Result result = static_cast<Result>( d.xrCreateRenderModelEXT(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  RenderModelEXT handle;
+  Result result =
+      static_cast<Result>(d.xrCreateRenderModelEXT(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<RenderModelEXT, impl::RemoveRefConst<Dispatch>>> Session::createRenderModelUniqueEXT (
-    const RenderModelCreateInfoEXT& createInfo, Dispatch&& d) const {
-    RenderModelEXT handle;
-    Result result = static_cast<Result>( d.xrCreateRenderModelEXT(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<RenderModelEXT, impl::RemoveRefConst<Dispatch>>>
+Session::createRenderModelUniqueEXT(const RenderModelCreateInfoEXT& createInfo,
+                                    Dispatch&& d) const {
+  RenderModelEXT handle;
+  Result result =
+      static_cast<Result>(d.xrCreateRenderModelEXT(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<RenderModelEXT, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<RenderModelEXT, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -17876,179 +7651,70 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<RenderModelEXT, impl::RemoveRefConst<
 
 #endif  // XR_EXT_render_model
 
-
 #ifdef XR_EXT_render_model
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result RenderModelEXT::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyRenderModelEXT(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result RenderModelEXT::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyRenderModelEXT(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_render_model
 
-
 #ifdef XR_EXT_render_model
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<RenderModelPropertiesEXT> RenderModelEXT::getRenderModelPropertiesEXT (
+OPENXR_HPP_INLINE ResultValue<RenderModelPropertiesEXT> RenderModelEXT::getRenderModelPropertiesEXT(
     const RenderModelPropertiesGetInfoEXT& getInfo, Dispatch&& d) const {
-    RenderModelPropertiesEXT properties;
-    Result result = static_cast<Result>( d.xrGetRenderModelPropertiesEXT(this->get(), getInfo.get(), OPENXR_HPP_NAMESPACE::put(properties)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  RenderModelPropertiesEXT properties;
+  Result result = static_cast<Result>(d.xrGetRenderModelPropertiesEXT(
+      this->get(), getInfo.get(), OPENXR_HPP_NAMESPACE::put(properties)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(properties) };
+  return {result, std::move(properties)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_render_model
 
-
 #ifdef XR_EXT_render_model
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<Space> Session::createRenderModelSpaceEXT (
+OPENXR_HPP_INLINE ResultValue<Space> Session::createRenderModelSpaceEXT(
     const RenderModelSpaceCreateInfoEXT& createInfo, Dispatch&& d) const {
-    Space handle;
-    Result result = static_cast<Result>( d.xrCreateRenderModelSpaceEXT(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Space handle;
+  Result result = static_cast<Result>(
+      d.xrCreateRenderModelSpaceEXT(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>> Session::createRenderModelSpaceUniqueEXT (
-    const RenderModelSpaceCreateInfoEXT& createInfo, Dispatch&& d) const {
-    Space handle;
-    Result result = static_cast<Result>( d.xrCreateRenderModelSpaceEXT(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>>
+Session::createRenderModelSpaceUniqueEXT(const RenderModelSpaceCreateInfoEXT& createInfo,
+                                         Dispatch&& d) const {
+  Space handle;
+  Result result = static_cast<Result>(
+      d.xrCreateRenderModelSpaceEXT(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -18056,75 +7722,36 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>
 
 #endif  // XR_EXT_render_model
 
-
 #ifdef XR_EXT_render_model
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<RenderModelAssetEXT> Session::createRenderModelAssetEXT (
+OPENXR_HPP_INLINE ResultValue<RenderModelAssetEXT> Session::createRenderModelAssetEXT(
     const RenderModelAssetCreateInfoEXT& createInfo, Dispatch&& d) const {
-    RenderModelAssetEXT handle;
-    Result result = static_cast<Result>( d.xrCreateRenderModelAssetEXT(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  RenderModelAssetEXT handle;
+  Result result = static_cast<Result>(
+      d.xrCreateRenderModelAssetEXT(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<RenderModelAssetEXT, impl::RemoveRefConst<Dispatch>>> Session::createRenderModelAssetUniqueEXT (
-    const RenderModelAssetCreateInfoEXT& createInfo, Dispatch&& d) const {
-    RenderModelAssetEXT handle;
-    Result result = static_cast<Result>( d.xrCreateRenderModelAssetEXT(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<RenderModelAssetEXT, impl::RemoveRefConst<Dispatch>>>
+Session::createRenderModelAssetUniqueEXT(const RenderModelAssetCreateInfoEXT& createInfo,
+                                         Dispatch&& d) const {
+  RenderModelAssetEXT handle;
+  Result result = static_cast<Result>(
+      d.xrCreateRenderModelAssetEXT(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<RenderModelAssetEXT, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result,
+          UniqueHandle<RenderModelAssetEXT, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -18132,595 +7759,293 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<RenderModelAssetEXT, impl::RemoveRefC
 
 #endif  // XR_EXT_render_model
 
-
 #ifdef XR_EXT_render_model
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result RenderModelAssetEXT::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyRenderModelAssetEXT(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result RenderModelAssetEXT::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyRenderModelAssetEXT(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_render_model
 
-
 #ifdef XR_EXT_render_model
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result RenderModelAssetEXT::getRenderModelAssetDataEXT (
-    const RenderModelAssetDataGetInfoEXT& getInfo, RenderModelAssetDataEXT& buffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetRenderModelAssetDataEXT(this->get(), getInfo.get(), buffer.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result RenderModelAssetEXT::getRenderModelAssetDataEXT(
+    const RenderModelAssetDataGetInfoEXT& getInfo, RenderModelAssetDataEXT& buffer,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetRenderModelAssetDataEXT(this->get(), getInfo.get(), buffer.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_render_model
 
-
 #ifdef XR_EXT_render_model
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result RenderModelAssetEXT::getRenderModelAssetPropertiesEXT (
-    const RenderModelAssetPropertiesGetInfoEXT& getInfo, RenderModelAssetPropertiesEXT& properties, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetRenderModelAssetPropertiesEXT(this->get(), getInfo.get(), properties.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result RenderModelAssetEXT::getRenderModelAssetPropertiesEXT(
+    const RenderModelAssetPropertiesGetInfoEXT& getInfo, RenderModelAssetPropertiesEXT& properties,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetRenderModelAssetPropertiesEXT(this->get(), getInfo.get(), properties.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_render_model
 
-
 #ifdef XR_EXT_render_model
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result RenderModelEXT::getRenderModelStateEXT (
+OPENXR_HPP_INLINE Result RenderModelEXT::getRenderModelStateEXT(
     const RenderModelStateGetInfoEXT& getInfo, RenderModelStateEXT& state, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetRenderModelStateEXT(this->get(), getInfo.get(), state.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result =
+      static_cast<Result>(d.xrGetRenderModelStateEXT(this->get(), getInfo.get(), state.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_render_model
 
-
 #ifdef XR_EXT_interaction_render_model
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<RenderModelIdEXT, Allocator>> Session::enumerateInteractionRenderModelIdsToVectorEXT (
+OPENXR_HPP_INLINE ResultValue<std::vector<RenderModelIdEXT, Allocator>>
+Session::enumerateInteractionRenderModelIdsToVectorEXT(
     const InteractionRenderModelIdsEnumerateInfoEXT& getInfo, Dispatch&& d) const {
-    std::vector<RenderModelIdEXT, Allocator> renderModelIds;
-        uint32_t renderModelIdCountOutput = 0;
-    uint32_t renderModelIdCapacityInput = 0;
+  std::vector<RenderModelIdEXT, Allocator> renderModelIds;
+  uint32_t renderModelIdCountOutput = 0;
+  uint32_t renderModelIdCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateInteractionRenderModelIdsEXT(this->get(), getInfo.get(), renderModelIdCapacityInput, &renderModelIdCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || renderModelIdCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateInteractionRenderModelIdsEXT(
+      this->get(), getInfo.get(), renderModelIdCapacityInput, &renderModelIdCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || renderModelIdCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(renderModelIds)};
+  }
+  do {
+    renderModelIds.resize(renderModelIdCountOutput);
+    renderModelIdCapacityInput = static_cast<uint32_t>(renderModelIds.size());
+    result = static_cast<Result>(d.xrEnumerateInteractionRenderModelIdsEXT(
+        this->get(), getInfo.get(), renderModelIdCapacityInput, &renderModelIdCountOutput,
+        reinterpret_cast<XrRenderModelIdEXT*>(renderModelIds.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(renderModelIdCountOutput <= renderModelIds.size());
+    renderModelIds.resize(renderModelIdCountOutput);
+  } else
+    renderModelIds.clear();
 
-        return { result, std::move(renderModelIds) };
-    }
-    do {
-        renderModelIds.resize(renderModelIdCountOutput);
-        renderModelIdCapacityInput = static_cast<uint32_t>(renderModelIds.size());
-        result = static_cast<Result>( d.xrEnumerateInteractionRenderModelIdsEXT(this->get(), getInfo.get(), renderModelIdCapacityInput, &renderModelIdCountOutput, reinterpret_cast<XrRenderModelIdEXT*>(renderModelIds.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(renderModelIdCountOutput <= renderModelIds.size());
-        renderModelIds.resize(renderModelIdCountOutput);
-    } else renderModelIds.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(renderModelIds) };
-
+  return {result, std::move(renderModelIds)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<RenderModelIdEXT, Allocator>> Session::enumerateInteractionRenderModelIdsToVectorEXT (
-    const InteractionRenderModelIdsEnumerateInfoEXT& getInfo, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<RenderModelIdEXT, Allocator> renderModelIds{vectorAllocator};
-        uint32_t renderModelIdCountOutput = 0;
-    uint32_t renderModelIdCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<RenderModelIdEXT, Allocator>>
+Session::enumerateInteractionRenderModelIdsToVectorEXT(
+    const InteractionRenderModelIdsEnumerateInfoEXT& getInfo, Allocator const& vectorAllocator,
+    Dispatch&& d) const {
+  std::vector<RenderModelIdEXT, Allocator> renderModelIds{vectorAllocator};
+  uint32_t renderModelIdCountOutput = 0;
+  uint32_t renderModelIdCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateInteractionRenderModelIdsEXT(this->get(), getInfo.get(), renderModelIdCapacityInput, &renderModelIdCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || renderModelIdCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateInteractionRenderModelIdsEXT(
+      this->get(), getInfo.get(), renderModelIdCapacityInput, &renderModelIdCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || renderModelIdCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(renderModelIds)};
+  }
+  do {
+    renderModelIds.resize(renderModelIdCountOutput);
+    renderModelIdCapacityInput = static_cast<uint32_t>(renderModelIds.size());
+    result = static_cast<Result>(d.xrEnumerateInteractionRenderModelIdsEXT(
+        this->get(), getInfo.get(), renderModelIdCapacityInput, &renderModelIdCountOutput,
+        reinterpret_cast<XrRenderModelIdEXT*>(renderModelIds.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(renderModelIdCountOutput <= renderModelIds.size());
+    renderModelIds.resize(renderModelIdCountOutput);
+  } else
+    renderModelIds.clear();
 
-        return { result, std::move(renderModelIds) };
-    }
-    do {
-        renderModelIds.resize(renderModelIdCountOutput);
-        renderModelIdCapacityInput = static_cast<uint32_t>(renderModelIds.size());
-        result = static_cast<Result>( d.xrEnumerateInteractionRenderModelIdsEXT(this->get(), getInfo.get(), renderModelIdCapacityInput, &renderModelIdCountOutput, reinterpret_cast<XrRenderModelIdEXT*>(renderModelIds.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(renderModelIdCountOutput <= renderModelIds.size());
-        renderModelIds.resize(renderModelIdCountOutput);
-    } else renderModelIds.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(renderModelIds) };
-
+  return {result, std::move(renderModelIds)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_interaction_render_model
 
-
 #ifdef XR_EXT_interaction_render_model
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<Path, Allocator>> RenderModelEXT::enumerateRenderModelSubactionPathsToVectorEXT (
+OPENXR_HPP_INLINE ResultValue<std::vector<Path, Allocator>>
+RenderModelEXT::enumerateRenderModelSubactionPathsToVectorEXT(
     const InteractionRenderModelSubactionPathInfoEXT& info, Dispatch&& d) const {
-    std::vector<Path, Allocator> paths;
-        uint32_t pathCountOutput = 0;
-    uint32_t pathCapacityInput = 0;
+  std::vector<Path, Allocator> paths;
+  uint32_t pathCountOutput = 0;
+  uint32_t pathCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateRenderModelSubactionPathsEXT(this->get(), info.get(), pathCapacityInput, &pathCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || pathCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateRenderModelSubactionPathsEXT(
+      this->get(), info.get(), pathCapacityInput, &pathCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || pathCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(paths)};
+  }
+  do {
+    paths.resize(pathCountOutput);
+    pathCapacityInput = static_cast<uint32_t>(paths.size());
+    result = static_cast<Result>(d.xrEnumerateRenderModelSubactionPathsEXT(
+        this->get(), info.get(), pathCapacityInput, &pathCountOutput,
+        reinterpret_cast<XrPath*>(paths.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(pathCountOutput <= paths.size());
+    paths.resize(pathCountOutput);
+  } else
+    paths.clear();
 
-        return { result, std::move(paths) };
-    }
-    do {
-        paths.resize(pathCountOutput);
-        pathCapacityInput = static_cast<uint32_t>(paths.size());
-        result = static_cast<Result>( d.xrEnumerateRenderModelSubactionPathsEXT(this->get(), info.get(), pathCapacityInput, &pathCountOutput, reinterpret_cast<XrPath*>(paths.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(pathCountOutput <= paths.size());
-        paths.resize(pathCountOutput);
-    } else paths.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(paths) };
-
+  return {result, std::move(paths)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<Path, Allocator>> RenderModelEXT::enumerateRenderModelSubactionPathsToVectorEXT (
-    const InteractionRenderModelSubactionPathInfoEXT& info, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<Path, Allocator> paths{vectorAllocator};
-        uint32_t pathCountOutput = 0;
-    uint32_t pathCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<Path, Allocator>>
+RenderModelEXT::enumerateRenderModelSubactionPathsToVectorEXT(
+    const InteractionRenderModelSubactionPathInfoEXT& info, Allocator const& vectorAllocator,
+    Dispatch&& d) const {
+  std::vector<Path, Allocator> paths{vectorAllocator};
+  uint32_t pathCountOutput = 0;
+  uint32_t pathCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateRenderModelSubactionPathsEXT(this->get(), info.get(), pathCapacityInput, &pathCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || pathCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateRenderModelSubactionPathsEXT(
+      this->get(), info.get(), pathCapacityInput, &pathCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || pathCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(paths)};
+  }
+  do {
+    paths.resize(pathCountOutput);
+    pathCapacityInput = static_cast<uint32_t>(paths.size());
+    result = static_cast<Result>(d.xrEnumerateRenderModelSubactionPathsEXT(
+        this->get(), info.get(), pathCapacityInput, &pathCountOutput,
+        reinterpret_cast<XrPath*>(paths.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(pathCountOutput <= paths.size());
+    paths.resize(pathCountOutput);
+  } else
+    paths.clear();
 
-        return { result, std::move(paths) };
-    }
-    do {
-        paths.resize(pathCountOutput);
-        pathCapacityInput = static_cast<uint32_t>(paths.size());
-        result = static_cast<Result>( d.xrEnumerateRenderModelSubactionPathsEXT(this->get(), info.get(), pathCapacityInput, &pathCountOutput, reinterpret_cast<XrPath*>(paths.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(pathCountOutput <= paths.size());
-        paths.resize(pathCountOutput);
-    } else paths.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(paths) };
-
+  return {result, std::move(paths)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_interaction_render_model
 
-
 #ifdef XR_EXT_interaction_render_model
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<Path> RenderModelEXT::getRenderModelPoseTopLevelUserPathEXT (
+OPENXR_HPP_INLINE ResultValue<Path> RenderModelEXT::getRenderModelPoseTopLevelUserPathEXT(
     const InteractionRenderModelTopLevelUserPathGetInfoEXT& info, Dispatch&& d) const {
-    Path topLevelUserPath;
-    Result result = static_cast<Result>( d.xrGetRenderModelPoseTopLevelUserPathEXT(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(topLevelUserPath)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Path topLevelUserPath;
+  Result result = static_cast<Result>(d.xrGetRenderModelPoseTopLevelUserPathEXT(
+      this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(topLevelUserPath)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(topLevelUserPath) };
+  return {result, std::move(topLevelUserPath)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_interaction_render_model
-
 
 #ifdef XR_QCOM_tracking_optimization_settings
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::setTrackingOptimizationSettingsHintQCOM (
-    TrackingOptimizationSettingsDomainQCOM domain, TrackingOptimizationSettingsHintQCOM hint, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetTrackingOptimizationSettingsHintQCOM(this->get(), OPENXR_HPP_NAMESPACE::get(domain), OPENXR_HPP_NAMESPACE::get(hint)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::setTrackingOptimizationSettingsHintQCOM(
+    TrackingOptimizationSettingsDomainQCOM domain, TrackingOptimizationSettingsHintQCOM hint,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrSetTrackingOptimizationSettingsHintQCOM(
+      this->get(), OPENXR_HPP_NAMESPACE::get(domain), OPENXR_HPP_NAMESPACE::get(hint)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_QCOM_tracking_optimization_settings
 
-
 #ifdef XR_HTC_passthrough
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<PassthroughHTC> Session::createPassthroughHTC (
+OPENXR_HPP_INLINE ResultValue<PassthroughHTC> Session::createPassthroughHTC(
     const PassthroughCreateInfoHTC& createInfo, Dispatch&& d) const {
-    PassthroughHTC handle;
-    Result result = static_cast<Result>( d.xrCreatePassthroughHTC(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  PassthroughHTC handle;
+  Result result =
+      static_cast<Result>(d.xrCreatePassthroughHTC(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<PassthroughHTC, impl::RemoveRefConst<Dispatch>>> Session::createPassthroughUniqueHTC (
-    const PassthroughCreateInfoHTC& createInfo, Dispatch&& d) const {
-    PassthroughHTC handle;
-    Result result = static_cast<Result>( d.xrCreatePassthroughHTC(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<PassthroughHTC, impl::RemoveRefConst<Dispatch>>>
+Session::createPassthroughUniqueHTC(const PassthroughCreateInfoHTC& createInfo,
+                                    Dispatch&& d) const {
+  PassthroughHTC handle;
+  Result result =
+      static_cast<Result>(d.xrCreatePassthroughHTC(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<PassthroughHTC, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<PassthroughHTC, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -18728,179 +8053,68 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<PassthroughHTC, impl::RemoveRefConst<
 
 #endif  // XR_HTC_passthrough
 
-
 #ifdef XR_HTC_passthrough
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PassthroughHTC::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyPassthroughHTC(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result PassthroughHTC::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyPassthroughHTC(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_HTC_passthrough
-
 
 #ifdef XR_HTC_foveation
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::applyFoveationHTC (
-    const FoveationApplyInfoHTC& applyInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrApplyFoveationHTC(this->get(), applyInfo.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Session::applyFoveationHTC(const FoveationApplyInfoHTC& applyInfo,
+                                                    Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrApplyFoveationHTC(this->get(), applyInfo.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_HTC_foveation
 
-
 #ifdef XR_HTC_anchor
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<Space> Session::createSpatialAnchorHTC (
+OPENXR_HPP_INLINE ResultValue<Space> Session::createSpatialAnchorHTC(
     const SpatialAnchorCreateInfoHTC& createInfo, Dispatch&& d) const {
-    Space handle;
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorHTC(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Space handle;
+  Result result =
+      static_cast<Result>(d.xrCreateSpatialAnchorHTC(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>> Session::createSpatialAnchorUniqueHTC (
-    const SpatialAnchorCreateInfoHTC& createInfo, Dispatch&& d) const {
-    Space handle;
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorHTC(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>>
+Session::createSpatialAnchorUniqueHTC(const SpatialAnchorCreateInfoHTC& createInfo,
+                                      Dispatch&& d) const {
+  Space handle;
+  Result result =
+      static_cast<Result>(d.xrCreateSpatialAnchorHTC(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -18908,127 +8122,54 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>
 
 #endif  // XR_HTC_anchor
 
-
 #ifdef XR_HTC_anchor
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<SpatialAnchorNameHTC> Space::getSpatialAnchorNameHTC (
+OPENXR_HPP_INLINE ResultValue<SpatialAnchorNameHTC> Space::getSpatialAnchorNameHTC(
     Dispatch&& d) const {
-    SpatialAnchorNameHTC name;
-    Result result = static_cast<Result>( d.xrGetSpatialAnchorNameHTC(this->get(), OPENXR_HPP_NAMESPACE::put(name)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  SpatialAnchorNameHTC name;
+  Result result = static_cast<Result>(
+      d.xrGetSpatialAnchorNameHTC(this->get(), OPENXR_HPP_NAMESPACE::put(name)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(name) };
+  return {result, std::move(name)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_HTC_anchor
 
-
 #ifdef XR_HTC_body_tracking
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<BodyTrackerHTC> Session::createBodyTrackerHTC (
+OPENXR_HPP_INLINE ResultValue<BodyTrackerHTC> Session::createBodyTrackerHTC(
     const BodyTrackerCreateInfoHTC& createInfo, Dispatch&& d) const {
-    BodyTrackerHTC handle;
-    Result result = static_cast<Result>( d.xrCreateBodyTrackerHTC(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  BodyTrackerHTC handle;
+  Result result =
+      static_cast<Result>(d.xrCreateBodyTrackerHTC(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<BodyTrackerHTC, impl::RemoveRefConst<Dispatch>>> Session::createBodyTrackerUniqueHTC (
-    const BodyTrackerCreateInfoHTC& createInfo, Dispatch&& d) const {
-    BodyTrackerHTC handle;
-    Result result = static_cast<Result>( d.xrCreateBodyTrackerHTC(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<BodyTrackerHTC, impl::RemoveRefConst<Dispatch>>>
+Session::createBodyTrackerUniqueHTC(const BodyTrackerCreateInfoHTC& createInfo,
+                                    Dispatch&& d) const {
+  BodyTrackerHTC handle;
+  Result result =
+      static_cast<Result>(d.xrCreateBodyTrackerHTC(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<BodyTrackerHTC, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<BodyTrackerHTC, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -19036,288 +8177,110 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<BodyTrackerHTC, impl::RemoveRefConst<
 
 #endif  // XR_HTC_body_tracking
 
-
 #ifdef XR_HTC_body_tracking
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result BodyTrackerHTC::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyBodyTrackerHTC(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result BodyTrackerHTC::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyBodyTrackerHTC(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_HTC_body_tracking
-
 
 #ifdef XR_HTC_body_tracking
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result BodyTrackerHTC::locateBodyJointsHTC (
-    const BodyJointsLocateInfoHTC& locateInfo, BodyJointLocationsHTC& locations, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrLocateBodyJointsHTC(this->get(), locateInfo.get(), locations.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result
+BodyTrackerHTC::locateBodyJointsHTC(const BodyJointsLocateInfoHTC& locateInfo,
+                                    BodyJointLocationsHTC& locations, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrLocateBodyJointsHTC(this->get(), locateInfo.get(), locations.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_HTC_body_tracking
-
 
 #ifdef XR_HTC_body_tracking
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result BodyTrackerHTC::getBodySkeletonHTC (
-    Space baseSpace, uint32_t skeletonGenerationId, BodySkeletonHTC& skeleton, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetBodySkeletonHTC(this->get(), baseSpace.get(), skeletonGenerationId, skeleton.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result BodyTrackerHTC::getBodySkeletonHTC(Space baseSpace,
+                                                            uint32_t skeletonGenerationId,
+                                                            BodySkeletonHTC& skeleton,
+                                                            Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetBodySkeletonHTC(
+      this->get(), baseSpace.get(), skeletonGenerationId, skeleton.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_HTC_body_tracking
-
 
 #ifdef XR_MNDX_force_feedback_curl
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result HandTrackerEXT::applyForceFeedbackCurlMNDX (
+OPENXR_HPP_INLINE Result HandTrackerEXT::applyForceFeedbackCurlMNDX(
     const ForceFeedbackCurlApplyLocationsMNDX& locations, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrApplyForceFeedbackCurlMNDX(this->get(), locations.get()) );
-    
-        #ifdef OPENXR_HPP_NO_EXCEPTIONS
-    OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrApplyForceFeedbackCurlMNDX(this->get(), locations.get()));
+
+#ifdef OPENXR_HPP_NO_EXCEPTIONS
+  OPENXR_HPP_ASSERT(succeeded(result));
 #else
-    if (!(succeeded(result))) {
-        exceptions::throwResultException(result, OPENXR_HPP_NAMESPACE_STRING "::HandTrackerEXT::applyForceFeedbackCurlMNDX");
-    }
+  if (!(succeeded(result))) {
+    exceptions::throwResultException(
+        result, OPENXR_HPP_NAMESPACE_STRING "::HandTrackerEXT::applyForceFeedbackCurlMNDX");
+  }
 #endif
 
-
-
-    return result;
+  return result;
 }
-
 
 #endif  // XR_MNDX_force_feedback_curl
 
-
 #ifdef XR_BD_body_tracking
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<BodyTrackerBD> Session::createBodyTrackerBD (
+OPENXR_HPP_INLINE ResultValue<BodyTrackerBD> Session::createBodyTrackerBD(
     const BodyTrackerCreateInfoBD& createInfo, Dispatch&& d) const {
-    BodyTrackerBD handle;
-    Result result = static_cast<Result>( d.xrCreateBodyTrackerBD(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  BodyTrackerBD handle;
+  Result result =
+      static_cast<Result>(d.xrCreateBodyTrackerBD(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<BodyTrackerBD, impl::RemoveRefConst<Dispatch>>> Session::createBodyTrackerUniqueBD (
-    const BodyTrackerCreateInfoBD& createInfo, Dispatch&& d) const {
-    BodyTrackerBD handle;
-    Result result = static_cast<Result>( d.xrCreateBodyTrackerBD(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<BodyTrackerBD, impl::RemoveRefConst<Dispatch>>>
+Session::createBodyTrackerUniqueBD(const BodyTrackerCreateInfoBD& createInfo, Dispatch&& d) const {
+  BodyTrackerBD handle;
+  Result result =
+      static_cast<Result>(d.xrCreateBodyTrackerBD(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<BodyTrackerBD, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<BodyTrackerBD, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -19325,387 +8288,182 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<BodyTrackerBD, impl::RemoveRefConst<D
 
 #endif  // XR_BD_body_tracking
 
-
 #ifdef XR_BD_body_tracking
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result BodyTrackerBD::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyBodyTrackerBD(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result BodyTrackerBD::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyBodyTrackerBD(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_body_tracking
-
 
 #ifdef XR_BD_body_tracking
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result BodyTrackerBD::locateBodyJointsBD (
-    const BodyJointsLocateInfoBD& locateInfo, BodyJointLocationsBD& locations, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrLocateBodyJointsBD(this->get(), locateInfo.get(), locations.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result BodyTrackerBD::locateBodyJointsBD(const BodyJointsLocateInfoBD& locateInfo,
+                                                           BodyJointLocationsBD& locations,
+                                                           Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrLocateBodyJointsBD(this->get(), locateInfo.get(), locations.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_body_tracking
-
 
 #ifdef XR_BD_spatial_sensing
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<SpatialEntityComponentTypeBD, Allocator>> SenseDataSnapshotBD::enumerateSpatialEntityComponentTypesToVectorBD (
-    SpatialEntityIdBD entityId, Dispatch&& d) const {
-    std::vector<SpatialEntityComponentTypeBD, Allocator> componentTypes;
-        uint32_t componentTypeCountOutput = 0;
-    uint32_t componentTypeCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<SpatialEntityComponentTypeBD, Allocator>>
+SenseDataSnapshotBD::enumerateSpatialEntityComponentTypesToVectorBD(SpatialEntityIdBD entityId,
+                                                                    Dispatch&& d) const {
+  std::vector<SpatialEntityComponentTypeBD, Allocator> componentTypes;
+  uint32_t componentTypeCountOutput = 0;
+  uint32_t componentTypeCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateSpatialEntityComponentTypesBD(this->get(), entityId.get(), componentTypeCapacityInput, &componentTypeCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || componentTypeCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateSpatialEntityComponentTypesBD(
+      this->get(), entityId.get(), componentTypeCapacityInput, &componentTypeCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || componentTypeCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(componentTypes)};
+  }
+  do {
+    componentTypes.resize(componentTypeCountOutput);
+    componentTypeCapacityInput = static_cast<uint32_t>(componentTypes.size());
+    result = static_cast<Result>(d.xrEnumerateSpatialEntityComponentTypesBD(
+        this->get(), entityId.get(), componentTypeCapacityInput, &componentTypeCountOutput,
+        reinterpret_cast<XrSpatialEntityComponentTypeBD*>(componentTypes.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(componentTypeCountOutput <= componentTypes.size());
+    componentTypes.resize(componentTypeCountOutput);
+  } else
+    componentTypes.clear();
 
-        return { result, std::move(componentTypes) };
-    }
-    do {
-        componentTypes.resize(componentTypeCountOutput);
-        componentTypeCapacityInput = static_cast<uint32_t>(componentTypes.size());
-        result = static_cast<Result>( d.xrEnumerateSpatialEntityComponentTypesBD(this->get(), entityId.get(), componentTypeCapacityInput, &componentTypeCountOutput, reinterpret_cast<XrSpatialEntityComponentTypeBD*>(componentTypes.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(componentTypeCountOutput <= componentTypes.size());
-        componentTypes.resize(componentTypeCountOutput);
-    } else componentTypes.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(componentTypes) };
-
+  return {result, std::move(componentTypes)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<SpatialEntityComponentTypeBD, Allocator>> SenseDataSnapshotBD::enumerateSpatialEntityComponentTypesToVectorBD (
+OPENXR_HPP_INLINE ResultValue<std::vector<SpatialEntityComponentTypeBD, Allocator>>
+SenseDataSnapshotBD::enumerateSpatialEntityComponentTypesToVectorBD(
     SpatialEntityIdBD entityId, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<SpatialEntityComponentTypeBD, Allocator> componentTypes{vectorAllocator};
-        uint32_t componentTypeCountOutput = 0;
-    uint32_t componentTypeCapacityInput = 0;
+  std::vector<SpatialEntityComponentTypeBD, Allocator> componentTypes{vectorAllocator};
+  uint32_t componentTypeCountOutput = 0;
+  uint32_t componentTypeCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateSpatialEntityComponentTypesBD(this->get(), entityId.get(), componentTypeCapacityInput, &componentTypeCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || componentTypeCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateSpatialEntityComponentTypesBD(
+      this->get(), entityId.get(), componentTypeCapacityInput, &componentTypeCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || componentTypeCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(componentTypes)};
+  }
+  do {
+    componentTypes.resize(componentTypeCountOutput);
+    componentTypeCapacityInput = static_cast<uint32_t>(componentTypes.size());
+    result = static_cast<Result>(d.xrEnumerateSpatialEntityComponentTypesBD(
+        this->get(), entityId.get(), componentTypeCapacityInput, &componentTypeCountOutput,
+        reinterpret_cast<XrSpatialEntityComponentTypeBD*>(componentTypes.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(componentTypeCountOutput <= componentTypes.size());
+    componentTypes.resize(componentTypeCountOutput);
+  } else
+    componentTypes.clear();
 
-        return { result, std::move(componentTypes) };
-    }
-    do {
-        componentTypes.resize(componentTypeCountOutput);
-        componentTypeCapacityInput = static_cast<uint32_t>(componentTypes.size());
-        result = static_cast<Result>( d.xrEnumerateSpatialEntityComponentTypesBD(this->get(), entityId.get(), componentTypeCapacityInput, &componentTypeCountOutput, reinterpret_cast<XrSpatialEntityComponentTypeBD*>(componentTypes.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(componentTypeCountOutput <= componentTypes.size());
-        componentTypes.resize(componentTypeCountOutput);
-    } else componentTypes.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(componentTypes) };
-
+  return {result, std::move(componentTypes)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_spatial_sensing
 
-
 #ifdef XR_BD_spatial_sensing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UuidEXT> SenseDataSnapshotBD::getSpatialEntityUuidBD (
+OPENXR_HPP_INLINE ResultValue<UuidEXT> SenseDataSnapshotBD::getSpatialEntityUuidBD(
     SpatialEntityIdBD entityId, Dispatch&& d) const {
-    UuidEXT uuid;
-    Result result = static_cast<Result>( d.xrGetSpatialEntityUuidBD(this->get(), entityId.get(), &uuid) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  UuidEXT uuid;
+  Result result =
+      static_cast<Result>(d.xrGetSpatialEntityUuidBD(this->get(), entityId.get(), &uuid));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(uuid) };
+  return {result, std::move(uuid)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_spatial_sensing
 
-
 #ifdef XR_BD_spatial_sensing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataSnapshotBD::getSpatialEntityComponentDataBD (
-    const SpatialEntityComponentGetInfoBD& getInfo, SpatialEntityComponentDataBaseHeaderBD& componentData, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetSpatialEntityComponentDataBD(this->get(), getInfo.get(), componentData.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result SenseDataSnapshotBD::getSpatialEntityComponentDataBD(
+    const SpatialEntityComponentGetInfoBD& getInfo,
+    SpatialEntityComponentDataBaseHeaderBD& componentData, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrGetSpatialEntityComponentDataBD(this->get(), getInfo.get(), componentData.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_spatial_sensing
 
-
 #ifdef XR_BD_spatial_sensing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<SenseDataProviderBD> Session::createSenseDataProviderBD (
+OPENXR_HPP_INLINE ResultValue<SenseDataProviderBD> Session::createSenseDataProviderBD(
     const SenseDataProviderCreateInfoBD& createInfo, Dispatch&& d) const {
-    SenseDataProviderBD handle;
-    Result result = static_cast<Result>( d.xrCreateSenseDataProviderBD(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  SenseDataProviderBD handle;
+  Result result = static_cast<Result>(
+      d.xrCreateSenseDataProviderBD(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<SenseDataProviderBD, impl::RemoveRefConst<Dispatch>>> Session::createSenseDataProviderUniqueBD (
-    const SenseDataProviderCreateInfoBD& createInfo, Dispatch&& d) const {
-    SenseDataProviderBD handle;
-    Result result = static_cast<Result>( d.xrCreateSenseDataProviderBD(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<SenseDataProviderBD, impl::RemoveRefConst<Dispatch>>>
+Session::createSenseDataProviderUniqueBD(const SenseDataProviderCreateInfoBD& createInfo,
+                                         Dispatch&& d) const {
+  SenseDataProviderBD handle;
+  Result result = static_cast<Result>(
+      d.xrCreateSenseDataProviderBD(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<SenseDataProviderBD, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result,
+          UniqueHandle<SenseDataProviderBD, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -19713,543 +8471,196 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<SenseDataProviderBD, impl::RemoveRefC
 
 #endif  // XR_BD_spatial_sensing
 
-
 #ifdef XR_BD_spatial_sensing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FutureEXT> SenseDataProviderBD::startSenseDataProviderAsyncBD (
+OPENXR_HPP_INLINE ResultValue<FutureEXT> SenseDataProviderBD::startSenseDataProviderAsyncBD(
     const SenseDataProviderStartInfoBD& startInfo, Dispatch&& d) const {
-    FutureEXT future;
-    Result result = static_cast<Result>( d.xrStartSenseDataProviderAsyncBD(this->get(), startInfo.get(), OPENXR_HPP_NAMESPACE::put(future)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  FutureEXT future;
+  Result result = static_cast<Result>(d.xrStartSenseDataProviderAsyncBD(
+      this->get(), startInfo.get(), OPENXR_HPP_NAMESPACE::put(future)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(future) };
+  return {result, std::move(future)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_spatial_sensing
 
-
 #ifdef XR_BD_spatial_sensing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FutureCompletionEXT> Session::startSenseDataProviderCompleteBD (
+OPENXR_HPP_INLINE ResultValue<FutureCompletionEXT> Session::startSenseDataProviderCompleteBD(
     FutureEXT future, Dispatch&& d) const {
-    FutureCompletionEXT completion;
-    Result result = static_cast<Result>( d.xrStartSenseDataProviderCompleteBD(this->get(), future.get(), OPENXR_HPP_NAMESPACE::put(completion)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  FutureCompletionEXT completion;
+  Result result = static_cast<Result>(d.xrStartSenseDataProviderCompleteBD(
+      this->get(), future.get(), OPENXR_HPP_NAMESPACE::put(completion)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(completion) };
+  return {result, std::move(completion)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_spatial_sensing
 
-
 #ifdef XR_BD_spatial_sensing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<SenseDataProviderStateBD> SenseDataProviderBD::getSenseDataProviderStateBD (
-    Dispatch&& d) const {
-    SenseDataProviderStateBD state;
-    Result result = static_cast<Result>( d.xrGetSenseDataProviderStateBD(this->get(), OPENXR_HPP_NAMESPACE::put(state)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<SenseDataProviderStateBD>
+SenseDataProviderBD::getSenseDataProviderStateBD(Dispatch&& d) const {
+  SenseDataProviderStateBD state;
+  Result result = static_cast<Result>(
+      d.xrGetSenseDataProviderStateBD(this->get(), OPENXR_HPP_NAMESPACE::put(state)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(state) };
+  return {result, std::move(state)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_spatial_sensing
 
-
 #ifdef XR_BD_spatial_sensing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FutureEXT> SenseDataProviderBD::querySenseDataAsyncBD (
+OPENXR_HPP_INLINE ResultValue<FutureEXT> SenseDataProviderBD::querySenseDataAsyncBD(
     const SenseDataQueryInfoBD& queryInfo, Dispatch&& d) const {
-    FutureEXT future;
-    Result result = static_cast<Result>( d.xrQuerySenseDataAsyncBD(this->get(), queryInfo.get(), OPENXR_HPP_NAMESPACE::put(future)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  FutureEXT future;
+  Result result = static_cast<Result>(
+      d.xrQuerySenseDataAsyncBD(this->get(), queryInfo.get(), OPENXR_HPP_NAMESPACE::put(future)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(future) };
+  return {result, std::move(future)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_spatial_sensing
 
-
 #ifdef XR_BD_spatial_sensing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<SenseDataQueryCompletionBD> SenseDataProviderBD::querySenseDataCompleteBD (
-    FutureEXT future, Dispatch&& d) const {
-    SenseDataQueryCompletionBD completion;
-    Result result = static_cast<Result>( d.xrQuerySenseDataCompleteBD(this->get(), future.get(), OPENXR_HPP_NAMESPACE::put(completion)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<SenseDataQueryCompletionBD>
+SenseDataProviderBD::querySenseDataCompleteBD(FutureEXT future, Dispatch&& d) const {
+  SenseDataQueryCompletionBD completion;
+  Result result = static_cast<Result>(d.xrQuerySenseDataCompleteBD(
+      this->get(), future.get(), OPENXR_HPP_NAMESPACE::put(completion)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(completion) };
+  return {result, std::move(completion)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_spatial_sensing
 
-
 #ifdef XR_BD_spatial_sensing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataSnapshotBD::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySenseDataSnapshotBD(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result SenseDataSnapshotBD::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySenseDataSnapshotBD(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_spatial_sensing
 
-
 #ifdef XR_BD_spatial_sensing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataSnapshotBD::getQueriedSenseDataBD (
+OPENXR_HPP_INLINE Result SenseDataSnapshotBD::getQueriedSenseDataBD(
     QueriedSenseDataGetInfoBD& getInfo, QueriedSenseDataBD& queriedSenseData, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetQueriedSenseDataBD(this->get(), getInfo.put(), queriedSenseData.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(
+      d.xrGetQueriedSenseDataBD(this->get(), getInfo.put(), queriedSenseData.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_spatial_sensing
 
-
 #ifdef XR_BD_spatial_sensing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataProviderBD::stopSenseDataProviderBD (
-    Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrStopSenseDataProviderBD(this->get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result SenseDataProviderBD::stopSenseDataProviderBD(Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrStopSenseDataProviderBD(this->get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_spatial_sensing
 
-
 #ifdef XR_BD_spatial_sensing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SenseDataProviderBD::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySenseDataProviderBD(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result SenseDataProviderBD::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySenseDataProviderBD(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_spatial_sensing
 
-
 #ifdef XR_BD_spatial_sensing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<AnchorBD> SenseDataProviderBD::createSpatialEntityAnchorBD (
+OPENXR_HPP_INLINE ResultValue<AnchorBD> SenseDataProviderBD::createSpatialEntityAnchorBD(
     const SpatialEntityAnchorCreateInfoBD& createInfo, Dispatch&& d) const {
-    AnchorBD handle;
-    Result result = static_cast<Result>( d.xrCreateSpatialEntityAnchorBD(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  AnchorBD handle;
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialEntityAnchorBD(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<AnchorBD, impl::RemoveRefConst<Dispatch>>> SenseDataProviderBD::createSpatialEntityAnchorUniqueBD (
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<AnchorBD, impl::RemoveRefConst<Dispatch>>>
+SenseDataProviderBD::createSpatialEntityAnchorUniqueBD(
     const SpatialEntityAnchorCreateInfoBD& createInfo, Dispatch&& d) const {
-    AnchorBD handle;
-    Result result = static_cast<Result>( d.xrCreateSpatialEntityAnchorBD(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  AnchorBD handle;
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialEntityAnchorBD(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<AnchorBD, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<AnchorBD, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -20257,879 +8668,331 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<AnchorBD, impl::RemoveRefConst<Dispat
 
 #endif  // XR_BD_spatial_sensing
 
-
 #ifdef XR_BD_spatial_sensing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result AnchorBD::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyAnchorBD(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result AnchorBD::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyAnchorBD(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_spatial_sensing
 
-
 #ifdef XR_BD_spatial_sensing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UuidEXT> AnchorBD::getAnchorUuidBD (
-    Dispatch&& d) const {
-    UuidEXT uuid;
-    Result result = static_cast<Result>( d.xrGetAnchorUuidBD(this->get(), &uuid) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UuidEXT> AnchorBD::getAnchorUuidBD(Dispatch&& d) const {
+  UuidEXT uuid;
+  Result result = static_cast<Result>(d.xrGetAnchorUuidBD(this->get(), &uuid));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(uuid) };
+  return {result, std::move(uuid)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_spatial_sensing
 
-
 #ifdef XR_BD_spatial_sensing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<Space> Session::createAnchorSpaceBD (
+OPENXR_HPP_INLINE ResultValue<Space> Session::createAnchorSpaceBD(
     const AnchorSpaceCreateInfoBD& createInfo, Dispatch&& d) const {
-    Space handle;
-    Result result = static_cast<Result>( d.xrCreateAnchorSpaceBD(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Space handle;
+  Result result =
+      static_cast<Result>(d.xrCreateAnchorSpaceBD(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>> Session::createAnchorSpaceUniqueBD (
-    const AnchorSpaceCreateInfoBD& createInfo, Dispatch&& d) const {
-    Space handle;
-    Result result = static_cast<Result>( d.xrCreateAnchorSpaceBD(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>>
+Session::createAnchorSpaceUniqueBD(const AnchorSpaceCreateInfoBD& createInfo, Dispatch&& d) const {
+  Space handle;
+  Result result =
+      static_cast<Result>(d.xrCreateAnchorSpaceBD(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<Space, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
 #endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_spatial_sensing
-
 
 #ifdef XR_BD_spatial_anchor
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FutureEXT> SenseDataProviderBD::createSpatialAnchorAsyncBD (
+OPENXR_HPP_INLINE ResultValue<FutureEXT> SenseDataProviderBD::createSpatialAnchorAsyncBD(
     const SpatialAnchorCreateInfoBD& info, Dispatch&& d) const {
-    FutureEXT future;
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorAsyncBD(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(future)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  FutureEXT future;
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialAnchorAsyncBD(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(future)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(future) };
+  return {result, std::move(future)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_spatial_anchor
 
-
 #ifdef XR_BD_spatial_anchor
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<SpatialAnchorCreateCompletionBD> SenseDataProviderBD::createSpatialAnchorCompleteBD (
-    FutureEXT future, Dispatch&& d) const {
-    SpatialAnchorCreateCompletionBD completion;
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorCompleteBD(this->get(), future.get(), OPENXR_HPP_NAMESPACE::put(completion)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<SpatialAnchorCreateCompletionBD>
+SenseDataProviderBD::createSpatialAnchorCompleteBD(FutureEXT future, Dispatch&& d) const {
+  SpatialAnchorCreateCompletionBD completion;
+  Result result = static_cast<Result>(d.xrCreateSpatialAnchorCompleteBD(
+      this->get(), future.get(), OPENXR_HPP_NAMESPACE::put(completion)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(completion) };
+  return {result, std::move(completion)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_spatial_anchor
 
-
 #ifdef XR_BD_spatial_anchor
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FutureEXT> SenseDataProviderBD::persistSpatialAnchorAsyncBD (
+OPENXR_HPP_INLINE ResultValue<FutureEXT> SenseDataProviderBD::persistSpatialAnchorAsyncBD(
     const SpatialAnchorPersistInfoBD& info, Dispatch&& d) const {
-    FutureEXT future;
-    Result result = static_cast<Result>( d.xrPersistSpatialAnchorAsyncBD(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(future)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  FutureEXT future;
+  Result result = static_cast<Result>(
+      d.xrPersistSpatialAnchorAsyncBD(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(future)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(future) };
+  return {result, std::move(future)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_spatial_anchor
 
-
 #ifdef XR_BD_spatial_anchor
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FutureCompletionEXT> SenseDataProviderBD::persistSpatialAnchorCompleteBD (
-    FutureEXT future, Dispatch&& d) const {
-    FutureCompletionEXT completion;
-    Result result = static_cast<Result>( d.xrPersistSpatialAnchorCompleteBD(this->get(), future.get(), OPENXR_HPP_NAMESPACE::put(completion)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<FutureCompletionEXT>
+SenseDataProviderBD::persistSpatialAnchorCompleteBD(FutureEXT future, Dispatch&& d) const {
+  FutureCompletionEXT completion;
+  Result result = static_cast<Result>(d.xrPersistSpatialAnchorCompleteBD(
+      this->get(), future.get(), OPENXR_HPP_NAMESPACE::put(completion)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(completion) };
+  return {result, std::move(completion)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_spatial_anchor
 
-
 #ifdef XR_BD_spatial_anchor
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FutureEXT> SenseDataProviderBD::unpersistSpatialAnchorAsyncBD (
+OPENXR_HPP_INLINE ResultValue<FutureEXT> SenseDataProviderBD::unpersistSpatialAnchorAsyncBD(
     const SpatialAnchorUnpersistInfoBD& info, Dispatch&& d) const {
-    FutureEXT future;
-    Result result = static_cast<Result>( d.xrUnpersistSpatialAnchorAsyncBD(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(future)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  FutureEXT future;
+  Result result = static_cast<Result>(d.xrUnpersistSpatialAnchorAsyncBD(
+      this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(future)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(future) };
+  return {result, std::move(future)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_spatial_anchor
-
 
 #ifdef XR_BD_spatial_anchor
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FutureCompletionEXT> SenseDataProviderBD::unpersistSpatialAnchorCompleteBD (
-    FutureEXT future, Dispatch&& d) const {
-    FutureCompletionEXT completion;
-    Result result = static_cast<Result>( d.xrUnpersistSpatialAnchorCompleteBD(this->get(), future.get(), OPENXR_HPP_NAMESPACE::put(completion)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<FutureCompletionEXT>
+SenseDataProviderBD::unpersistSpatialAnchorCompleteBD(FutureEXT future, Dispatch&& d) const {
+  FutureCompletionEXT completion;
+  Result result = static_cast<Result>(d.xrUnpersistSpatialAnchorCompleteBD(
+      this->get(), future.get(), OPENXR_HPP_NAMESPACE::put(completion)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(completion) };
+  return {result, std::move(completion)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_spatial_anchor
 
-
 #ifdef XR_BD_spatial_anchor_sharing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FutureEXT> SenseDataProviderBD::shareSpatialAnchorAsyncBD (
+OPENXR_HPP_INLINE ResultValue<FutureEXT> SenseDataProviderBD::shareSpatialAnchorAsyncBD(
     const SpatialAnchorShareInfoBD& info, Dispatch&& d) const {
-    FutureEXT future;
-    Result result = static_cast<Result>( d.xrShareSpatialAnchorAsyncBD(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(future)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  FutureEXT future;
+  Result result = static_cast<Result>(
+      d.xrShareSpatialAnchorAsyncBD(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(future)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(future) };
+  return {result, std::move(future)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_spatial_anchor_sharing
 
-
 #ifdef XR_BD_spatial_anchor_sharing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FutureCompletionEXT> SenseDataProviderBD::shareSpatialAnchorCompleteBD (
-    FutureEXT future, Dispatch&& d) const {
-    FutureCompletionEXT completion;
-    Result result = static_cast<Result>( d.xrShareSpatialAnchorCompleteBD(this->get(), future.get(), OPENXR_HPP_NAMESPACE::put(completion)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<FutureCompletionEXT>
+SenseDataProviderBD::shareSpatialAnchorCompleteBD(FutureEXT future, Dispatch&& d) const {
+  FutureCompletionEXT completion;
+  Result result = static_cast<Result>(d.xrShareSpatialAnchorCompleteBD(
+      this->get(), future.get(), OPENXR_HPP_NAMESPACE::put(completion)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(completion) };
+  return {result, std::move(completion)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_spatial_anchor_sharing
 
-
 #ifdef XR_BD_spatial_anchor_sharing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FutureEXT> SenseDataProviderBD::downloadSharedSpatialAnchorAsyncBD (
+OPENXR_HPP_INLINE ResultValue<FutureEXT> SenseDataProviderBD::downloadSharedSpatialAnchorAsyncBD(
     const SharedSpatialAnchorDownloadInfoBD& info, Dispatch&& d) const {
-    FutureEXT future;
-    Result result = static_cast<Result>( d.xrDownloadSharedSpatialAnchorAsyncBD(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(future)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  FutureEXT future;
+  Result result = static_cast<Result>(d.xrDownloadSharedSpatialAnchorAsyncBD(
+      this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(future)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(future) };
+  return {result, std::move(future)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_spatial_anchor_sharing
-
 
 #ifdef XR_BD_spatial_anchor_sharing
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FutureCompletionEXT> SenseDataProviderBD::downloadSharedSpatialAnchorCompleteBD (
-    FutureEXT future, Dispatch&& d) const {
-    FutureCompletionEXT completion;
-    Result result = static_cast<Result>( d.xrDownloadSharedSpatialAnchorCompleteBD(this->get(), future.get(), OPENXR_HPP_NAMESPACE::put(completion)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<FutureCompletionEXT>
+SenseDataProviderBD::downloadSharedSpatialAnchorCompleteBD(FutureEXT future, Dispatch&& d) const {
+  FutureCompletionEXT completion;
+  Result result = static_cast<Result>(d.xrDownloadSharedSpatialAnchorCompleteBD(
+      this->get(), future.get(), OPENXR_HPP_NAMESPACE::put(completion)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(completion) };
+  return {result, std::move(completion)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_spatial_anchor_sharing
 
-
 #ifdef XR_BD_spatial_scene
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FutureEXT> SenseDataProviderBD::captureSceneAsyncBD (
+OPENXR_HPP_INLINE ResultValue<FutureEXT> SenseDataProviderBD::captureSceneAsyncBD(
     const SceneCaptureInfoBD& info, Dispatch&& d) const {
-    FutureEXT future;
-    Result result = static_cast<Result>( d.xrCaptureSceneAsyncBD(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(future)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  FutureEXT future;
+  Result result = static_cast<Result>(
+      d.xrCaptureSceneAsyncBD(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(future)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(future) };
+  return {result, std::move(future)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_spatial_scene
-
 
 #ifdef XR_BD_spatial_scene
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FutureCompletionEXT> SenseDataProviderBD::captureSceneCompleteBD (
+OPENXR_HPP_INLINE ResultValue<FutureCompletionEXT> SenseDataProviderBD::captureSceneCompleteBD(
     FutureEXT future, Dispatch&& d) const {
-    FutureCompletionEXT completion;
-    Result result = static_cast<Result>( d.xrCaptureSceneCompleteBD(this->get(), future.get(), OPENXR_HPP_NAMESPACE::put(completion)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  FutureCompletionEXT completion;
+  Result result = static_cast<Result>(
+      d.xrCaptureSceneCompleteBD(this->get(), future.get(), OPENXR_HPP_NAMESPACE::put(completion)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(completion) };
+  return {result, std::move(completion)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_BD_spatial_scene
-
 
 #ifdef XR_EXT_plane_detection
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<PlaneDetectorEXT> Session::createPlaneDetectorEXT (
+OPENXR_HPP_INLINE ResultValue<PlaneDetectorEXT> Session::createPlaneDetectorEXT(
     const PlaneDetectorCreateInfoEXT& createInfo, Dispatch&& d) const {
-    PlaneDetectorEXT handle;
-    Result result = static_cast<Result>( d.xrCreatePlaneDetectorEXT(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  PlaneDetectorEXT handle;
+  Result result =
+      static_cast<Result>(d.xrCreatePlaneDetectorEXT(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<PlaneDetectorEXT, impl::RemoveRefConst<Dispatch>>> Session::createPlaneDetectorUniqueEXT (
-    const PlaneDetectorCreateInfoEXT& createInfo, Dispatch&& d) const {
-    PlaneDetectorEXT handle;
-    Result result = static_cast<Result>( d.xrCreatePlaneDetectorEXT(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<PlaneDetectorEXT, impl::RemoveRefConst<Dispatch>>>
+Session::createPlaneDetectorUniqueEXT(const PlaneDetectorCreateInfoEXT& createInfo,
+                                      Dispatch&& d) const {
+  PlaneDetectorEXT handle;
+  Result result =
+      static_cast<Result>(d.xrCreatePlaneDetectorEXT(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<PlaneDetectorEXT, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<PlaneDetectorEXT, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -21137,543 +9000,196 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<PlaneDetectorEXT, impl::RemoveRefCons
 
 #endif  // XR_EXT_plane_detection
 
-
 #ifdef XR_EXT_plane_detection
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PlaneDetectorEXT::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyPlaneDetectorEXT(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result PlaneDetectorEXT::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyPlaneDetectorEXT(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_plane_detection
 
-
 #ifdef XR_EXT_plane_detection
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PlaneDetectorEXT::beginPlaneDetectionEXT (
+OPENXR_HPP_INLINE Result PlaneDetectorEXT::beginPlaneDetectionEXT(
     const PlaneDetectorBeginInfoEXT& beginInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrBeginPlaneDetectionEXT(this->get(), beginInfo.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrBeginPlaneDetectionEXT(this->get(), beginInfo.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_plane_detection
 
-
 #ifdef XR_EXT_plane_detection
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<PlaneDetectionStateEXT> PlaneDetectorEXT::getPlaneDetectionStateEXT (
+OPENXR_HPP_INLINE ResultValue<PlaneDetectionStateEXT> PlaneDetectorEXT::getPlaneDetectionStateEXT(
     Dispatch&& d) const {
-    PlaneDetectionStateEXT state;
-    Result result = static_cast<Result>( d.xrGetPlaneDetectionStateEXT(this->get(), OPENXR_HPP_NAMESPACE::put(state)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  PlaneDetectionStateEXT state;
+  Result result = static_cast<Result>(
+      d.xrGetPlaneDetectionStateEXT(this->get(), OPENXR_HPP_NAMESPACE::put(state)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(state) };
+  return {result, std::move(state)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_plane_detection
 
-
 #ifdef XR_EXT_plane_detection
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PlaneDetectorEXT::getPlaneDetectionsEXT (
+OPENXR_HPP_INLINE Result PlaneDetectorEXT::getPlaneDetectionsEXT(
     const PlaneDetectorGetInfoEXT& info, PlaneDetectorLocationsEXT& locations, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetPlaneDetectionsEXT(this->get(), info.get(), locations.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result =
+      static_cast<Result>(d.xrGetPlaneDetectionsEXT(this->get(), info.get(), locations.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_plane_detection
-
 
 #ifdef XR_EXT_plane_detection
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result PlaneDetectorEXT::getPlanePolygonBufferEXT (
-    uint64_t planeId, uint32_t polygonBufferIndex, PlaneDetectorPolygonBufferEXT& polygonBuffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrGetPlanePolygonBufferEXT(this->get(), planeId, polygonBufferIndex, polygonBuffer.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result PlaneDetectorEXT::getPlanePolygonBufferEXT(
+    uint64_t planeId, uint32_t polygonBufferIndex, PlaneDetectorPolygonBufferEXT& polygonBuffer,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrGetPlanePolygonBufferEXT(
+      this->get(), planeId, polygonBufferIndex, polygonBuffer.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_plane_detection
 
-
 #ifdef XR_EXT_future
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FuturePollResultEXT> Instance::pollFutureEXT (
+OPENXR_HPP_INLINE ResultValue<FuturePollResultEXT> Instance::pollFutureEXT(
     const FuturePollInfoEXT& pollInfo, Dispatch&& d) const {
-    FuturePollResultEXT pollResult;
-    Result result = static_cast<Result>( d.xrPollFutureEXT(this->get(), pollInfo.get(), OPENXR_HPP_NAMESPACE::put(pollResult)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  FuturePollResultEXT pollResult;
+  Result result = static_cast<Result>(
+      d.xrPollFutureEXT(this->get(), pollInfo.get(), OPENXR_HPP_NAMESPACE::put(pollResult)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(pollResult) };
+  return {result, std::move(pollResult)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_future
-
 
 #ifdef XR_EXT_future
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::cancelFutureEXT (
-    const FutureCancelInfoEXT& cancelInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrCancelFutureEXT(this->get(), cancelInfo.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Instance::cancelFutureEXT(const FutureCancelInfoEXT& cancelInfo,
+                                                   Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrCancelFutureEXT(this->get(), cancelInfo.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_future
-
 
 #ifdef XR_ML_user_calibration
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::enableUserCalibrationEventsML (
+OPENXR_HPP_INLINE Result Instance::enableUserCalibrationEventsML(
     const UserCalibrationEnableEventsInfoML& enableInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnableUserCalibrationEventsML(this->get(), enableInfo.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result =
+      static_cast<Result>(d.xrEnableUserCalibrationEventsML(this->get(), enableInfo.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_user_calibration
 
-
 #ifdef XR_ML_system_notifications
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::setSystemNotificationsML (
-    const SystemNotificationsSetInfoML& info, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrSetSystemNotificationsML(this->get(), info.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result
+Instance::setSystemNotificationsML(const SystemNotificationsSetInfoML& info, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrSetSystemNotificationsML(this->get(), info.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_system_notifications
 
-
-#ifdef XR_ML_world_mesh_detection
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_world_mesh_detection
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<WorldMeshDetectorML> Session::createWorldMeshDetectorML (
+OPENXR_HPP_INLINE ResultValue<WorldMeshDetectorML> Session::createWorldMeshDetectorML(
     const WorldMeshDetectorCreateInfoML& createInfo, Dispatch&& d) const {
-    WorldMeshDetectorML handle;
-    Result result = static_cast<Result>( d.xrCreateWorldMeshDetectorML(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  WorldMeshDetectorML handle;
+  Result result = static_cast<Result>(
+      d.xrCreateWorldMeshDetectorML(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<WorldMeshDetectorML, impl::RemoveRefConst<Dispatch>>> Session::createWorldMeshDetectorUniqueML (
-    const WorldMeshDetectorCreateInfoML& createInfo, Dispatch&& d) const {
-    WorldMeshDetectorML handle;
-    Result result = static_cast<Result>( d.xrCreateWorldMeshDetectorML(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<WorldMeshDetectorML, impl::RemoveRefConst<Dispatch>>>
+Session::createWorldMeshDetectorUniqueML(const WorldMeshDetectorCreateInfoML& createInfo,
+                                         Dispatch&& d) const {
+  WorldMeshDetectorML handle;
+  Result result = static_cast<Result>(
+      d.xrCreateWorldMeshDetectorML(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<WorldMeshDetectorML, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result,
+          UniqueHandle<WorldMeshDetectorML, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -21681,491 +9197,183 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<WorldMeshDetectorML, impl::RemoveRefC
 
 #endif  // XR_ML_world_mesh_detection
 
-
-#ifdef XR_ML_world_mesh_detection
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_world_mesh_detection
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result WorldMeshDetectorML::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyWorldMeshDetectorML(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result WorldMeshDetectorML::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyWorldMeshDetectorML(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_world_mesh_detection
 
-
-#ifdef XR_ML_world_mesh_detection
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_world_mesh_detection
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FutureEXT> WorldMeshDetectorML::requestWorldMeshStateAsyncML (
+OPENXR_HPP_INLINE ResultValue<FutureEXT> WorldMeshDetectorML::requestWorldMeshStateAsyncML(
     const WorldMeshStateRequestInfoML& stateRequest, Dispatch&& d) const {
-    FutureEXT future;
-    Result result = static_cast<Result>( d.xrRequestWorldMeshStateAsyncML(this->get(), stateRequest.get(), OPENXR_HPP_NAMESPACE::put(future)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  FutureEXT future;
+  Result result = static_cast<Result>(d.xrRequestWorldMeshStateAsyncML(
+      this->get(), stateRequest.get(), OPENXR_HPP_NAMESPACE::put(future)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(future) };
+  return {result, std::move(future)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_world_mesh_detection
 
-
-#ifdef XR_ML_world_mesh_detection
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_world_mesh_detection
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result WorldMeshDetectorML::requestWorldMeshStateCompleteML (
+OPENXR_HPP_INLINE Result WorldMeshDetectorML::requestWorldMeshStateCompleteML(
     FutureEXT future, WorldMeshStateRequestCompletionML& completion, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrRequestWorldMeshStateCompleteML(this->get(), future.get(), completion.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(
+      d.xrRequestWorldMeshStateCompleteML(this->get(), future.get(), completion.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_world_mesh_detection
 
-
-#ifdef XR_ML_world_mesh_detection
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_world_mesh_detection
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<WorldMeshBufferSizeML> WorldMeshDetectorML::getWorldMeshBufferRecommendSizeML (
+OPENXR_HPP_INLINE ResultValue<WorldMeshBufferSizeML>
+WorldMeshDetectorML::getWorldMeshBufferRecommendSizeML(
     const WorldMeshBufferRecommendedSizeInfoML& sizeInfo, Dispatch&& d) const {
-    WorldMeshBufferSizeML size;
-    Result result = static_cast<Result>( d.xrGetWorldMeshBufferRecommendSizeML(this->get(), sizeInfo.get(), OPENXR_HPP_NAMESPACE::put(size)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  WorldMeshBufferSizeML size;
+  Result result = static_cast<Result>(d.xrGetWorldMeshBufferRecommendSizeML(
+      this->get(), sizeInfo.get(), OPENXR_HPP_NAMESPACE::put(size)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(size) };
+  return {result, std::move(size)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_world_mesh_detection
 
-
-#ifdef XR_ML_world_mesh_detection
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_world_mesh_detection
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result WorldMeshDetectorML::allocateWorldMeshBufferML (
+OPENXR_HPP_INLINE Result WorldMeshDetectorML::allocateWorldMeshBufferML(
     const WorldMeshBufferSizeML& size, WorldMeshBufferML& buffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrAllocateWorldMeshBufferML(this->get(), size.get(), buffer.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(
+      d.xrAllocateWorldMeshBufferML(this->get(), size.get(), buffer.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_world_mesh_detection
 
-
-#ifdef XR_ML_world_mesh_detection
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_world_mesh_detection
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result WorldMeshDetectorML::freeWorldMeshBufferML (
-    const WorldMeshBufferML& buffer, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrFreeWorldMeshBufferML(this->get(), buffer.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result WorldMeshDetectorML::freeWorldMeshBufferML(const WorldMeshBufferML& buffer,
+                                                                    Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrFreeWorldMeshBufferML(this->get(), buffer.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_world_mesh_detection
 
-
-#ifdef XR_ML_world_mesh_detection
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_world_mesh_detection
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result WorldMeshDetectorML::requestWorldMeshAsyncML (
-    const WorldMeshGetInfoML& getInfo, WorldMeshBufferML& buffer, FutureEXT& future, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrRequestWorldMeshAsyncML(this->get(), getInfo.get(), buffer.put(false), future.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result WorldMeshDetectorML::requestWorldMeshAsyncML(
+    const WorldMeshGetInfoML& getInfo, WorldMeshBufferML& buffer, FutureEXT& future,
+    Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrRequestWorldMeshAsyncML(this->get(), getInfo.get(), buffer.put(false), future.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_world_mesh_detection
 
-
-#ifdef XR_ML_world_mesh_detection
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef dsaXR_ML_world_mesh_detection
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result WorldMeshDetectorML::requestWorldMeshCompleteML (
-    const WorldMeshRequestCompletionInfoML& completionInfo, FutureEXT future, WorldMeshRequestCompletionML& completion, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrRequestWorldMeshCompleteML(this->get(), completionInfo.get(), future.get(), completion.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result WorldMeshDetectorML::requestWorldMeshCompleteML(
+    const WorldMeshRequestCompletionInfoML& completionInfo, FutureEXT future,
+    WorldMeshRequestCompletionML& completion, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrRequestWorldMeshCompleteML(
+      this->get(), completionInfo.get(), future.get(), completion.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_world_mesh_detection
-
 
 #ifdef XR_ML_facial_expression
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FacialExpressionClientML> Session::createFacialExpressionClientML (
+OPENXR_HPP_INLINE ResultValue<FacialExpressionClientML> Session::createFacialExpressionClientML(
     const FacialExpressionClientCreateInfoML& createInfo, Dispatch&& d) const {
-    FacialExpressionClientML handle;
-    Result result = static_cast<Result>( d.xrCreateFacialExpressionClientML(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  FacialExpressionClientML handle;
+  Result result = static_cast<Result>(
+      d.xrCreateFacialExpressionClientML(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<FacialExpressionClientML, impl::RemoveRefConst<Dispatch>>> Session::createFacialExpressionClientUniqueML (
-    const FacialExpressionClientCreateInfoML& createInfo, Dispatch&& d) const {
-    FacialExpressionClientML handle;
-    Result result = static_cast<Result>( d.xrCreateFacialExpressionClientML(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE
+    ResultValue<UniqueHandle<FacialExpressionClientML, impl::RemoveRefConst<Dispatch>>>
+    Session::createFacialExpressionClientUniqueML(
+        const FacialExpressionClientCreateInfoML& createInfo, Dispatch&& d) const {
+  FacialExpressionClientML handle;
+  Result result = static_cast<Result>(
+      d.xrCreateFacialExpressionClientML(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<FacialExpressionClientML, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result,
+          UniqueHandle<FacialExpressionClientML, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -22173,1115 +9381,487 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<FacialExpressionClientML, impl::Remov
 
 #endif  // XR_ML_facial_expression
 
-
 #ifdef XR_ML_facial_expression
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result FacialExpressionClientML::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroyFacialExpressionClientML(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result FacialExpressionClientML::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroyFacialExpressionClientML(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_facial_expression
-
 
 #ifdef XR_ML_facial_expression
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FacialExpressionBlendShapePropertiesML> FacialExpressionClientML::getFacialExpressionBlendShapePropertiesML (
-    const FacialExpressionBlendShapeGetInfoML& blendShapeGetInfo, uint32_t blendShapeCount, Dispatch&& d) const {
-    FacialExpressionBlendShapePropertiesML blendShapes;
-    Result result = static_cast<Result>( d.xrGetFacialExpressionBlendShapePropertiesML(this->get(), blendShapeGetInfo.get(), blendShapeCount, OPENXR_HPP_NAMESPACE::put(blendShapes)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<FacialExpressionBlendShapePropertiesML>
+FacialExpressionClientML::getFacialExpressionBlendShapePropertiesML(
+    const FacialExpressionBlendShapeGetInfoML& blendShapeGetInfo, uint32_t blendShapeCount,
+    Dispatch&& d) const {
+  FacialExpressionBlendShapePropertiesML blendShapes;
+  Result result = static_cast<Result>(d.xrGetFacialExpressionBlendShapePropertiesML(
+      this->get(), blendShapeGetInfo.get(), blendShapeCount,
+      OPENXR_HPP_NAMESPACE::put(blendShapes)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(blendShapes) };
+  return {result, std::move(blendShapes)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_ML_facial_expression
-
 
 #ifdef XR_META_simultaneous_hands_and_controllers
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::resumeSimultaneousHandsAndControllersTrackingMETA (
+OPENXR_HPP_INLINE Result Session::resumeSimultaneousHandsAndControllersTrackingMETA(
     const SimultaneousHandsAndControllersTrackingResumeInfoMETA& resumeInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrResumeSimultaneousHandsAndControllersTrackingMETA(this->get(), resumeInfo.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(
+      d.xrResumeSimultaneousHandsAndControllersTrackingMETA(this->get(), resumeInfo.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_simultaneous_hands_and_controllers
-
 
 #ifdef XR_META_simultaneous_hands_and_controllers
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Session::pauseSimultaneousHandsAndControllersTrackingMETA (
+OPENXR_HPP_INLINE Result Session::pauseSimultaneousHandsAndControllersTrackingMETA(
     const SimultaneousHandsAndControllersTrackingPauseInfoMETA& pauseInfo, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrPauseSimultaneousHandsAndControllersTrackingMETA(this->get(), pauseInfo.get()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(
+      d.xrPauseSimultaneousHandsAndControllersTrackingMETA(this->get(), pauseInfo.get()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_simultaneous_hands_and_controllers
 
-
 #ifdef XR_META_colocation_discovery
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<AsyncRequestIdFB> Session::startColocationDiscoveryMETA (
+OPENXR_HPP_INLINE ResultValue<AsyncRequestIdFB> Session::startColocationDiscoveryMETA(
     const ColocationDiscoveryStartInfoMETA& info, Dispatch&& d) const {
-    AsyncRequestIdFB discoveryRequestId;
-    Result result = static_cast<Result>( d.xrStartColocationDiscoveryMETA(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(discoveryRequestId)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  AsyncRequestIdFB discoveryRequestId;
+  Result result = static_cast<Result>(d.xrStartColocationDiscoveryMETA(
+      this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(discoveryRequestId)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(discoveryRequestId) };
+  return {result, std::move(discoveryRequestId)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_colocation_discovery
 
-
 #ifdef XR_META_colocation_discovery
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<AsyncRequestIdFB> Session::stopColocationDiscoveryMETA (
+OPENXR_HPP_INLINE ResultValue<AsyncRequestIdFB> Session::stopColocationDiscoveryMETA(
     const ColocationDiscoveryStopInfoMETA& info, Dispatch&& d) const {
-    AsyncRequestIdFB requestId;
-    Result result = static_cast<Result>( d.xrStopColocationDiscoveryMETA(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(requestId)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  AsyncRequestIdFB requestId;
+  Result result = static_cast<Result>(d.xrStopColocationDiscoveryMETA(
+      this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(requestId)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(requestId) };
+  return {result, std::move(requestId)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_colocation_discovery
 
-
 #ifdef XR_META_colocation_discovery
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<AsyncRequestIdFB> Session::startColocationAdvertisementMETA (
+OPENXR_HPP_INLINE ResultValue<AsyncRequestIdFB> Session::startColocationAdvertisementMETA(
     const ColocationAdvertisementStartInfoMETA& info, Dispatch&& d) const {
-    AsyncRequestIdFB advertisementRequestId;
-    Result result = static_cast<Result>( d.xrStartColocationAdvertisementMETA(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(advertisementRequestId)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  AsyncRequestIdFB advertisementRequestId;
+  Result result = static_cast<Result>(d.xrStartColocationAdvertisementMETA(
+      this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(advertisementRequestId)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(advertisementRequestId) };
+  return {result, std::move(advertisementRequestId)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_colocation_discovery
-
 
 #ifdef XR_META_colocation_discovery
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<AsyncRequestIdFB> Session::stopColocationAdvertisementMETA (
+OPENXR_HPP_INLINE ResultValue<AsyncRequestIdFB> Session::stopColocationAdvertisementMETA(
     const ColocationAdvertisementStopInfoMETA& info, Dispatch&& d) const {
-    AsyncRequestIdFB requestId;
-    Result result = static_cast<Result>( d.xrStopColocationAdvertisementMETA(this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(requestId)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  AsyncRequestIdFB requestId;
+  Result result = static_cast<Result>(d.xrStopColocationAdvertisementMETA(
+      this->get(), info.get(), OPENXR_HPP_NAMESPACE::put(requestId)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(requestId) };
+  return {result, std::move(requestId)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_META_colocation_discovery
 
-
 #ifdef XR_EXT_spatial_entity
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<SpatialCapabilityEXT, Allocator>> Instance::enumerateSpatialCapabilitiesToVectorEXT (
-    SystemId systemId, Dispatch&& d) const {
-    std::vector<SpatialCapabilityEXT, Allocator> capabilities;
-        uint32_t capabilityCountOutput = 0;
-    uint32_t capabilityCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<SpatialCapabilityEXT, Allocator>>
+Instance::enumerateSpatialCapabilitiesToVectorEXT(SystemId systemId, Dispatch&& d) const {
+  std::vector<SpatialCapabilityEXT, Allocator> capabilities;
+  uint32_t capabilityCountOutput = 0;
+  uint32_t capabilityCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateSpatialCapabilitiesEXT(this->get(), systemId.get(), capabilityCapacityInput, &capabilityCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || capabilityCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateSpatialCapabilitiesEXT(
+      this->get(), systemId.get(), capabilityCapacityInput, &capabilityCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || capabilityCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(capabilities)};
+  }
+  do {
+    capabilities.resize(capabilityCountOutput);
+    capabilityCapacityInput = static_cast<uint32_t>(capabilities.size());
+    result = static_cast<Result>(d.xrEnumerateSpatialCapabilitiesEXT(
+        this->get(), systemId.get(), capabilityCapacityInput, &capabilityCountOutput,
+        reinterpret_cast<XrSpatialCapabilityEXT*>(capabilities.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(capabilityCountOutput <= capabilities.size());
+    capabilities.resize(capabilityCountOutput);
+  } else
+    capabilities.clear();
 
-        return { result, std::move(capabilities) };
-    }
-    do {
-        capabilities.resize(capabilityCountOutput);
-        capabilityCapacityInput = static_cast<uint32_t>(capabilities.size());
-        result = static_cast<Result>( d.xrEnumerateSpatialCapabilitiesEXT(this->get(), systemId.get(), capabilityCapacityInput, &capabilityCountOutput, reinterpret_cast<XrSpatialCapabilityEXT*>(capabilities.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(capabilityCountOutput <= capabilities.size());
-        capabilities.resize(capabilityCountOutput);
-    } else capabilities.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(capabilities) };
-
+  return {result, std::move(capabilities)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<SpatialCapabilityEXT, Allocator>> Instance::enumerateSpatialCapabilitiesToVectorEXT (
-    SystemId systemId, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<SpatialCapabilityEXT, Allocator> capabilities{vectorAllocator};
-        uint32_t capabilityCountOutput = 0;
-    uint32_t capabilityCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<SpatialCapabilityEXT, Allocator>>
+Instance::enumerateSpatialCapabilitiesToVectorEXT(SystemId systemId,
+                                                  Allocator const& vectorAllocator,
+                                                  Dispatch&& d) const {
+  std::vector<SpatialCapabilityEXT, Allocator> capabilities{vectorAllocator};
+  uint32_t capabilityCountOutput = 0;
+  uint32_t capabilityCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateSpatialCapabilitiesEXT(this->get(), systemId.get(), capabilityCapacityInput, &capabilityCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || capabilityCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateSpatialCapabilitiesEXT(
+      this->get(), systemId.get(), capabilityCapacityInput, &capabilityCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || capabilityCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(capabilities)};
+  }
+  do {
+    capabilities.resize(capabilityCountOutput);
+    capabilityCapacityInput = static_cast<uint32_t>(capabilities.size());
+    result = static_cast<Result>(d.xrEnumerateSpatialCapabilitiesEXT(
+        this->get(), systemId.get(), capabilityCapacityInput, &capabilityCountOutput,
+        reinterpret_cast<XrSpatialCapabilityEXT*>(capabilities.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(capabilityCountOutput <= capabilities.size());
+    capabilities.resize(capabilityCountOutput);
+  } else
+    capabilities.clear();
 
-        return { result, std::move(capabilities) };
-    }
-    do {
-        capabilities.resize(capabilityCountOutput);
-        capabilityCapacityInput = static_cast<uint32_t>(capabilities.size());
-        result = static_cast<Result>( d.xrEnumerateSpatialCapabilitiesEXT(this->get(), systemId.get(), capabilityCapacityInput, &capabilityCountOutput, reinterpret_cast<XrSpatialCapabilityEXT*>(capabilities.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(capabilityCountOutput <= capabilities.size());
-        capabilities.resize(capabilityCountOutput);
-    } else capabilities.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(capabilities) };
-
+  return {result, std::move(capabilities)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result Instance::enumerateSpatialCapabilityComponentTypesEXT (
-    SystemId systemId, SpatialCapabilityEXT capability, SpatialCapabilityComponentTypesEXT& capabilityComponents, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrEnumerateSpatialCapabilityComponentTypesEXT(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(capability), capabilityComponents.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result Instance::enumerateSpatialCapabilityComponentTypesEXT(
+    SystemId systemId, SpatialCapabilityEXT capability,
+    SpatialCapabilityComponentTypesEXT& capabilityComponents, Dispatch&& d) const {
+  Result result = static_cast<Result>(d.xrEnumerateSpatialCapabilityComponentTypesEXT(
+      this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(capability),
+      capabilityComponents.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<SpatialCapabilityFeatureEXT, Allocator>> Instance::enumerateSpatialCapabilityFeaturesToVectorEXT (
-    SystemId systemId, SpatialCapabilityEXT capability, Dispatch&& d) const {
-    std::vector<SpatialCapabilityFeatureEXT, Allocator> capabilityFeatures;
-        uint32_t capabilityFeatureCountOutput = 0;
-    uint32_t capabilityFeatureCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<SpatialCapabilityFeatureEXT, Allocator>>
+Instance::enumerateSpatialCapabilityFeaturesToVectorEXT(SystemId systemId,
+                                                        SpatialCapabilityEXT capability,
+                                                        Dispatch&& d) const {
+  std::vector<SpatialCapabilityFeatureEXT, Allocator> capabilityFeatures;
+  uint32_t capabilityFeatureCountOutput = 0;
+  uint32_t capabilityFeatureCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateSpatialCapabilityFeaturesEXT(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(capability), capabilityFeatureCapacityInput, &capabilityFeatureCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || capabilityFeatureCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateSpatialCapabilityFeaturesEXT(
+      this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(capability),
+      capabilityFeatureCapacityInput, &capabilityFeatureCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || capabilityFeatureCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(capabilityFeatures)};
+  }
+  do {
+    capabilityFeatures.resize(capabilityFeatureCountOutput);
+    capabilityFeatureCapacityInput = static_cast<uint32_t>(capabilityFeatures.size());
+    result = static_cast<Result>(d.xrEnumerateSpatialCapabilityFeaturesEXT(
+        this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(capability),
+        capabilityFeatureCapacityInput, &capabilityFeatureCountOutput,
+        reinterpret_cast<XrSpatialCapabilityFeatureEXT*>(capabilityFeatures.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(capabilityFeatureCountOutput <= capabilityFeatures.size());
+    capabilityFeatures.resize(capabilityFeatureCountOutput);
+  } else
+    capabilityFeatures.clear();
 
-        return { result, std::move(capabilityFeatures) };
-    }
-    do {
-        capabilityFeatures.resize(capabilityFeatureCountOutput);
-        capabilityFeatureCapacityInput = static_cast<uint32_t>(capabilityFeatures.size());
-        result = static_cast<Result>( d.xrEnumerateSpatialCapabilityFeaturesEXT(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(capability), capabilityFeatureCapacityInput, &capabilityFeatureCountOutput, reinterpret_cast<XrSpatialCapabilityFeatureEXT*>(capabilityFeatures.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(capabilityFeatureCountOutput <= capabilityFeatures.size());
-        capabilityFeatures.resize(capabilityFeatureCountOutput);
-    } else capabilityFeatures.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(capabilityFeatures) };
-
+  return {result, std::move(capabilityFeatures)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<SpatialCapabilityFeatureEXT, Allocator>> Instance::enumerateSpatialCapabilityFeaturesToVectorEXT (
-    SystemId systemId, SpatialCapabilityEXT capability, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<SpatialCapabilityFeatureEXT, Allocator> capabilityFeatures{vectorAllocator};
-        uint32_t capabilityFeatureCountOutput = 0;
-    uint32_t capabilityFeatureCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<SpatialCapabilityFeatureEXT, Allocator>>
+Instance::enumerateSpatialCapabilityFeaturesToVectorEXT(SystemId systemId,
+                                                        SpatialCapabilityEXT capability,
+                                                        Allocator const& vectorAllocator,
+                                                        Dispatch&& d) const {
+  std::vector<SpatialCapabilityFeatureEXT, Allocator> capabilityFeatures{vectorAllocator};
+  uint32_t capabilityFeatureCountOutput = 0;
+  uint32_t capabilityFeatureCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateSpatialCapabilityFeaturesEXT(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(capability), capabilityFeatureCapacityInput, &capabilityFeatureCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || capabilityFeatureCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateSpatialCapabilityFeaturesEXT(
+      this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(capability),
+      capabilityFeatureCapacityInput, &capabilityFeatureCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || capabilityFeatureCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(capabilityFeatures)};
+  }
+  do {
+    capabilityFeatures.resize(capabilityFeatureCountOutput);
+    capabilityFeatureCapacityInput = static_cast<uint32_t>(capabilityFeatures.size());
+    result = static_cast<Result>(d.xrEnumerateSpatialCapabilityFeaturesEXT(
+        this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(capability),
+        capabilityFeatureCapacityInput, &capabilityFeatureCountOutput,
+        reinterpret_cast<XrSpatialCapabilityFeatureEXT*>(capabilityFeatures.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(capabilityFeatureCountOutput <= capabilityFeatures.size());
+    capabilityFeatures.resize(capabilityFeatureCountOutput);
+  } else
+    capabilityFeatures.clear();
 
-        return { result, std::move(capabilityFeatures) };
-    }
-    do {
-        capabilityFeatures.resize(capabilityFeatureCountOutput);
-        capabilityFeatureCapacityInput = static_cast<uint32_t>(capabilityFeatures.size());
-        result = static_cast<Result>( d.xrEnumerateSpatialCapabilityFeaturesEXT(this->get(), systemId.get(), OPENXR_HPP_NAMESPACE::get(capability), capabilityFeatureCapacityInput, &capabilityFeatureCountOutput, reinterpret_cast<XrSpatialCapabilityFeatureEXT*>(capabilityFeatures.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(capabilityFeatureCountOutput <= capabilityFeatures.size());
-        capabilityFeatures.resize(capabilityFeatureCountOutput);
-    } else capabilityFeatures.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(capabilityFeatures) };
-
+  return {result, std::move(capabilityFeatures)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FutureEXT> Session::createSpatialContextAsyncEXT (
+OPENXR_HPP_INLINE ResultValue<FutureEXT> Session::createSpatialContextAsyncEXT(
     const SpatialContextCreateInfoEXT& createInfo, Dispatch&& d) const {
-    FutureEXT future;
-    Result result = static_cast<Result>( d.xrCreateSpatialContextAsyncEXT(this->get(), createInfo.get(), OPENXR_HPP_NAMESPACE::put(future)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  FutureEXT future;
+  Result result = static_cast<Result>(d.xrCreateSpatialContextAsyncEXT(
+      this->get(), createInfo.get(), OPENXR_HPP_NAMESPACE::put(future)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(future) };
+  return {result, std::move(future)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<CreateSpatialContextCompletionEXT> Session::createSpatialContextCompleteEXT (
-    FutureEXT future, Dispatch&& d) const {
-    CreateSpatialContextCompletionEXT completion;
-    Result result = static_cast<Result>( d.xrCreateSpatialContextCompleteEXT(this->get(), future.get(), OPENXR_HPP_NAMESPACE::put(completion)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<CreateSpatialContextCompletionEXT>
+Session::createSpatialContextCompleteEXT(FutureEXT future, Dispatch&& d) const {
+  CreateSpatialContextCompletionEXT completion;
+  Result result = static_cast<Result>(d.xrCreateSpatialContextCompleteEXT(
+      this->get(), future.get(), OPENXR_HPP_NAMESPACE::put(completion)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(completion) };
+  return {result, std::move(completion)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialContextEXT::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySpatialContextEXT(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result SpatialContextEXT::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySpatialContextEXT(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FutureEXT> SpatialContextEXT::createSpatialDiscoverySnapshotAsyncEXT (
+OPENXR_HPP_INLINE ResultValue<FutureEXT> SpatialContextEXT::createSpatialDiscoverySnapshotAsyncEXT(
     const SpatialDiscoverySnapshotCreateInfoEXT& createInfo, Dispatch&& d) const {
-    FutureEXT future;
-    Result result = static_cast<Result>( d.xrCreateSpatialDiscoverySnapshotAsyncEXT(this->get(), createInfo.get(), OPENXR_HPP_NAMESPACE::put(future)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  FutureEXT future;
+  Result result = static_cast<Result>(d.xrCreateSpatialDiscoverySnapshotAsyncEXT(
+      this->get(), createInfo.get(), OPENXR_HPP_NAMESPACE::put(future)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(future) };
+  return {result, std::move(future)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<CreateSpatialDiscoverySnapshotCompletionEXT> SpatialContextEXT::createSpatialDiscoverySnapshotCompleteEXT (
-    const CreateSpatialDiscoverySnapshotCompletionInfoEXT& createSnapshotCompletionInfo, Dispatch&& d) const {
-    CreateSpatialDiscoverySnapshotCompletionEXT completion;
-    Result result = static_cast<Result>( d.xrCreateSpatialDiscoverySnapshotCompleteEXT(this->get(), createSnapshotCompletionInfo.get(), OPENXR_HPP_NAMESPACE::put(completion)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<CreateSpatialDiscoverySnapshotCompletionEXT>
+SpatialContextEXT::createSpatialDiscoverySnapshotCompleteEXT(
+    const CreateSpatialDiscoverySnapshotCompletionInfoEXT& createSnapshotCompletionInfo,
+    Dispatch&& d) const {
+  CreateSpatialDiscoverySnapshotCompletionEXT completion;
+  Result result = static_cast<Result>(d.xrCreateSpatialDiscoverySnapshotCompleteEXT(
+      this->get(), createSnapshotCompletionInfo.get(), OPENXR_HPP_NAMESPACE::put(completion)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(completion) };
+  return {result, std::move(completion)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialSnapshotEXT::querySpatialComponentDataEXT (
-    const SpatialComponentDataQueryConditionEXT& queryCondition, SpatialComponentDataQueryResultEXT& queryResult, Dispatch&& d) const {
-    
-    Result result = static_cast<Result>( d.xrQuerySpatialComponentDataEXT(this->get(), queryCondition.get(), queryResult.put(false)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result SpatialSnapshotEXT::querySpatialComponentDataEXT(
+    const SpatialComponentDataQueryConditionEXT& queryCondition,
+    SpatialComponentDataQueryResultEXT& queryResult, Dispatch&& d) const {
+  Result result = static_cast<Result>(
+      d.xrQuerySpatialComponentDataEXT(this->get(), queryCondition.get(), queryResult.put(false)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialSnapshotEXT::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySpatialSnapshotEXT(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result SpatialSnapshotEXT::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySpatialSnapshotEXT(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<SpatialEntityEXT> SpatialContextEXT::createSpatialEntityFromIdEXT (
+OPENXR_HPP_INLINE ResultValue<SpatialEntityEXT> SpatialContextEXT::createSpatialEntityFromIdEXT(
     const SpatialEntityFromIdCreateInfoEXT& createInfo, Dispatch&& d) const {
-    SpatialEntityEXT handle;
-    Result result = static_cast<Result>( d.xrCreateSpatialEntityFromIdEXT(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  SpatialEntityEXT handle;
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialEntityFromIdEXT(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<SpatialEntityEXT, impl::RemoveRefConst<Dispatch>>> SpatialContextEXT::createSpatialEntityFromIdUniqueEXT (
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<SpatialEntityEXT, impl::RemoveRefConst<Dispatch>>>
+SpatialContextEXT::createSpatialEntityFromIdUniqueEXT(
     const SpatialEntityFromIdCreateInfoEXT& createInfo, Dispatch&& d) const {
-    SpatialEntityEXT handle;
-    Result result = static_cast<Result>( d.xrCreateSpatialEntityFromIdEXT(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  SpatialEntityEXT handle;
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialEntityFromIdEXT(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<SpatialEntityEXT, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<SpatialEntityEXT, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -23289,127 +9869,52 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<SpatialEntityEXT, impl::RemoveRefCons
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialEntityEXT::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySpatialEntityEXT(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result SpatialEntityEXT::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySpatialEntityEXT(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<SpatialSnapshotEXT> SpatialContextEXT::createSpatialUpdateSnapshotEXT (
+OPENXR_HPP_INLINE ResultValue<SpatialSnapshotEXT> SpatialContextEXT::createSpatialUpdateSnapshotEXT(
     const SpatialUpdateSnapshotCreateInfoEXT& createInfo, Dispatch&& d) const {
-    SpatialSnapshotEXT handle;
-    Result result = static_cast<Result>( d.xrCreateSpatialUpdateSnapshotEXT(this->get(), createInfo.get(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  SpatialSnapshotEXT handle;
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialUpdateSnapshotEXT(this->get(), createInfo.get(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<SpatialSnapshotEXT, impl::RemoveRefConst<Dispatch>>> SpatialContextEXT::createSpatialUpdateSnapshotUniqueEXT (
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<SpatialSnapshotEXT, impl::RemoveRefConst<Dispatch>>>
+SpatialContextEXT::createSpatialUpdateSnapshotUniqueEXT(
     const SpatialUpdateSnapshotCreateInfoEXT& createInfo, Dispatch&& d) const {
-    SpatialSnapshotEXT handle;
-    Result result = static_cast<Result>( d.xrCreateSpatialUpdateSnapshotEXT(this->get(), createInfo.get(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  SpatialSnapshotEXT handle;
+  Result result = static_cast<Result>(
+      d.xrCreateSpatialUpdateSnapshotEXT(this->get(), createInfo.get(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<SpatialSnapshotEXT, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result,
+          UniqueHandle<SpatialSnapshotEXT, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -23417,807 +9922,559 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<SpatialSnapshotEXT, impl::RemoveRefCo
 
 #endif  // XR_EXT_spatial_entity
 
-
 #ifdef XR_EXT_spatial_entity
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>> SpatialSnapshotEXT::getSpatialBufferStringEXT (
-    const SpatialBufferGetInfoEXT& info, Dispatch&& d) const {
-    std::vector<char, Allocator> buffer;
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>>
+SpatialSnapshotEXT::getSpatialBufferStringEXT(const SpatialBufferGetInfoEXT& info,
+                                              Dispatch&& d) const {
+  std::vector<char, Allocator> buffer;
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    std::basic_string<char, std::char_traits<char>, Allocator> str{{}};
-    Result result = static_cast<Result>( d.xrGetSpatialBufferStringEXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  std::basic_string<char, std::char_traits<char>, Allocator> str{{}};
+  Result result = static_cast<Result>(d.xrGetSpatialBufferStringEXT(
+      this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(str)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(
+        d.xrGetSpatialBufferStringEXT(this->get(), info.get(), bufferCapacityInput,
+                                      &bufferCountOutput, reinterpret_cast<char*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(str) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrGetSpatialBufferStringEXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<char*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-    str.assign(buffer.begin(), buffer.end());
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  str.assign(buffer.begin(), buffer.end());
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(str) };
-
+  return {result, std::move(str)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>> SpatialSnapshotEXT::getSpatialBufferStringEXT (
-    const SpatialBufferGetInfoEXT& info, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<char, Allocator> buffer{vectorAllocator};
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<string_with_allocator<Allocator>>
+SpatialSnapshotEXT::getSpatialBufferStringEXT(const SpatialBufferGetInfoEXT& info,
+                                              Allocator const& vectorAllocator,
+                                              Dispatch&& d) const {
+  std::vector<char, Allocator> buffer{vectorAllocator};
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    std::basic_string<char, std::char_traits<char>, Allocator> str{vectorAllocator};
-    Result result = static_cast<Result>( d.xrGetSpatialBufferStringEXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  std::basic_string<char, std::char_traits<char>, Allocator> str{vectorAllocator};
+  Result result = static_cast<Result>(d.xrGetSpatialBufferStringEXT(
+      this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(str)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(
+        d.xrGetSpatialBufferStringEXT(this->get(), info.get(), bufferCapacityInput,
+                                      &bufferCountOutput, reinterpret_cast<char*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(str) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrGetSpatialBufferStringEXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<char*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-    str.assign(buffer.begin(), buffer.end());
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  str.assign(buffer.begin(), buffer.end());
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(str) };
-
+  return {result, std::move(str)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_spatial_entity
-
 
 #ifdef XR_EXT_spatial_entity
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<uint8_t, Allocator>> SpatialSnapshotEXT::getSpatialBufferUint8ToVectorEXT (
-    const SpatialBufferGetInfoEXT& info, Dispatch&& d) const {
-    std::vector<uint8_t, Allocator> buffer;
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<uint8_t, Allocator>>
+SpatialSnapshotEXT::getSpatialBufferUint8ToVectorEXT(const SpatialBufferGetInfoEXT& info,
+                                                     Dispatch&& d) const {
+  std::vector<uint8_t, Allocator> buffer;
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrGetSpatialBufferUint8EXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrGetSpatialBufferUint8EXT(
+      this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(buffer)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(d.xrGetSpatialBufferUint8EXT(
+        this->get(), info.get(), bufferCapacityInput, &bufferCountOutput,
+        reinterpret_cast<uint8_t*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(buffer) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrGetSpatialBufferUint8EXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<uint8_t*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(buffer) };
-
+  return {result, std::move(buffer)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<uint8_t, Allocator>> SpatialSnapshotEXT::getSpatialBufferUint8ToVectorEXT (
-    const SpatialBufferGetInfoEXT& info, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<uint8_t, Allocator> buffer{vectorAllocator};
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<uint8_t, Allocator>>
+SpatialSnapshotEXT::getSpatialBufferUint8ToVectorEXT(const SpatialBufferGetInfoEXT& info,
+                                                     Allocator const& vectorAllocator,
+                                                     Dispatch&& d) const {
+  std::vector<uint8_t, Allocator> buffer{vectorAllocator};
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrGetSpatialBufferUint8EXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrGetSpatialBufferUint8EXT(
+      this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(buffer)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(d.xrGetSpatialBufferUint8EXT(
+        this->get(), info.get(), bufferCapacityInput, &bufferCountOutput,
+        reinterpret_cast<uint8_t*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(buffer) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrGetSpatialBufferUint8EXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<uint8_t*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(buffer) };
-
+  return {result, std::move(buffer)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_spatial_entity
-
 
 #ifdef XR_EXT_spatial_entity
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<uint16_t, Allocator>> SpatialSnapshotEXT::getSpatialBufferUint16ToVectorEXT (
-    const SpatialBufferGetInfoEXT& info, Dispatch&& d) const {
-    std::vector<uint16_t, Allocator> buffer;
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<uint16_t, Allocator>>
+SpatialSnapshotEXT::getSpatialBufferUint16ToVectorEXT(const SpatialBufferGetInfoEXT& info,
+                                                      Dispatch&& d) const {
+  std::vector<uint16_t, Allocator> buffer;
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrGetSpatialBufferUint16EXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrGetSpatialBufferUint16EXT(
+      this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(buffer)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(d.xrGetSpatialBufferUint16EXT(
+        this->get(), info.get(), bufferCapacityInput, &bufferCountOutput,
+        reinterpret_cast<uint16_t*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(buffer) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrGetSpatialBufferUint16EXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<uint16_t*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(buffer) };
-
+  return {result, std::move(buffer)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<uint16_t, Allocator>> SpatialSnapshotEXT::getSpatialBufferUint16ToVectorEXT (
-    const SpatialBufferGetInfoEXT& info, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<uint16_t, Allocator> buffer{vectorAllocator};
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<uint16_t, Allocator>>
+SpatialSnapshotEXT::getSpatialBufferUint16ToVectorEXT(const SpatialBufferGetInfoEXT& info,
+                                                      Allocator const& vectorAllocator,
+                                                      Dispatch&& d) const {
+  std::vector<uint16_t, Allocator> buffer{vectorAllocator};
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrGetSpatialBufferUint16EXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrGetSpatialBufferUint16EXT(
+      this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(buffer)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(d.xrGetSpatialBufferUint16EXT(
+        this->get(), info.get(), bufferCapacityInput, &bufferCountOutput,
+        reinterpret_cast<uint16_t*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(buffer) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrGetSpatialBufferUint16EXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<uint16_t*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(buffer) };
-
+  return {result, std::move(buffer)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_spatial_entity
-
 
 #ifdef XR_EXT_spatial_entity
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<uint32_t, Allocator>> SpatialSnapshotEXT::getSpatialBufferUint32ToVectorEXT (
-    const SpatialBufferGetInfoEXT& info, Dispatch&& d) const {
-    std::vector<uint32_t, Allocator> buffer;
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<uint32_t, Allocator>>
+SpatialSnapshotEXT::getSpatialBufferUint32ToVectorEXT(const SpatialBufferGetInfoEXT& info,
+                                                      Dispatch&& d) const {
+  std::vector<uint32_t, Allocator> buffer;
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrGetSpatialBufferUint32EXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrGetSpatialBufferUint32EXT(
+      this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(buffer)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(d.xrGetSpatialBufferUint32EXT(
+        this->get(), info.get(), bufferCapacityInput, &bufferCountOutput,
+        reinterpret_cast<uint32_t*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(buffer) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrGetSpatialBufferUint32EXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<uint32_t*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(buffer) };
-
+  return {result, std::move(buffer)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<uint32_t, Allocator>> SpatialSnapshotEXT::getSpatialBufferUint32ToVectorEXT (
-    const SpatialBufferGetInfoEXT& info, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<uint32_t, Allocator> buffer{vectorAllocator};
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<uint32_t, Allocator>>
+SpatialSnapshotEXT::getSpatialBufferUint32ToVectorEXT(const SpatialBufferGetInfoEXT& info,
+                                                      Allocator const& vectorAllocator,
+                                                      Dispatch&& d) const {
+  std::vector<uint32_t, Allocator> buffer{vectorAllocator};
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrGetSpatialBufferUint32EXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrGetSpatialBufferUint32EXT(
+      this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(buffer)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(d.xrGetSpatialBufferUint32EXT(
+        this->get(), info.get(), bufferCapacityInput, &bufferCountOutput,
+        reinterpret_cast<uint32_t*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(buffer) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrGetSpatialBufferUint32EXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<uint32_t*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(buffer) };
-
+  return {result, std::move(buffer)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_spatial_entity
-
 
 #ifdef XR_EXT_spatial_entity
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<float, Allocator>> SpatialSnapshotEXT::getSpatialBufferFloatToVectorEXT (
-    const SpatialBufferGetInfoEXT& info, Dispatch&& d) const {
-    std::vector<float, Allocator> buffer;
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<float, Allocator>>
+SpatialSnapshotEXT::getSpatialBufferFloatToVectorEXT(const SpatialBufferGetInfoEXT& info,
+                                                     Dispatch&& d) const {
+  std::vector<float, Allocator> buffer;
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrGetSpatialBufferFloatEXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrGetSpatialBufferFloatEXT(
+      this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(buffer)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(
+        d.xrGetSpatialBufferFloatEXT(this->get(), info.get(), bufferCapacityInput,
+                                     &bufferCountOutput, reinterpret_cast<float*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(buffer) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrGetSpatialBufferFloatEXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<float*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(buffer) };
-
+  return {result, std::move(buffer)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<float, Allocator>> SpatialSnapshotEXT::getSpatialBufferFloatToVectorEXT (
-    const SpatialBufferGetInfoEXT& info, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<float, Allocator> buffer{vectorAllocator};
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<float, Allocator>>
+SpatialSnapshotEXT::getSpatialBufferFloatToVectorEXT(const SpatialBufferGetInfoEXT& info,
+                                                     Allocator const& vectorAllocator,
+                                                     Dispatch&& d) const {
+  std::vector<float, Allocator> buffer{vectorAllocator};
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrGetSpatialBufferFloatEXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrGetSpatialBufferFloatEXT(
+      this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(buffer)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(
+        d.xrGetSpatialBufferFloatEXT(this->get(), info.get(), bufferCapacityInput,
+                                     &bufferCountOutput, reinterpret_cast<float*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(buffer) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrGetSpatialBufferFloatEXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<float*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(buffer) };
-
+  return {result, std::move(buffer)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_spatial_entity
-
 
 #ifdef XR_EXT_spatial_entity
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<Vector2f, Allocator>> SpatialSnapshotEXT::getSpatialBufferVector2fToVectorEXT (
-    const SpatialBufferGetInfoEXT& info, Dispatch&& d) const {
-    std::vector<Vector2f, Allocator> buffer;
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<Vector2f, Allocator>>
+SpatialSnapshotEXT::getSpatialBufferVector2fToVectorEXT(const SpatialBufferGetInfoEXT& info,
+                                                        Dispatch&& d) const {
+  std::vector<Vector2f, Allocator> buffer;
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrGetSpatialBufferVector2fEXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrGetSpatialBufferVector2fEXT(
+      this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(buffer)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(d.xrGetSpatialBufferVector2fEXT(
+        this->get(), info.get(), bufferCapacityInput, &bufferCountOutput,
+        reinterpret_cast<XrVector2f*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(buffer) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrGetSpatialBufferVector2fEXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<XrVector2f*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(buffer) };
-
+  return {result, std::move(buffer)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<Vector2f, Allocator>> SpatialSnapshotEXT::getSpatialBufferVector2fToVectorEXT (
-    const SpatialBufferGetInfoEXT& info, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<Vector2f, Allocator> buffer{vectorAllocator};
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<Vector2f, Allocator>>
+SpatialSnapshotEXT::getSpatialBufferVector2fToVectorEXT(const SpatialBufferGetInfoEXT& info,
+                                                        Allocator const& vectorAllocator,
+                                                        Dispatch&& d) const {
+  std::vector<Vector2f, Allocator> buffer{vectorAllocator};
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrGetSpatialBufferVector2fEXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrGetSpatialBufferVector2fEXT(
+      this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(buffer)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(d.xrGetSpatialBufferVector2fEXT(
+        this->get(), info.get(), bufferCapacityInput, &bufferCountOutput,
+        reinterpret_cast<XrVector2f*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(buffer) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrGetSpatialBufferVector2fEXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<XrVector2f*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(buffer) };
-
+  return {result, std::move(buffer)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_spatial_entity
-
 
 #ifdef XR_EXT_spatial_entity
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<Vector3f, Allocator>> SpatialSnapshotEXT::getSpatialBufferVector3fToVectorEXT (
-    const SpatialBufferGetInfoEXT& info, Dispatch&& d) const {
-    std::vector<Vector3f, Allocator> buffer;
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<Vector3f, Allocator>>
+SpatialSnapshotEXT::getSpatialBufferVector3fToVectorEXT(const SpatialBufferGetInfoEXT& info,
+                                                        Dispatch&& d) const {
+  std::vector<Vector3f, Allocator> buffer;
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrGetSpatialBufferVector3fEXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrGetSpatialBufferVector3fEXT(
+      this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(buffer)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(d.xrGetSpatialBufferVector3fEXT(
+        this->get(), info.get(), bufferCapacityInput, &bufferCountOutput,
+        reinterpret_cast<XrVector3f*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(buffer) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrGetSpatialBufferVector3fEXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<XrVector3f*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(buffer) };
-
+  return {result, std::move(buffer)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<Vector3f, Allocator>> SpatialSnapshotEXT::getSpatialBufferVector3fToVectorEXT (
-    const SpatialBufferGetInfoEXT& info, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<Vector3f, Allocator> buffer{vectorAllocator};
-        uint32_t bufferCountOutput = 0;
-    uint32_t bufferCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<Vector3f, Allocator>>
+SpatialSnapshotEXT::getSpatialBufferVector3fToVectorEXT(const SpatialBufferGetInfoEXT& info,
+                                                        Allocator const& vectorAllocator,
+                                                        Dispatch&& d) const {
+  std::vector<Vector3f, Allocator> buffer{vectorAllocator};
+  uint32_t bufferCountOutput = 0;
+  uint32_t bufferCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrGetSpatialBufferVector3fEXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrGetSpatialBufferVector3fEXT(
+      this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, nullptr));
+  if (!unqualifiedSuccess(result) || bufferCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(buffer)};
+  }
+  do {
+    buffer.resize(bufferCountOutput);
+    bufferCapacityInput = static_cast<uint32_t>(buffer.size());
+    result = static_cast<Result>(d.xrGetSpatialBufferVector3fEXT(
+        this->get(), info.get(), bufferCapacityInput, &bufferCountOutput,
+        reinterpret_cast<XrVector3f*>(buffer.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
+    buffer.resize(bufferCountOutput);
+  } else
+    buffer.clear();
 
-        return { result, std::move(buffer) };
-    }
-    do {
-        buffer.resize(bufferCountOutput);
-        bufferCapacityInput = static_cast<uint32_t>(buffer.size());
-        result = static_cast<Result>( d.xrGetSpatialBufferVector3fEXT(this->get(), info.get(), bufferCapacityInput, &bufferCountOutput, reinterpret_cast<XrVector3f*>(buffer.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(bufferCountOutput <= buffer.size());
-        buffer.resize(bufferCountOutput);
-    } else buffer.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(buffer) };
-
+  return {result, std::move(buffer)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_spatial_entity
-
 
 #ifdef XR_EXT_spatial_anchor
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<SpatialEntityEXT> SpatialContextEXT::createSpatialAnchorEXT (
-    const SpatialAnchorCreateInfoEXT& createInfo, SpatialEntityIdEXT& anchorEntityId, Dispatch&& d) const {
-    SpatialEntityEXT handle;
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorEXT(this->get(), createInfo.get(), anchorEntityId.put(), handle.put()) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<SpatialEntityEXT> SpatialContextEXT::createSpatialAnchorEXT(
+    const SpatialAnchorCreateInfoEXT& createInfo, SpatialEntityIdEXT& anchorEntityId,
+    Dispatch&& d) const {
+  SpatialEntityEXT handle;
+  Result result = static_cast<Result>(d.xrCreateSpatialAnchorEXT(
+      this->get(), createInfo.get(), anchorEntityId.put(), handle.put()));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(handle) };
+  return {result, std::move(handle)};
 }
 
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UniqueHandle<SpatialEntityEXT, impl::RemoveRefConst<Dispatch>>> SpatialContextEXT::createSpatialAnchorUniqueEXT (
-    const SpatialAnchorCreateInfoEXT& createInfo, SpatialEntityIdEXT& anchorEntityId, Dispatch&& d) const {
-    SpatialEntityEXT handle;
-    Result result = static_cast<Result>( d.xrCreateSpatialAnchorEXT(this->get(), createInfo.get(), anchorEntityId.put(), handle.put()) );
-    ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UniqueHandle<SpatialEntityEXT, impl::RemoveRefConst<Dispatch>>>
+SpatialContextEXT::createSpatialAnchorUniqueEXT(const SpatialAnchorCreateInfoEXT& createInfo,
+                                                SpatialEntityIdEXT& anchorEntityId,
+                                                Dispatch&& d) const {
+  SpatialEntityEXT handle;
+  Result result = static_cast<Result>(d.xrCreateSpatialAnchorEXT(
+      this->get(), createInfo.get(), anchorEntityId.put(), handle.put()));
+  ObjectDestroy<impl::RemoveRefConst<Dispatch>> deleter{d};
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, UniqueHandle<SpatialEntityEXT, impl::RemoveRefConst<Dispatch>>(handle, deleter) };
+  return {result, UniqueHandle<SpatialEntityEXT, impl::RemoveRefConst<Dispatch>>(handle, deleter)};
 }
-
-
-
-
-
-
-
-
 
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
@@ -24225,507 +10482,215 @@ OPENXR_HPP_INLINE ResultValue<UniqueHandle<SpatialEntityEXT, impl::RemoveRefCons
 
 #endif  // XR_EXT_spatial_anchor
 
-
 #ifdef XR_EXT_spatial_persistence
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<SpatialPersistenceScopeEXT, Allocator>> Instance::enumerateSpatialPersistenceScopesToVectorEXT (
-    SystemId systemId, Dispatch&& d) const {
-    std::vector<SpatialPersistenceScopeEXT, Allocator> persistenceScopes;
-        uint32_t persistenceScopeCountOutput = 0;
-    uint32_t persistenceScopeCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<SpatialPersistenceScopeEXT, Allocator>>
+Instance::enumerateSpatialPersistenceScopesToVectorEXT(SystemId systemId, Dispatch&& d) const {
+  std::vector<SpatialPersistenceScopeEXT, Allocator> persistenceScopes;
+  uint32_t persistenceScopeCountOutput = 0;
+  uint32_t persistenceScopeCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateSpatialPersistenceScopesEXT(this->get(), systemId.get(), persistenceScopeCapacityInput, &persistenceScopeCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || persistenceScopeCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateSpatialPersistenceScopesEXT(
+      this->get(), systemId.get(), persistenceScopeCapacityInput, &persistenceScopeCountOutput,
+      nullptr));
+  if (!unqualifiedSuccess(result) || persistenceScopeCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(persistenceScopes)};
+  }
+  do {
+    persistenceScopes.resize(persistenceScopeCountOutput);
+    persistenceScopeCapacityInput = static_cast<uint32_t>(persistenceScopes.size());
+    result = static_cast<Result>(d.xrEnumerateSpatialPersistenceScopesEXT(
+        this->get(), systemId.get(), persistenceScopeCapacityInput, &persistenceScopeCountOutput,
+        reinterpret_cast<XrSpatialPersistenceScopeEXT*>(persistenceScopes.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(persistenceScopeCountOutput <= persistenceScopes.size());
+    persistenceScopes.resize(persistenceScopeCountOutput);
+  } else
+    persistenceScopes.clear();
 
-        return { result, std::move(persistenceScopes) };
-    }
-    do {
-        persistenceScopes.resize(persistenceScopeCountOutput);
-        persistenceScopeCapacityInput = static_cast<uint32_t>(persistenceScopes.size());
-        result = static_cast<Result>( d.xrEnumerateSpatialPersistenceScopesEXT(this->get(), systemId.get(), persistenceScopeCapacityInput, &persistenceScopeCountOutput, reinterpret_cast<XrSpatialPersistenceScopeEXT*>(persistenceScopes.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(persistenceScopeCountOutput <= persistenceScopes.size());
-        persistenceScopes.resize(persistenceScopeCountOutput);
-    } else persistenceScopes.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(persistenceScopes) };
-
+  return {result, std::move(persistenceScopes)};
 }
 
 template <typename Allocator, typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<std::vector<SpatialPersistenceScopeEXT, Allocator>> Instance::enumerateSpatialPersistenceScopesToVectorEXT (
-    SystemId systemId, Allocator const& vectorAllocator, Dispatch&& d) const {
-    std::vector<SpatialPersistenceScopeEXT, Allocator> persistenceScopes{vectorAllocator};
-        uint32_t persistenceScopeCountOutput = 0;
-    uint32_t persistenceScopeCapacityInput = 0;
+OPENXR_HPP_INLINE ResultValue<std::vector<SpatialPersistenceScopeEXT, Allocator>>
+Instance::enumerateSpatialPersistenceScopesToVectorEXT(SystemId systemId,
+                                                       Allocator const& vectorAllocator,
+                                                       Dispatch&& d) const {
+  std::vector<SpatialPersistenceScopeEXT, Allocator> persistenceScopes{vectorAllocator};
+  uint32_t persistenceScopeCountOutput = 0;
+  uint32_t persistenceScopeCapacityInput = 0;
 
-    
-    Result result = static_cast<Result>( d.xrEnumerateSpatialPersistenceScopesEXT(this->get(), systemId.get(), persistenceScopeCapacityInput, &persistenceScopeCountOutput, nullptr) );
-    if (!unqualifiedSuccess(result) || persistenceScopeCountOutput == 0) {
-                OPENXR_HPP_ASSERT( succeeded(result) );
+  Result result = static_cast<Result>(d.xrEnumerateSpatialPersistenceScopesEXT(
+      this->get(), systemId.get(), persistenceScopeCapacityInput, &persistenceScopeCountOutput,
+      nullptr));
+  if (!unqualifiedSuccess(result) || persistenceScopeCountOutput == 0) {
+    OPENXR_HPP_ASSERT(succeeded(result));
 
+    return {result, std::move(persistenceScopes)};
+  }
+  do {
+    persistenceScopes.resize(persistenceScopeCountOutput);
+    persistenceScopeCapacityInput = static_cast<uint32_t>(persistenceScopes.size());
+    result = static_cast<Result>(d.xrEnumerateSpatialPersistenceScopesEXT(
+        this->get(), systemId.get(), persistenceScopeCapacityInput, &persistenceScopeCountOutput,
+        reinterpret_cast<XrSpatialPersistenceScopeEXT*>(persistenceScopes.data())));
+  } while (result == xr::Result::ErrorSizeInsufficient);
+  if (succeeded(result)) {
+    OPENXR_HPP_ASSERT(persistenceScopeCountOutput <= persistenceScopes.size());
+    persistenceScopes.resize(persistenceScopeCountOutput);
+  } else
+    persistenceScopes.clear();
 
-        return { result, std::move(persistenceScopes) };
-    }
-    do {
-        persistenceScopes.resize(persistenceScopeCountOutput);
-        persistenceScopeCapacityInput = static_cast<uint32_t>(persistenceScopes.size());
-        result = static_cast<Result>( d.xrEnumerateSpatialPersistenceScopesEXT(this->get(), systemId.get(), persistenceScopeCapacityInput, &persistenceScopeCountOutput, reinterpret_cast<XrSpatialPersistenceScopeEXT*>(persistenceScopes.data())) );
-    } while (result == xr::Result::ErrorSizeInsufficient);
-    if (succeeded(result)) {
-        OPENXR_HPP_ASSERT(persistenceScopeCountOutput <= persistenceScopes.size());
-        persistenceScopes.resize(persistenceScopeCountOutput);
-    } else persistenceScopes.clear();
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return { result, std::move(persistenceScopes) };
-
+  return {result, std::move(persistenceScopes)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_spatial_persistence
 
-
 #ifdef XR_EXT_spatial_persistence
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FutureEXT> Session::createSpatialPersistenceContextAsyncEXT (
+OPENXR_HPP_INLINE ResultValue<FutureEXT> Session::createSpatialPersistenceContextAsyncEXT(
     const SpatialPersistenceContextCreateInfoEXT& createInfo, Dispatch&& d) const {
-    FutureEXT future;
-    Result result = static_cast<Result>( d.xrCreateSpatialPersistenceContextAsyncEXT(this->get(), createInfo.get(), OPENXR_HPP_NAMESPACE::put(future)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  FutureEXT future;
+  Result result = static_cast<Result>(d.xrCreateSpatialPersistenceContextAsyncEXT(
+      this->get(), createInfo.get(), OPENXR_HPP_NAMESPACE::put(future)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(future) };
+  return {result, std::move(future)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_spatial_persistence
-
 
 #ifdef XR_EXT_spatial_persistence
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<CreateSpatialPersistenceContextCompletionEXT> Session::createSpatialPersistenceContextCompleteEXT (
-    FutureEXT future, Dispatch&& d) const {
-    CreateSpatialPersistenceContextCompletionEXT completion;
-    Result result = static_cast<Result>( d.xrCreateSpatialPersistenceContextCompleteEXT(this->get(), future.get(), OPENXR_HPP_NAMESPACE::put(completion)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<CreateSpatialPersistenceContextCompletionEXT>
+Session::createSpatialPersistenceContextCompleteEXT(FutureEXT future, Dispatch&& d) const {
+  CreateSpatialPersistenceContextCompletionEXT completion;
+  Result result = static_cast<Result>(d.xrCreateSpatialPersistenceContextCompleteEXT(
+      this->get(), future.get(), OPENXR_HPP_NAMESPACE::put(completion)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(completion) };
+  return {result, std::move(completion)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_spatial_persistence
-
 
 #ifdef XR_EXT_spatial_persistence
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE Result SpatialPersistenceContextEXT::destroy (
-    Dispatch&& d)  {
-    
-    Result result = static_cast<Result>( d.xrDestroySpatialPersistenceContextEXT(this->get()) );
-    val_ = XR_NULL_HANDLE;
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE Result SpatialPersistenceContextEXT::destroy(Dispatch&& d) {
+  Result result = static_cast<Result>(d.xrDestroySpatialPersistenceContextEXT(this->get()));
+  val_ = XR_NULL_HANDLE;
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-
-    return result;
+  return result;
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_spatial_persistence
-
 
 #ifdef XR_EXT_spatial_persistence_operations
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FutureEXT> SpatialPersistenceContextEXT::persistSpatialEntityAsyncEXT (
+OPENXR_HPP_INLINE ResultValue<FutureEXT> SpatialPersistenceContextEXT::persistSpatialEntityAsyncEXT(
     const SpatialEntityPersistInfoEXT& persistInfo, Dispatch&& d) const {
-    FutureEXT future;
-    Result result = static_cast<Result>( d.xrPersistSpatialEntityAsyncEXT(this->get(), persistInfo.get(), OPENXR_HPP_NAMESPACE::put(future)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  FutureEXT future;
+  Result result = static_cast<Result>(d.xrPersistSpatialEntityAsyncEXT(
+      this->get(), persistInfo.get(), OPENXR_HPP_NAMESPACE::put(future)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(future) };
+  return {result, std::move(future)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_spatial_persistence_operations
 
-
 #ifdef XR_EXT_spatial_persistence_operations
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<PersistSpatialEntityCompletionEXT> SpatialPersistenceContextEXT::persistSpatialEntityCompleteEXT (
-    FutureEXT future, Dispatch&& d) const {
-    PersistSpatialEntityCompletionEXT completion;
-    Result result = static_cast<Result>( d.xrPersistSpatialEntityCompleteEXT(this->get(), future.get(), OPENXR_HPP_NAMESPACE::put(completion)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<PersistSpatialEntityCompletionEXT>
+SpatialPersistenceContextEXT::persistSpatialEntityCompleteEXT(FutureEXT future,
+                                                              Dispatch&& d) const {
+  PersistSpatialEntityCompletionEXT completion;
+  Result result = static_cast<Result>(d.xrPersistSpatialEntityCompleteEXT(
+      this->get(), future.get(), OPENXR_HPP_NAMESPACE::put(completion)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(completion) };
+  return {result, std::move(completion)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_spatial_persistence_operations
 
-
 #ifdef XR_EXT_spatial_persistence_operations
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<FutureEXT> SpatialPersistenceContextEXT::unpersistSpatialEntityAsyncEXT (
+OPENXR_HPP_INLINE ResultValue<FutureEXT>
+SpatialPersistenceContextEXT::unpersistSpatialEntityAsyncEXT(
     const SpatialEntityUnpersistInfoEXT& unpersistInfo, Dispatch&& d) const {
-    FutureEXT future;
-    Result result = static_cast<Result>( d.xrUnpersistSpatialEntityAsyncEXT(this->get(), unpersistInfo.get(), OPENXR_HPP_NAMESPACE::put(future)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+  FutureEXT future;
+  Result result = static_cast<Result>(d.xrUnpersistSpatialEntityAsyncEXT(
+      this->get(), unpersistInfo.get(), OPENXR_HPP_NAMESPACE::put(future)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(future) };
+  return {result, std::move(future)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_spatial_persistence_operations
 
-
 #ifdef XR_EXT_spatial_persistence_operations
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #ifdef OPENXR_HPP_NO_EXCEPTIONS
 template <typename Dispatch, OPENXR_HPP_REQUIRE_DISPATCH(Dispatch)>
-OPENXR_HPP_INLINE ResultValue<UnpersistSpatialEntityCompletionEXT> SpatialPersistenceContextEXT::unpersistSpatialEntityCompleteEXT (
-    FutureEXT future, Dispatch&& d) const {
-    UnpersistSpatialEntityCompletionEXT completion;
-    Result result = static_cast<Result>( d.xrUnpersistSpatialEntityCompleteEXT(this->get(), future.get(), OPENXR_HPP_NAMESPACE::put(completion)) );
-    
-            OPENXR_HPP_ASSERT( succeeded(result) );
+OPENXR_HPP_INLINE ResultValue<UnpersistSpatialEntityCompletionEXT>
+SpatialPersistenceContextEXT::unpersistSpatialEntityCompleteEXT(FutureEXT future,
+                                                                Dispatch&& d) const {
+  UnpersistSpatialEntityCompletionEXT completion;
+  Result result = static_cast<Result>(d.xrUnpersistSpatialEntityCompleteEXT(
+      this->get(), future.get(), OPENXR_HPP_NAMESPACE::put(completion)));
 
+  OPENXR_HPP_ASSERT(succeeded(result));
 
-    return { result, std::move(completion) };
+  return {result, std::move(completion)};
 }
 
-#endif // OPENXR_HPP_NO_EXCEPTIONS
+#endif  // OPENXR_HPP_NO_EXCEPTIONS
 
 #endif  // XR_EXT_spatial_persistence_operations
 }  // namespace OPENXR_HPP_NAMESPACE
 
 #endif  // !OPENXR_HPP_DISABLE_ENHANCED_MODE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #endif  // ifndef OPENXR_METHOD_IMPLS_ENHANCED_INL_
-

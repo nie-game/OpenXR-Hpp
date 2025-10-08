@@ -2,37 +2,6 @@
 //     See cpp_generator.py for modifications
 // ************************************************************
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
 ** Copyright (c) 2017-2023 The Khronos Group Inc.
 ** Copyright (c) 2019-2023 Collabora, Ltd.
@@ -83,71 +52,9 @@
 
 #include "openxr_enums.hpp"
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #if !defined(OPENXR_HPP_NAMESPACE)
 #define OPENXR_HPP_NAMESPACE xr
 #endif  // !OPENXR_HPP_NAMESPACE
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 namespace OPENXR_HPP_NAMESPACE {
 
@@ -155,199 +62,201 @@ namespace OPENXR_HPP_NAMESPACE {
 
 namespace traits {
 
-    template <typename Type, typename Dispatch>
-    class UniqueHandleTraits;
+  template <typename Type, typename Dispatch>
+  class UniqueHandleTraits;
 
 }  // namespace traits
 
 namespace impl {
 
-    // Used when returning unique handles.
-    template <typename T>
-    using RemoveRefConst = typename std::remove_const<typename std::remove_reference<T>::type>::type;
+  // Used when returning unique handles.
+  template <typename T>
+  using RemoveRefConst = typename std::remove_const<typename std::remove_reference<T>::type>::type;
 }  // namespace impl
 
 /*!
  * @brief Template class for holding a handle with unique ownership, much like unique_ptr.
  *
- * Note that this does not keep track of children or parents, though OpenXR specifies that destruction of a handle also destroys its
- * children automatically. Thus, it is important to order destruction of these correctly, usually by ordering declarations.
+ * Note that this does not keep track of children or parents, though OpenXR specifies that
+ * destruction of a handle also destroys its children automatically. Thus, it is important to order
+ * destruction of these correctly, usually by ordering declarations.
  *
  * Inherits from the deleter to use empty-base-class optimization when possible.
  */
 template <typename Type, typename Dispatch>
 class UniqueHandle : public traits::UniqueHandleTraits<Type, Dispatch>::deleter {
-   private:
-    using Deleter = typename traits::UniqueHandleTraits<Type, Dispatch>::deleter;
+private:
+  using Deleter = typename traits::UniqueHandleTraits<Type, Dispatch>::deleter;
 
-   public:
-    //! Explicit constructor with deleter.
-    explicit UniqueHandle(Type const &value = Type(), Deleter const &deleter = Deleter())
-        : Deleter(deleter), m_value(value) {}
+public:
+  //! Explicit constructor with deleter.
+  explicit UniqueHandle(Type const& value = Type(), Deleter const& deleter = Deleter())
+      : Deleter(deleter), m_value(value) {}
 
-    // Cannot copy
-    UniqueHandle(UniqueHandle const &) = delete;
+  // Cannot copy
+  UniqueHandle(UniqueHandle const&) = delete;
 
-    //! Move constructor
-    UniqueHandle(UniqueHandle &&other) : Deleter(std::move(static_cast<Deleter &>(other))), m_value(other.release()) {}
+  //! Move constructor
+  UniqueHandle(UniqueHandle&& other)
+      : Deleter(std::move(static_cast<Deleter&>(other))), m_value(other.release()) {}
 
-    //! Destructor: destroys owned handle if valid.
-    ~UniqueHandle() {
-        if (m_value) this->destroy(m_value);
+  //! Destructor: destroys owned handle if valid.
+  ~UniqueHandle() {
+    if (m_value) this->destroy(m_value);
+  }
+
+  // cannot copy-assign
+  UniqueHandle& operator=(UniqueHandle const&) = delete;
+
+  //! Move-assignment operator.
+  UniqueHandle& operator=(UniqueHandle&& other) {
+    reset(other.release());
+    *static_cast<Deleter*>(this) = std::move(static_cast<Deleter&>(other));
+    return *this;
+  }
+
+  //! Explicit bool conversion: for testing if the handle is valid.
+  explicit operator bool() const { return m_value.operator bool(); }
+
+  // Smart pointer operator
+  Type const* operator->() const { return &m_value; }
+
+  // Smart pointer operator
+  Type* operator->() { return &m_value; }
+
+  // Smart pointer operator
+  Type const& operator*() const { return m_value; }
+
+  // Smart pointer operator
+  Type& operator*() { return m_value; }
+
+  //! Get the underlying (wrapped) handle type.
+  const Type& get() const { return m_value; }
+
+  //! Get the underlying (wrapped) handle type.
+  Type& get() { return m_value; }
+
+  //! Get the raw OpenXR handle or XR_NULL_HANDLE
+  typename Type::RawHandleType getRawHandle() { return m_value ? m_value.get() : XR_NULL_HANDLE; }
+
+  //! Clear or re-assign the underlying handle
+  void reset(Type const& value = Type()) {
+    if (m_value != value) {
+      if (m_value) this->destroy(m_value);
+      m_value = value;
     }
+  }
 
-    // cannot copy-assign
-    UniqueHandle &operator=(UniqueHandle const &) = delete;
+  //! Clear this handle and return a pointer to the storage, for assignment/creation purposes.
+  typename Type::RawHandleType* put() {
+    reset();
+    return m_value.put();
+  }
 
-    //! Move-assignment operator.
-    UniqueHandle &operator=(UniqueHandle &&other) {
-        reset(other.release());
-        *static_cast<Deleter *>(this) = std::move(static_cast<Deleter &>(other));
-        return *this;
-    }
+  //! Relinquish ownership of the contained handle and return it without destroying it.
+  Type release() {
+    Type value = m_value;
+    m_value = nullptr;
+    return value;
+  }
 
-    //! Explicit bool conversion: for testing if the handle is valid.
-    explicit operator bool() const { return m_value.operator bool(); }
+  //! Swap with another handle of this type.
+  void swap(UniqueHandle<Type, Dispatch>& rhs) {
+    std::swap(m_value, rhs.m_value);
+    std::swap(static_cast<Deleter&>(*this), static_cast<Deleter&>(rhs));
+  }
 
-    // Smart pointer operator
-    Type const *operator->() const { return &m_value; }
-
-    // Smart pointer operator
-    Type *operator->() { return &m_value; }
-
-    // Smart pointer operator
-    Type const &operator*() const { return m_value; }
-
-    // Smart pointer operator
-    Type &operator*() { return m_value; }
-
-    //! Get the underlying (wrapped) handle type.
-    const Type &get() const { return m_value; }
-
-    //! Get the underlying (wrapped) handle type.
-    Type &get() { return m_value; }
-
-    //! Get the raw OpenXR handle or XR_NULL_HANDLE
-    typename Type::RawHandleType getRawHandle() { return m_value ? m_value.get() : XR_NULL_HANDLE; }
-
-    //! Clear or re-assign the underlying handle
-    void reset(Type const &value = Type()) {
-        if (m_value != value) {
-            if (m_value) this->destroy(m_value);
-            m_value = value;
-        }
-    }
-
-    //! Clear this handle and return a pointer to the storage, for assignment/creation purposes.
-    typename Type::RawHandleType *put() {
-        reset();
-        return m_value.put();
-    }
-
-    //! Relinquish ownership of the contained handle and return it without destroying it.
-    Type release() {
-        Type value = m_value;
-        m_value = nullptr;
-        return value;
-    }
-
-    //! Swap with another handle of this type.
-    void swap(UniqueHandle<Type, Dispatch> &rhs) {
-        std::swap(m_value, rhs.m_value);
-        std::swap(static_cast<Deleter &>(*this), static_cast<Deleter &>(rhs));
-    }
-
-   private:
-    Type m_value;
+private:
+  Type m_value;
 };
 
 template <typename Type, typename Dispatch>
-class UniqueHandle<Type, Dispatch &> : public UniqueHandle<Type, Dispatch> {};
+class UniqueHandle<Type, Dispatch&> : public UniqueHandle<Type, Dispatch> {};
 
 template <typename Type, typename Dispatch>
 class UniqueHandle<Type, Dispatch const> : public UniqueHandle<Type, Dispatch> {};
 
 //! @relates UniqueHandle
 template <typename Type, typename Dispatch>
-OPENXR_HPP_INLINE void swap(UniqueHandle<Type, Dispatch> &lhs, UniqueHandle<Type, Dispatch> &rhs) {
-    lhs.swap(rhs);
+OPENXR_HPP_INLINE void swap(UniqueHandle<Type, Dispatch>& lhs, UniqueHandle<Type, Dispatch>& rhs) {
+  lhs.swap(rhs);
 }
 
 //! @relates UniqueHandle
 template <typename Type, typename Dispatch>
-OPENXR_HPP_INLINE const Type& get(const UniqueHandle<Type, Dispatch> &h) {
-    return h.get();
+OPENXR_HPP_INLINE const Type& get(const UniqueHandle<Type, Dispatch>& h) {
+  return h.get();
 }
 
 //! @brief Equality comparison between two UniqueHandles, potentially of different dispatch.
 //! @relates UniqueHandle
 template <typename Type, typename D1, typename D2>
-OPENXR_HPP_CONSTEXPR OPENXR_HPP_INLINE bool operator==(UniqueHandle<Type, D1> const &lhs,
-                                                       UniqueHandle<Type, D2> const &rhs) {
-    return lhs.get() == rhs.get();
+OPENXR_HPP_CONSTEXPR OPENXR_HPP_INLINE bool operator==(UniqueHandle<Type, D1> const& lhs,
+                                                       UniqueHandle<Type, D2> const& rhs) {
+  return lhs.get() == rhs.get();
 }
 //! @brief Inequality comparison between two UniqueHandles, potentially of different dispatch.
 //! @relates UniqueHandle
 template <typename Type, typename D1, typename D2>
-OPENXR_HPP_CONSTEXPR OPENXR_HPP_INLINE bool operator!=(UniqueHandle<Type, D1> const &lhs,
-                                                       UniqueHandle<Type, D2> const &rhs) {
-    return lhs.get() != rhs.get();
+OPENXR_HPP_CONSTEXPR OPENXR_HPP_INLINE bool operator!=(UniqueHandle<Type, D1> const& lhs,
+                                                       UniqueHandle<Type, D2> const& rhs) {
+  return lhs.get() != rhs.get();
 }
 //! @brief Equality comparison between UniqueHandle and nullptr: true if the handle is
 //! null.
 //! @relates UniqueHandle
 template <typename Type, typename Dispatch>
-OPENXR_HPP_CONSTEXPR OPENXR_HPP_INLINE bool operator==(UniqueHandle<Type, Dispatch> const &lhs,
+OPENXR_HPP_CONSTEXPR OPENXR_HPP_INLINE bool operator==(UniqueHandle<Type, Dispatch> const& lhs,
                                                        std::nullptr_t /* unused */) {
-    return lhs.get() == XR_NULL_HANDLE;
+  return lhs.get() == XR_NULL_HANDLE;
 }
 //! @brief Equality comparison between nullptr and UniqueHandle: true if the handle is
 //! null.
 //! @relates UniqueHandle
 template <typename Type, typename Dispatch>
 OPENXR_HPP_CONSTEXPR OPENXR_HPP_INLINE bool operator==(std::nullptr_t /* unused */,
-                                                       UniqueHandle<Type, Dispatch> const &rhs) {
-    return rhs.get() == XR_NULL_HANDLE;
+                                                       UniqueHandle<Type, Dispatch> const& rhs) {
+  return rhs.get() == XR_NULL_HANDLE;
 }
 //! @brief Inequality comparison between UniqueHandle and nullptr: true if the handle
 //! is not null.
 //! @relates UniqueHandle
 template <typename Type, typename Dispatch>
-OPENXR_HPP_CONSTEXPR OPENXR_HPP_INLINE bool operator!=(UniqueHandle<Type, Dispatch> const &lhs,
+OPENXR_HPP_CONSTEXPR OPENXR_HPP_INLINE bool operator!=(UniqueHandle<Type, Dispatch> const& lhs,
                                                        std::nullptr_t /* unused */) {
-    return lhs.get() != XR_NULL_HANDLE;
+  return lhs.get() != XR_NULL_HANDLE;
 }
 //! @brief Inequality comparison between nullptr and UniqueHandle: true if the handle
 //! is not null.
 //! @relates UniqueHandle
 template <typename Type, typename Dispatch>
 OPENXR_HPP_CONSTEXPR OPENXR_HPP_INLINE bool operator!=(std::nullptr_t /* unused */,
-                                                       UniqueHandle<Type, Dispatch> const &rhs) {
-    return rhs.get() != XR_NULL_HANDLE;
+                                                       UniqueHandle<Type, Dispatch> const& rhs) {
+  return rhs.get() != XR_NULL_HANDLE;
 }
 #endif
 
 template <typename Dispatch>
 class ObjectDestroy {
-   public:
-    ObjectDestroy(Dispatch const &dispatch = Dispatch()) : m_dispatch(&dispatch) {}
+public:
+  ObjectDestroy(Dispatch const& dispatch = Dispatch()) : m_dispatch(&dispatch) {}
 
-   protected:
-    template <typename T>
-    void destroy(T t) {
-        t.destroy(*m_dispatch);
-    }
+protected:
+  template <typename T>
+  void destroy(T t) {
+    t.destroy(*m_dispatch);
+  }
 
-   private:
-    Dispatch const *m_dispatch;
+private:
+  Dispatch const* m_dispatch;
 };
 }  // namespace OPENXR_HPP_NAMESPACE
 namespace OPENXR_HPP_NAMESPACE {
 
 namespace traits {
-    //! Type trait associating an ObjectType enum value with its C++ type.
-    template <ObjectType o>
-    struct cpp_type_from_object_type_enum;
+  //! Type trait associating an ObjectType enum value with its C++ type.
+  template <ObjectType o>
+  struct cpp_type_from_object_type_enum;
 }  // namespace traits
 
 // forward declarations
@@ -355,146 +264,100 @@ namespace traits {
 class DispatchLoaderStatic;
 class DispatchLoaderDynamic;
 
-// FIXME a hack to get this working, since I don't know how to appropriately force the code to not project the
-// XrSpaceUserIdFB name, and I don't want to make a openxr_spaceuseridfb.hpp file just for this.
+// FIXME a hack to get this working, since I don't know how to appropriately force the code to not
+// project the XrSpaceUserIdFB name, and I don't want to make a openxr_spaceuseridfb.hpp file just
+// for this.
 using SpaceUserIdFB = XrSpaceUserIdFB;
-
-
 
 class Instance;
 
-
 class Session;
-
 
 class Space;
 
-
 class Action;
-
 
 class Swapchain;
 
-
 class ActionSet;
-
 
 class DebugUtilsMessengerEXT;
 
-
 class SpatialAnchorMSFT;
-
 
 class SpatialGraphNodeBindingMSFT;
 
-
 class HandTrackerEXT;
-
 
 class BodyTrackerFB;
 
-
 class SceneObserverMSFT;
-
 
 class SceneMSFT;
 
-
 class FacialTrackerHTC;
-
 
 class FoveationProfileFB;
 
-
 class TriangleMeshFB;
-
 
 class PassthroughFB;
 
-
 class PassthroughLayerFB;
-
 
 class GeometryInstanceFB;
 
-
 class MarkerDetectorML;
-
 
 class ExportedLocalizationMapML;
 
-
 class SpatialAnchorsStorageML;
-
 
 class SpatialAnchorStoreConnectionMSFT;
 
-
 class SpaceUserFB;
-
 
 class FaceTrackerFB;
 
-
 class EyeTrackerFB;
-
 
 class VirtualKeyboardMETA;
 
-
 class PassthroughColorLutMETA;
-
 
 class FaceTracker2FB;
 
-
 class EnvironmentDepthProviderMETA;
-
 
 class EnvironmentDepthSwapchainMETA;
 
-
 class RenderModelEXT;
-
 
 class RenderModelAssetEXT;
 
-
 class PassthroughHTC;
-
 
 class BodyTrackerHTC;
 
-
 class BodyTrackerBD;
-
 
 class SenseDataProviderBD;
 
-
 class SenseDataSnapshotBD;
-
 
 class AnchorBD;
 
-
 class PlaneDetectorEXT;
-
 
 class WorldMeshDetectorML;
 
-
 class FacialExpressionClientML;
-
 
 class SpatialEntityEXT;
 
-
 class SpatialContextEXT;
 
-
 class SpatialSnapshotEXT;
-
 
 class SpatialPersistenceContextEXT;
 /*!
@@ -511,242 +374,241 @@ class SpatialPersistenceContextEXT;
 #ifndef OPENXR_HPP_NO_SMART_HANDLE
 #ifndef OPENXR_HPP_DOXYGEN
 namespace traits {
-template <typename Dispatch>
-class UniqueHandleTraits<Instance, Dispatch> {
-   public:
+  template <typename Dispatch>
+  class UniqueHandleTraits<Instance, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<Session, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<Session, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<Space, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<Space, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<Action, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<Action, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<Swapchain, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<Swapchain, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<ActionSet, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<ActionSet, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<DebugUtilsMessengerEXT, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<DebugUtilsMessengerEXT, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<SpatialAnchorMSFT, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<SpatialAnchorMSFT, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<SpatialGraphNodeBindingMSFT, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<SpatialGraphNodeBindingMSFT, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<HandTrackerEXT, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<HandTrackerEXT, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<BodyTrackerFB, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<BodyTrackerFB, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<SceneObserverMSFT, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<SceneObserverMSFT, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<SceneMSFT, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<SceneMSFT, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<FacialTrackerHTC, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<FacialTrackerHTC, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<FoveationProfileFB, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<FoveationProfileFB, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<TriangleMeshFB, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<TriangleMeshFB, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<PassthroughFB, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<PassthroughFB, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<PassthroughLayerFB, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<PassthroughLayerFB, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<GeometryInstanceFB, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<GeometryInstanceFB, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<MarkerDetectorML, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<MarkerDetectorML, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<ExportedLocalizationMapML, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<ExportedLocalizationMapML, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<SpatialAnchorsStorageML, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<SpatialAnchorsStorageML, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<SpatialAnchorStoreConnectionMSFT, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<SpatialAnchorStoreConnectionMSFT, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<SpaceUserFB, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<SpaceUserFB, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<FaceTrackerFB, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<FaceTrackerFB, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<EyeTrackerFB, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<EyeTrackerFB, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<VirtualKeyboardMETA, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<VirtualKeyboardMETA, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<PassthroughColorLutMETA, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<PassthroughColorLutMETA, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<FaceTracker2FB, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<FaceTracker2FB, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<EnvironmentDepthProviderMETA, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<EnvironmentDepthProviderMETA, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<EnvironmentDepthSwapchainMETA, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<EnvironmentDepthSwapchainMETA, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<RenderModelEXT, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<RenderModelEXT, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<RenderModelAssetEXT, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<RenderModelAssetEXT, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<PassthroughHTC, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<PassthroughHTC, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<BodyTrackerHTC, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<BodyTrackerHTC, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<BodyTrackerBD, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<BodyTrackerBD, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<SenseDataProviderBD, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<SenseDataProviderBD, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<SenseDataSnapshotBD, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<SenseDataSnapshotBD, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<AnchorBD, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<AnchorBD, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<PlaneDetectorEXT, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<PlaneDetectorEXT, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<WorldMeshDetectorML, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<WorldMeshDetectorML, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<FacialExpressionClientML, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<FacialExpressionClientML, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<SpatialEntityEXT, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<SpatialEntityEXT, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<SpatialContextEXT, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<SpatialContextEXT, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<SpatialSnapshotEXT, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<SpatialSnapshotEXT, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-template <typename Dispatch>
-class UniqueHandleTraits<SpatialPersistenceContextEXT, Dispatch> {
-   public:
+  };
+  template <typename Dispatch>
+  class UniqueHandleTraits<SpatialPersistenceContextEXT, Dispatch> {
+  public:
     using deleter = ObjectDestroy<Dispatch>;
-};
-} //namespace traits
+  };
+}  // namespace traits
 #endif  // !OPENXR_HPP_DOXYGEN
 
 //! @addtogroup unique_handle_aliases
 //! @{
-
 
 //! Shorthand name for unique handles of type Instance, using a static dispatch.
 using UniqueInstance = UniqueHandle<Instance, DispatchLoaderStatic>;
@@ -775,15 +637,18 @@ using UniqueDynamicActionSet = UniqueHandle<ActionSet, DispatchLoaderDynamic>;
 //! Shorthand name for unique handles of type DebugUtilsMessengerEXT, using a static dispatch.
 using UniqueDebugUtilsMessengerEXT = UniqueHandle<DebugUtilsMessengerEXT, DispatchLoaderStatic>;
 //! Shorthand name for unique handles of type DebugUtilsMessengerEXT, using a dynamic dispatch.
-using UniqueDynamicDebugUtilsMessengerEXT = UniqueHandle<DebugUtilsMessengerEXT, DispatchLoaderDynamic>;
+using UniqueDynamicDebugUtilsMessengerEXT =
+    UniqueHandle<DebugUtilsMessengerEXT, DispatchLoaderDynamic>;
 //! Shorthand name for unique handles of type SpatialAnchorMSFT, using a static dispatch.
 using UniqueSpatialAnchorMSFT = UniqueHandle<SpatialAnchorMSFT, DispatchLoaderStatic>;
 //! Shorthand name for unique handles of type SpatialAnchorMSFT, using a dynamic dispatch.
 using UniqueDynamicSpatialAnchorMSFT = UniqueHandle<SpatialAnchorMSFT, DispatchLoaderDynamic>;
 //! Shorthand name for unique handles of type SpatialGraphNodeBindingMSFT, using a static dispatch.
-using UniqueSpatialGraphNodeBindingMSFT = UniqueHandle<SpatialGraphNodeBindingMSFT, DispatchLoaderStatic>;
+using UniqueSpatialGraphNodeBindingMSFT =
+    UniqueHandle<SpatialGraphNodeBindingMSFT, DispatchLoaderStatic>;
 //! Shorthand name for unique handles of type SpatialGraphNodeBindingMSFT, using a dynamic dispatch.
-using UniqueDynamicSpatialGraphNodeBindingMSFT = UniqueHandle<SpatialGraphNodeBindingMSFT, DispatchLoaderDynamic>;
+using UniqueDynamicSpatialGraphNodeBindingMSFT =
+    UniqueHandle<SpatialGraphNodeBindingMSFT, DispatchLoaderDynamic>;
 //! Shorthand name for unique handles of type HandTrackerEXT, using a static dispatch.
 using UniqueHandTrackerEXT = UniqueHandle<HandTrackerEXT, DispatchLoaderStatic>;
 //! Shorthand name for unique handles of type HandTrackerEXT, using a dynamic dispatch.
@@ -829,17 +694,24 @@ using UniqueMarkerDetectorML = UniqueHandle<MarkerDetectorML, DispatchLoaderStat
 //! Shorthand name for unique handles of type MarkerDetectorML, using a dynamic dispatch.
 using UniqueDynamicMarkerDetectorML = UniqueHandle<MarkerDetectorML, DispatchLoaderDynamic>;
 //! Shorthand name for unique handles of type ExportedLocalizationMapML, using a static dispatch.
-using UniqueExportedLocalizationMapML = UniqueHandle<ExportedLocalizationMapML, DispatchLoaderStatic>;
+using UniqueExportedLocalizationMapML =
+    UniqueHandle<ExportedLocalizationMapML, DispatchLoaderStatic>;
 //! Shorthand name for unique handles of type ExportedLocalizationMapML, using a dynamic dispatch.
-using UniqueDynamicExportedLocalizationMapML = UniqueHandle<ExportedLocalizationMapML, DispatchLoaderDynamic>;
+using UniqueDynamicExportedLocalizationMapML =
+    UniqueHandle<ExportedLocalizationMapML, DispatchLoaderDynamic>;
 //! Shorthand name for unique handles of type SpatialAnchorsStorageML, using a static dispatch.
 using UniqueSpatialAnchorsStorageML = UniqueHandle<SpatialAnchorsStorageML, DispatchLoaderStatic>;
 //! Shorthand name for unique handles of type SpatialAnchorsStorageML, using a dynamic dispatch.
-using UniqueDynamicSpatialAnchorsStorageML = UniqueHandle<SpatialAnchorsStorageML, DispatchLoaderDynamic>;
-//! Shorthand name for unique handles of type SpatialAnchorStoreConnectionMSFT, using a static dispatch.
-using UniqueSpatialAnchorStoreConnectionMSFT = UniqueHandle<SpatialAnchorStoreConnectionMSFT, DispatchLoaderStatic>;
-//! Shorthand name for unique handles of type SpatialAnchorStoreConnectionMSFT, using a dynamic dispatch.
-using UniqueDynamicSpatialAnchorStoreConnectionMSFT = UniqueHandle<SpatialAnchorStoreConnectionMSFT, DispatchLoaderDynamic>;
+using UniqueDynamicSpatialAnchorsStorageML =
+    UniqueHandle<SpatialAnchorsStorageML, DispatchLoaderDynamic>;
+//! Shorthand name for unique handles of type SpatialAnchorStoreConnectionMSFT, using a static
+//! dispatch.
+using UniqueSpatialAnchorStoreConnectionMSFT =
+    UniqueHandle<SpatialAnchorStoreConnectionMSFT, DispatchLoaderStatic>;
+//! Shorthand name for unique handles of type SpatialAnchorStoreConnectionMSFT, using a dynamic
+//! dispatch.
+using UniqueDynamicSpatialAnchorStoreConnectionMSFT =
+    UniqueHandle<SpatialAnchorStoreConnectionMSFT, DispatchLoaderDynamic>;
 //! Shorthand name for unique handles of type SpaceUserFB, using a static dispatch.
 using UniqueSpaceUserFB = UniqueHandle<SpaceUserFB, DispatchLoaderStatic>;
 //! Shorthand name for unique handles of type SpaceUserFB, using a dynamic dispatch.
@@ -859,19 +731,27 @@ using UniqueDynamicVirtualKeyboardMETA = UniqueHandle<VirtualKeyboardMETA, Dispa
 //! Shorthand name for unique handles of type PassthroughColorLutMETA, using a static dispatch.
 using UniquePassthroughColorLutMETA = UniqueHandle<PassthroughColorLutMETA, DispatchLoaderStatic>;
 //! Shorthand name for unique handles of type PassthroughColorLutMETA, using a dynamic dispatch.
-using UniqueDynamicPassthroughColorLutMETA = UniqueHandle<PassthroughColorLutMETA, DispatchLoaderDynamic>;
+using UniqueDynamicPassthroughColorLutMETA =
+    UniqueHandle<PassthroughColorLutMETA, DispatchLoaderDynamic>;
 //! Shorthand name for unique handles of type FaceTracker2FB, using a static dispatch.
 using UniqueFaceTracker2FB = UniqueHandle<FaceTracker2FB, DispatchLoaderStatic>;
 //! Shorthand name for unique handles of type FaceTracker2FB, using a dynamic dispatch.
 using UniqueDynamicFaceTracker2FB = UniqueHandle<FaceTracker2FB, DispatchLoaderDynamic>;
 //! Shorthand name for unique handles of type EnvironmentDepthProviderMETA, using a static dispatch.
-using UniqueEnvironmentDepthProviderMETA = UniqueHandle<EnvironmentDepthProviderMETA, DispatchLoaderStatic>;
-//! Shorthand name for unique handles of type EnvironmentDepthProviderMETA, using a dynamic dispatch.
-using UniqueDynamicEnvironmentDepthProviderMETA = UniqueHandle<EnvironmentDepthProviderMETA, DispatchLoaderDynamic>;
-//! Shorthand name for unique handles of type EnvironmentDepthSwapchainMETA, using a static dispatch.
-using UniqueEnvironmentDepthSwapchainMETA = UniqueHandle<EnvironmentDepthSwapchainMETA, DispatchLoaderStatic>;
-//! Shorthand name for unique handles of type EnvironmentDepthSwapchainMETA, using a dynamic dispatch.
-using UniqueDynamicEnvironmentDepthSwapchainMETA = UniqueHandle<EnvironmentDepthSwapchainMETA, DispatchLoaderDynamic>;
+using UniqueEnvironmentDepthProviderMETA =
+    UniqueHandle<EnvironmentDepthProviderMETA, DispatchLoaderStatic>;
+//! Shorthand name for unique handles of type EnvironmentDepthProviderMETA, using a dynamic
+//! dispatch.
+using UniqueDynamicEnvironmentDepthProviderMETA =
+    UniqueHandle<EnvironmentDepthProviderMETA, DispatchLoaderDynamic>;
+//! Shorthand name for unique handles of type EnvironmentDepthSwapchainMETA, using a static
+//! dispatch.
+using UniqueEnvironmentDepthSwapchainMETA =
+    UniqueHandle<EnvironmentDepthSwapchainMETA, DispatchLoaderStatic>;
+//! Shorthand name for unique handles of type EnvironmentDepthSwapchainMETA, using a dynamic
+//! dispatch.
+using UniqueDynamicEnvironmentDepthSwapchainMETA =
+    UniqueHandle<EnvironmentDepthSwapchainMETA, DispatchLoaderDynamic>;
 //! Shorthand name for unique handles of type RenderModelEXT, using a static dispatch.
 using UniqueRenderModelEXT = UniqueHandle<RenderModelEXT, DispatchLoaderStatic>;
 //! Shorthand name for unique handles of type RenderModelEXT, using a dynamic dispatch.
@@ -915,7 +795,8 @@ using UniqueDynamicWorldMeshDetectorML = UniqueHandle<WorldMeshDetectorML, Dispa
 //! Shorthand name for unique handles of type FacialExpressionClientML, using a static dispatch.
 using UniqueFacialExpressionClientML = UniqueHandle<FacialExpressionClientML, DispatchLoaderStatic>;
 //! Shorthand name for unique handles of type FacialExpressionClientML, using a dynamic dispatch.
-using UniqueDynamicFacialExpressionClientML = UniqueHandle<FacialExpressionClientML, DispatchLoaderDynamic>;
+using UniqueDynamicFacialExpressionClientML =
+    UniqueHandle<FacialExpressionClientML, DispatchLoaderDynamic>;
 //! Shorthand name for unique handles of type SpatialEntityEXT, using a static dispatch.
 using UniqueSpatialEntityEXT = UniqueHandle<SpatialEntityEXT, DispatchLoaderStatic>;
 //! Shorthand name for unique handles of type SpatialEntityEXT, using a dynamic dispatch.
@@ -929,326 +810,292 @@ using UniqueSpatialSnapshotEXT = UniqueHandle<SpatialSnapshotEXT, DispatchLoader
 //! Shorthand name for unique handles of type SpatialSnapshotEXT, using a dynamic dispatch.
 using UniqueDynamicSpatialSnapshotEXT = UniqueHandle<SpatialSnapshotEXT, DispatchLoaderDynamic>;
 //! Shorthand name for unique handles of type SpatialPersistenceContextEXT, using a static dispatch.
-using UniqueSpatialPersistenceContextEXT = UniqueHandle<SpatialPersistenceContextEXT, DispatchLoaderStatic>;
-//! Shorthand name for unique handles of type SpatialPersistenceContextEXT, using a dynamic dispatch.
-using UniqueDynamicSpatialPersistenceContextEXT = UniqueHandle<SpatialPersistenceContextEXT, DispatchLoaderDynamic>;
+using UniqueSpatialPersistenceContextEXT =
+    UniqueHandle<SpatialPersistenceContextEXT, DispatchLoaderStatic>;
+//! Shorthand name for unique handles of type SpatialPersistenceContextEXT, using a dynamic
+//! dispatch.
+using UniqueDynamicSpatialPersistenceContextEXT =
+    UniqueHandle<SpatialPersistenceContextEXT, DispatchLoaderDynamic>;
 //! @}
 #endif  // !OPENXR_HPP_NO_SMART_HANDLE
 
 #ifndef OPENXR_HPP_DOXYGEN
 namespace traits {
-// Explicit specializations of cpp_type_from_object_type_enum
+  // Explicit specializations of cpp_type_from_object_type_enum
 
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::Instance> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::Instance> {
     using type = Instance;
-};
+  };
 
-
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::Session> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::Session> {
     using type = Session;
-};
+  };
 
-
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::Space> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::Space> {
     using type = Space;
-};
+  };
 
-
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::Action> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::Action> {
     using type = Action;
-};
+  };
 
-
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::Swapchain> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::Swapchain> {
     using type = Swapchain;
-};
+  };
 
-
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::ActionSet> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::ActionSet> {
     using type = ActionSet;
-};
+  };
 
 #ifdef XR_EXT_debug_utils
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::DebugUtilsMessengerEXT> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::DebugUtilsMessengerEXT> {
     using type = DebugUtilsMessengerEXT;
-};
+  };
 #endif  // XR_EXT_debug_utils
 #ifdef XR_MSFT_spatial_anchor
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::SpatialAnchorMSFT> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::SpatialAnchorMSFT> {
     using type = SpatialAnchorMSFT;
-};
+  };
 #endif  // XR_MSFT_spatial_anchor
 #ifdef XR_MSFT_spatial_graph_bridge
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::SpatialGraphNodeBindingMSFT> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::SpatialGraphNodeBindingMSFT> {
     using type = SpatialGraphNodeBindingMSFT;
-};
+  };
 #endif  // XR_MSFT_spatial_graph_bridge
 #ifdef XR_EXT_hand_tracking
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::HandTrackerEXT> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::HandTrackerEXT> {
     using type = HandTrackerEXT;
-};
+  };
 #endif  // XR_EXT_hand_tracking
 #ifdef XR_FB_body_tracking
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::BodyTrackerFB> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::BodyTrackerFB> {
     using type = BodyTrackerFB;
-};
+  };
 #endif  // XR_FB_body_tracking
 #ifdef XR_MSFT_scene_understanding
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::SceneObserverMSFT> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::SceneObserverMSFT> {
     using type = SceneObserverMSFT;
-};
+  };
 #endif  // XR_MSFT_scene_understanding
 #ifdef XR_MSFT_scene_understanding
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::SceneMSFT> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::SceneMSFT> {
     using type = SceneMSFT;
-};
+  };
 #endif  // XR_MSFT_scene_understanding
 #ifdef XR_HTC_facial_tracking
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::FacialTrackerHTC> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::FacialTrackerHTC> {
     using type = FacialTrackerHTC;
-};
+  };
 #endif  // XR_HTC_facial_tracking
 #ifdef XR_FB_foveation
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::FoveationProfileFB> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::FoveationProfileFB> {
     using type = FoveationProfileFB;
-};
+  };
 #endif  // XR_FB_foveation
 #ifdef XR_FB_triangle_mesh
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::TriangleMeshFB> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::TriangleMeshFB> {
     using type = TriangleMeshFB;
-};
+  };
 #endif  // XR_FB_triangle_mesh
 #ifdef XR_FB_passthrough
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::PassthroughFB> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::PassthroughFB> {
     using type = PassthroughFB;
-};
+  };
 #endif  // XR_FB_passthrough
 #ifdef XR_FB_passthrough
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::PassthroughLayerFB> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::PassthroughLayerFB> {
     using type = PassthroughLayerFB;
-};
+  };
 #endif  // XR_FB_passthrough
 #ifdef XR_FB_passthrough
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::GeometryInstanceFB> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::GeometryInstanceFB> {
     using type = GeometryInstanceFB;
-};
+  };
 #endif  // XR_FB_passthrough
 #ifdef XR_ML_marker_understanding
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::MarkerDetectorML> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::MarkerDetectorML> {
     using type = MarkerDetectorML;
-};
+  };
 #endif  // XR_ML_marker_understanding
 #ifdef XR_ML_localization_map
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::ExportedLocalizationMapML> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::ExportedLocalizationMapML> {
     using type = ExportedLocalizationMapML;
-};
+  };
 #endif  // XR_ML_localization_map
-#ifdef XR_ML_spatial_anchors_storage
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::SpatialAnchorsStorageML> {
+#ifdef dsaXR_ML_spatial_anchors_storage
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::SpatialAnchorsStorageML> {
     using type = SpatialAnchorsStorageML;
-};
+  };
 #endif  // XR_ML_spatial_anchors_storage
 #ifdef XR_MSFT_spatial_anchor_persistence
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::SpatialAnchorStoreConnectionMSFT> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::SpatialAnchorStoreConnectionMSFT> {
     using type = SpatialAnchorStoreConnectionMSFT;
-};
+  };
 #endif  // XR_MSFT_spatial_anchor_persistence
 #ifdef XR_FB_spatial_entity_sharing
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::SpaceUserFB> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::SpaceUserFB> {
     using type = SpaceUserFB;
-};
+  };
 #endif  // XR_FB_spatial_entity_sharing
 #ifdef XR_FB_face_tracking
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::FaceTrackerFB> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::FaceTrackerFB> {
     using type = FaceTrackerFB;
-};
+  };
 #endif  // XR_FB_face_tracking
 #ifdef XR_FB_eye_tracking_social
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::EyeTrackerFB> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::EyeTrackerFB> {
     using type = EyeTrackerFB;
-};
+  };
 #endif  // XR_FB_eye_tracking_social
 #ifdef XR_META_virtual_keyboard
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::VirtualKeyboardMETA> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::VirtualKeyboardMETA> {
     using type = VirtualKeyboardMETA;
-};
+  };
 #endif  // XR_META_virtual_keyboard
 #ifdef XR_META_passthrough_color_lut
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::PassthroughColorLutMETA> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::PassthroughColorLutMETA> {
     using type = PassthroughColorLutMETA;
-};
+  };
 #endif  // XR_META_passthrough_color_lut
 #ifdef XR_FB_face_tracking2
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::FaceTracker2FB> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::FaceTracker2FB> {
     using type = FaceTracker2FB;
-};
+  };
 #endif  // XR_FB_face_tracking2
 #ifdef XR_META_environment_depth
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::EnvironmentDepthProviderMETA> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::EnvironmentDepthProviderMETA> {
     using type = EnvironmentDepthProviderMETA;
-};
+  };
 #endif  // XR_META_environment_depth
 #ifdef XR_META_environment_depth
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::EnvironmentDepthSwapchainMETA> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::EnvironmentDepthSwapchainMETA> {
     using type = EnvironmentDepthSwapchainMETA;
-};
+  };
 #endif  // XR_META_environment_depth
 #ifdef XR_EXT_render_model
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::RenderModelEXT> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::RenderModelEXT> {
     using type = RenderModelEXT;
-};
+  };
 #endif  // XR_EXT_render_model
 #ifdef XR_EXT_render_model
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::RenderModelAssetEXT> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::RenderModelAssetEXT> {
     using type = RenderModelAssetEXT;
-};
+  };
 #endif  // XR_EXT_render_model
 #ifdef XR_HTC_passthrough
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::PassthroughHTC> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::PassthroughHTC> {
     using type = PassthroughHTC;
-};
+  };
 #endif  // XR_HTC_passthrough
 #ifdef XR_HTC_body_tracking
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::BodyTrackerHTC> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::BodyTrackerHTC> {
     using type = BodyTrackerHTC;
-};
+  };
 #endif  // XR_HTC_body_tracking
 #ifdef XR_BD_body_tracking
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::BodyTrackerBD> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::BodyTrackerBD> {
     using type = BodyTrackerBD;
-};
+  };
 #endif  // XR_BD_body_tracking
 #ifdef XR_BD_spatial_sensing
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::SenseDataProviderBD> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::SenseDataProviderBD> {
     using type = SenseDataProviderBD;
-};
+  };
 #endif  // XR_BD_spatial_sensing
 #ifdef XR_BD_spatial_sensing
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::SenseDataSnapshotBD> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::SenseDataSnapshotBD> {
     using type = SenseDataSnapshotBD;
-};
+  };
 #endif  // XR_BD_spatial_sensing
 #ifdef XR_BD_spatial_sensing
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::AnchorBD> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::AnchorBD> {
     using type = AnchorBD;
-};
+  };
 #endif  // XR_BD_spatial_sensing
 #ifdef XR_EXT_plane_detection
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::PlaneDetectorEXT> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::PlaneDetectorEXT> {
     using type = PlaneDetectorEXT;
-};
+  };
 #endif  // XR_EXT_plane_detection
-#ifdef XR_ML_world_mesh_detection
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::WorldMeshDetectorML> {
+#ifdef dsaXR_ML_world_mesh_detection
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::WorldMeshDetectorML> {
     using type = WorldMeshDetectorML;
-};
+  };
 #endif  // XR_ML_world_mesh_detection
 #ifdef XR_ML_facial_expression
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::FacialExpressionClientML> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::FacialExpressionClientML> {
     using type = FacialExpressionClientML;
-};
+  };
 #endif  // XR_ML_facial_expression
 #ifdef XR_EXT_spatial_entity
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::SpatialEntityEXT> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::SpatialEntityEXT> {
     using type = SpatialEntityEXT;
-};
+  };
 #endif  // XR_EXT_spatial_entity
 #ifdef XR_EXT_spatial_entity
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::SpatialContextEXT> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::SpatialContextEXT> {
     using type = SpatialContextEXT;
-};
+  };
 #endif  // XR_EXT_spatial_entity
 #ifdef XR_EXT_spatial_entity
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::SpatialSnapshotEXT> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::SpatialSnapshotEXT> {
     using type = SpatialSnapshotEXT;
-};
+  };
 #endif  // XR_EXT_spatial_entity
 #ifdef XR_EXT_spatial_persistence
-template <>
-struct cpp_type_from_object_type_enum<ObjectType::SpatialPersistenceContextEXT> {
+  template <>
+  struct cpp_type_from_object_type_enum<ObjectType::SpatialPersistenceContextEXT> {
     using type = SpatialPersistenceContextEXT;
-};
+  };
 #endif  // XR_EXT_spatial_persistence
-} // namespace traits
+}  // namespace traits
 #endif  // !OPENXR_HPP_DOXYGEN
 
 }  // namespace OPENXR_HPP_NAMESPACE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #endif  // ifndef OPENXR_HANDLES_FORWARD_HPP_
-
